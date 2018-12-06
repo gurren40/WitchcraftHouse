@@ -1,9 +1,21 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>HomeForm.ui.qml</file>
         <file>Page1Form.ui.qml</file>
         <file>Page2Form.ui.qml</file>
         <file>qtquickcontrols2.conf</file>
+        <file>Devices.qml</file>
+        <file>main.cpp</file>
+        <file>images/cctv.png</file>
+        <file>images/handle.png</file>
+        <file>images/hisheadreally.png</file>
+        <file>images/just_logo.png</file>
+        <file>images/lampu.png</file>
+        <file>images/logo_color.png</file>
+        <file>images/logo_white.png</file>
+        <file>images/outlet.png</file>
+        <file>images/splash.png</file>
+        <file>images/switch.png</file>
+        <file>images/thermostat.png</file>
     </qresource>
 </RCC>

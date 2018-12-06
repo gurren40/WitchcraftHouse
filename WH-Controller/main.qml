@@ -1,12 +1,13 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
+import QtQuick.Window 2.3
 
 ApplicationWindow {
     id: window
     visible: true
     width: 640
     height: 480
-    title: qsTr("Stack")
+    title: qsTr("Witchcraft House")
 
     header: ToolBar {
         contentHeight: toolButton.implicitHeight
@@ -37,6 +38,7 @@ ApplicationWindow {
 
         Column {
             anchors.fill: parent
+            topPadding: 15
 
             ItemDelegate {
                 text: qsTr("Page 1")
@@ -59,7 +61,7 @@ ApplicationWindow {
 
     StackView {
         id: stackView
-        initialItem: "HomeForm.ui.qml"
+        initialItem: "Devices.qml"
         anchors.fill: parent
     }
 }
