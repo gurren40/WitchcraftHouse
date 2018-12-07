@@ -1,3 +1,4 @@
+QT += core websockets
 QT -= gui
 
 CONFIG += c++11 console
