@@ -6,6 +6,8 @@
 #include <QJsonArray>
 #include <QJsonObject>
 
+#include "Model/devicemodel.h"
+
 class DeviceController : public QObject
 {
     Q_OBJECT

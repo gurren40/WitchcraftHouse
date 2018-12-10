@@ -2,6 +2,7 @@
 #define DEVICEMODEL_H
 
 #include <QObject>
+#include <QJsonObject>
 
 struct DeviceItem{
     QString uuid;
@@ -21,7 +22,23 @@ public:
 signals:
 
 public slots:
-    bool setValue(QString value);
+    //setter
+    bool setType(QString uuid, QString type);
+    bool setGroup(QString uuid, QString group);
+    bool setOwnerEmail(QString uuid, QString ownerEmail);
+    bool setValue(QString uuid, QString value);
+
+    //getter
+    QString getType(QString uuid);
+    QString getGroup(QString uuid);
+    QString getOwnerEmail(QString uuid);
+    QString getValue(QString uuid);
+
+    //custom method
+    QJsonObject getDeviceInfo(QString uuid);
+    QJsonObject getOwnerDevicesList(QString ownerEmail);
+
+private:
 };
 
 #endif // DEVICEMODEL_H

@@ -1,0 +1,9 @@
+{
+    "//" : "database",
+    "dbtype" : "QMYSQL",
+    "hostname" : "localhost",
+    "dbname" : "Witchcraft",
+    "dbusername" : "admin",
+    "dbpassword" : "password"
+    
+}
