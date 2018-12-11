@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     QObject::connect(&client,&WebsocketConnection::getDeviceList,&deviceList,&DeviceList::rewriteAllItem);
 
     QQmlApplicationEngine engine;
-    engine.rootContext()->setContextProperty(QStringLiteral("DeviceList"), &deviceList);
+    engine.rootContext()->setContextProperty(QStringLiteral("deviceList"), &deviceList);
     engine.rootContext()->setContextProperty("backend", &backhand);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())

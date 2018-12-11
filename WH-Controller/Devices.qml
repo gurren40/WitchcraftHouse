@@ -98,11 +98,12 @@ Pane {
             Switch{
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
+                checked: getPosition()
                 function getPosition(){
-                    if(model.value === "true"){
-                        position = 1;
-                    }else if(model.value === "false"){
-                        position = 0;
+                    if(value == "true"){
+                        return true;
+                    }else if(value == "false"){
+                        return false;
                     }
                 }
             }
@@ -302,7 +303,9 @@ Pane {
             Layout.fillWidth: true
             Layout.fillHeight: true
             clip: true
-            model: DeviceList
+            model: DeviceModel{
+                list: deviceList
+            }
 
             section.property: "group"
             section.delegate: Pane {
