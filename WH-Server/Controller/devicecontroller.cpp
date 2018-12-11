@@ -1,13 +1,38 @@
 #include "devicecontroller.h"
 
-DeviceController::DeviceController(QObject *parent) : QObject(parent)
+
+DeviceController::DeviceController(QObject *parent)
 {
 
 }
 
-void DeviceController::setDeviceValue(QJsonObject json)
+DeviceController::DeviceController(QSqlDatabase *database, QObject *parent)
 {
-    DeviceModel the_model(json["uuid"].toString());
-    the_model.setValue(json["value"].toString());
-    the_model.deleteLater();
+    this->db = *database;
 }
+
+void DeviceController::getDeviceList(QUrl url, QJsonObject json)
+{
+    DeviceModel model;
+    QJsonObject toReturn;
+    toReturn = model.getOwnerDevicesList(url.userName());
+    sendMessegeToControllDevice(url,toReturn);
+}
+
+void DeviceController::setDeviceValue(QUrl url, QJsonObject json)
+{
+
+}
+
+void DeviceController::fromWebsocket(QUrl url, QJsonObject json)
+{
+    switch (json["function"].toString()){
+    case "setDeviceValue":
+        setDeviceValue(url,json);
+        break;
+    case "getDeviceList":
+        getDeviceList(url,json);
+        break;
+    }
+}
+

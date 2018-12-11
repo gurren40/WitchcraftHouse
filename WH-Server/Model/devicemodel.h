@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QJsonObject>
+#include <QSqlDatabase>
 
 struct DeviceItem{
     QString uuid;
@@ -18,6 +19,7 @@ class DeviceModel : public QObject
 public:
     QList<DeviceItem>
     explicit DeviceModel(QObject *parent = nullptr);
+    explicit DeviceModel(QSqlDatabase *database, QObject *parent = nullptr);
 
 signals:
 
@@ -39,6 +41,7 @@ public slots:
     QJsonObject getOwnerDevicesList(QString ownerEmail);
 
 private:
+    QSqlDatabase db;
 };
 
 #endif // DEVICEMODEL_H

@@ -43,11 +43,18 @@ void WebsocketServer::onNewConnection(){
 void WebsocketServer::processMessage(const QString &message)
 {
     QWebSocket *pSender = qobject_cast<QWebSocket *>(sender());
+    /* old stuff
     for (QWebSocket *pClient : qAsConst(m_clients)) {
         if (pClient != pSender) //don't echo message back to sender
             pClient->sendTextMessage(message);
         QTextStream(stdout) << message << '\n';
     }
+    */
+    QByteArray theMessage = message.toLocal8Bit();
+    QJsonDocument jsonDoc(QJsonDocument::fromJson(theMessage));
+    QJsonObject jsonObj = jsonDoc.object();
+    if(jsonObj["toWhere"].toString() == "toDevice")
+        emit toDeviceController(pSender->requestUrl(),jsonObj);
 }
 
 void WebsocketServer::socketDisconnected()
@@ -58,5 +65,17 @@ void WebsocketServer::socketDisconnected()
     {
         m_clients.removeAll(pClient);
         pClient->deleteLater();
+    }
+}
+
+void WebsocketServer::sendMessageToControllDevice(QUrl url, QJsonObject json)
+{
+    //QWebSocket *pSender = qobject_cast<QWebSocket *>(sender());
+    QJsonDocument doc(json);
+    QString message(doc.toJson());
+    for (QWebSocket *pClient : qAsConst(m_clients)){
+        if (pClient->requestUrl()==url){
+            pClient->sendTextMessage(message);
+        }
     }
 }

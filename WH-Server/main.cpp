@@ -6,6 +6,7 @@
 #include <QDebug>
 
 #include "websocketserver.h"
+#include "Controller/devicecontroller.h"
 
 static QJsonObject loadSetting(){
     QFile loadFile(QStringLiteral("/home/aditiya/QtProjects/witchcrafthouse/SettingFolder/setting.json"));
@@ -43,6 +44,10 @@ int main(int argc, char *argv[])
     QCoreApplication a(argc, argv);
     QSqlDatabase db = setDatabase();
     WebsocketServer server(1234);
+    DeviceController c_device(&db);
+
+    QObject::connect(&server,&WebsocketServer::toDeviceController,&c_device,&DeviceController::fromWebsocket);
+    QObject::connect(&c_device,&DeviceController::sendMessegeToControllDevice,&server,&WebsocketServer::sendMessageToControllDevice);
 
     return a.exec();
 }
