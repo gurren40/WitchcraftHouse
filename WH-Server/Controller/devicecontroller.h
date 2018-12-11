@@ -6,6 +6,7 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QSqlDatabase>
+#include <QUrl>
 
 #include "Model/devicemodel.h"
 
@@ -17,7 +18,7 @@ public:
     explicit DeviceController(QSqlDatabase *database, QObject *parent = nullptr);
     void getDeviceList(QUrl url, QJsonObject json); //perlu ditambahkan ownernya siapa
     void setDeviceValue(QUrl url, QJsonObject json);
-    void deviceValueIsSet();
+    void requestSetDeviceValue(QUrl url, QJsonObject json);
 
 signals:
     void sendMessegeToDevice(QString uuid, QUrl url, QJsonObject json);

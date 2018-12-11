@@ -16,7 +16,7 @@ WebsocketServer::WebsocketServer(quint16 port,QObject *parent) : QObject(parent)
 {
     if (m_pWebSocketServer->listen(QHostAddress::Any, port))
     {
-        QTextStream(stdout) << "Chat Server listening on port " << port << '\n';
+        QTextStream(stdout) << "Websocket Server listening on port " << port << '\n';
         connect(m_pWebSocketServer, &QWebSocketServer::newConnection,
                 this, &WebsocketServer::onNewConnection);
     }
@@ -68,13 +68,27 @@ void WebsocketServer::socketDisconnected()
     }
 }
 
+void WebsocketServer::sendMessageToDevice(QString uuid, QUrl url, QJsonObject json)
+{
+    //QWebSocket *pSender = qobject_cast<QWebSocket *>(sender());
+    QJsonDocument doc(json);
+    QString message(doc.toJson());
+    for (QWebSocket *pClient : qAsConst(m_clients)){
+        if (pClient->requestUrl().path()==url.path()){
+            if("/device/"+uuid == pClient->requestUrl().path()){
+                pClient->sendTextMessage(message);
+            }
+        }
+    }
+}
+
 void WebsocketServer::sendMessageToControllDevice(QUrl url, QJsonObject json)
 {
     //QWebSocket *pSender = qobject_cast<QWebSocket *>(sender());
     QJsonDocument doc(json);
     QString message(doc.toJson());
     for (QWebSocket *pClient : qAsConst(m_clients)){
-        if (pClient->requestUrl()==url){
+        if (pClient->requestUrl().path()==url.path()){
             pClient->sendTextMessage(message);
         }
     }

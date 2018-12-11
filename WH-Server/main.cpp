@@ -48,6 +48,7 @@ int main(int argc, char *argv[])
 
     QObject::connect(&server,&WebsocketServer::toDeviceController,&c_device,&DeviceController::fromWebsocket);
     QObject::connect(&c_device,&DeviceController::sendMessegeToControllDevice,&server,&WebsocketServer::sendMessageToControllDevice);
+    QObject::connect(&c_device,&DeviceController::sendMessegeToDevice,&server,&WebsocketServer::sendMessageToDevice);
 
     return a.exec();
 }
