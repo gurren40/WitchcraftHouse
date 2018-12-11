@@ -50,8 +50,8 @@ void WebsocketServer::processMessage(const QString &message)
         QTextStream(stdout) << message << '\n';
     }
     */
-    QByteArray theMessage = message.toLocal8Bit();
-    QJsonDocument jsonDoc(QJsonDocument::fromJson(theMessage));
+    QTextStream(stdout) << message << '\n';
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(message.toUtf8());
     QJsonObject jsonObj = jsonDoc.object();
     if(jsonObj["toWhere"].toString() == "toDevice")
         emit toDeviceController(pSender->requestUrl(),jsonObj);
@@ -90,6 +90,7 @@ void WebsocketServer::sendMessageToControllDevice(QUrl url, QJsonObject json)
     for (QWebSocket *pClient : qAsConst(m_clients)){
         if (pClient->requestUrl().path()==url.path()){
             pClient->sendTextMessage(message);
+            QTextStream(stdout) << message << "\n";
         }
     }
 }

@@ -2,8 +2,8 @@
     "//" : "database",
     "dbtype" : "QMYSQL",
     "hostname" : "localhost",
-    "dbname" : "Witchcraft",
+    "dbname" : "witchcraft",
     "dbusername" : "admin",
-    "dbpassword" : "password"
-    
+    "dbpassword" : "password",
+    "dbport" : "3306"
 }

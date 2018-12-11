@@ -1,6 +1,7 @@
 import QtQuick 2.6
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.1
+import Device 1.0
 
 Pane {
     padding: 0
@@ -8,7 +9,7 @@ Pane {
 
     property var delegateComponentMap: {
         "LampDelegate": lampDelegateComponent,
-        "LockDelegate": lockDelegateComponent,
+        "lock": lockDelegateComponent,
         "OutletDelegate": outletDelegateComponent,
         "ThermostatDelegate": thermostatDelegateComponent,
         "ThermometerDelegate": thermometerDelegateComponent,
@@ -49,7 +50,7 @@ Pane {
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
             }
-            signal todetail(string type, string text, string devicename, string devicevalue)
+            signal todetail(string group, string text, string devicename, string devicevalue)
             MouseArea{
                 id: mousearea
                 anchors.top: parent.top
@@ -61,7 +62,7 @@ Pane {
                 }
             }
             Component.onCompleted: {
-                mousearea.clicked.connect(todetail(type,text,devicename,devicevalue))
+                mousearea.clicked.connect(todetail(group,text,devicename,devicevalue))
             }
         }
     }
@@ -97,6 +98,13 @@ Pane {
             Switch{
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
+                function getPosition(){
+                    if(model.value === "true"){
+                        position = 1;
+                    }else if(model.value === "false"){
+                        position = 0;
+                    }
+                }
             }
         }
     }
@@ -294,20 +302,9 @@ Pane {
             Layout.fillWidth: true
             Layout.fillHeight: true
             clip: true
-            model: ListModel {
-                ListElement { type: "Ruang Teras"; text: "LampDelegate"; devicename: "Lampu Teras"}
-                ListElement { type: "Ruang Teras"; text: "OutletDelegate"; devicename: "Outlet Teras 1"}
-                ListElement { type: "Ruang Teras"; text: "OutletDelegate"; devicename: "Outlet Teras 2"}
-                ListElement { type: "Ruang Tamu"; text: "OutletDelegate"; devicename: "Outlet 1"}
-                ListElement { type: "Ruang Tamu"; text: "OutletDelegate"; devicename: "Outlet 2"}
-                ListElement { type: "Ruang Tamu"; text: "OutletDelegate"; devicename: "Outlet 3"}
-                ListElement { type: "Ruang Tamu"; text: "LampDelegate"; devicename: "Lampu 1"}
-                ListElement { type: "Ruang Tamu"; text: "LampDelegate"; devicename: "Lampu 2"}
-                ListElement { type: "Ruang Tamu"; text: "ThermometerDelegate"; devicename: "Suhu Ruang"; devicevalue: "25 C"}
-                ListElement { type: "Ruang Tamu"; text: "ThermostatDelegate"; devicename: "Thermostat"; devicevalue: "25"}
-            }
+            model: DeviceList
 
-            section.property: "type"
+            section.property: "group"
             section.delegate: Pane {
                 width: listView.width
                 height: sectionLabel.implicitHeight + 20
@@ -322,10 +319,10 @@ Pane {
             delegate: Loader {
                 id: delegateLoader
                 width: listView.width
-                sourceComponent: delegateComponentMap[text]
+                sourceComponent: delegateComponentMap[model.type]
 
-                property string labelText: devicename
-                property var value : devicevalue
+                property string labelText: model.name
+                property var value : model.value
                 property ListView view: listView
                 property int ourIndex: index
 

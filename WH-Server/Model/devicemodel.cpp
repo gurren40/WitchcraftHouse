@@ -10,6 +10,23 @@ void DeviceModel::setDatabase(QSqlDatabase *database)
     this->db = *database;
 }
 
+bool DeviceModel::setDeviceValue(QString uuid, QString value)
+{
+    if(db.open()){
+        bool ok;
+        QString theQuery;
+        QSqlQuery query(db);
+        theQuery = "\
+         update device\
+         set value = "+value+"\
+         where uuid = "+uuid+"\
+        ";
+        ok = query.exec(theQuery);
+        return ok;
+    }
+    return false;
+}
+
 QJsonObject DeviceModel::getOwnerDevicesList(QString ownerEmail)
 {
     QJsonObject json;
@@ -19,11 +36,11 @@ QJsonObject DeviceModel::getOwnerDevicesList(QString ownerEmail)
         QString theQuery;
         QSqlQuery query(db);
         theQuery = "\
-         Select * from device \
+         Select * from Device \
          where ownerEmail \
          = '"+ ownerEmail +"'\
         ";
-        ok = query.exec();
+        ok = query.exec(theQuery);
         if(ok){
             while(query.next()){
                 QJsonObject theObject;
@@ -32,12 +49,16 @@ QJsonObject DeviceModel::getOwnerDevicesList(QString ownerEmail)
                 theObject["group"] = query.value("group").toString();
                 theObject["ownerEmail"] = query.value("ownerEmail").toString();
                 theObject["value"] = query.value("value").toString();
+                theObject["name"] = query.value("name").toString();
                 objectArray.append(theObject);
             }
             json["DeviceList"] = objectArray;
+            json["function"] = "getDeviceList";
             return json;
         }
+        json["message"] = "error gawat 2" + query.lastError().text();
         return json;
     }
+    json["message"] = "error gawat 1";
     return json;
 }

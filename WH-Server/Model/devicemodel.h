@@ -16,6 +16,7 @@ struct DeviceItem{
     QString group;
     QString ownerEmail;
     QString value;
+    QString name;
 };
 
 class DeviceModel : public QObject

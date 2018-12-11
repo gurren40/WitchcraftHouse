@@ -25,16 +25,17 @@ static QJsonObject loadSetting(){
 
 static QSqlDatabase setDatabase() {
     QJsonObject setting = loadSetting();
-    QSqlDatabase db = QSqlDatabase::addDatabase(setting["dbtype"].toString());
-    db.setHostName(setting["hostname"].toString());
-    db.setDatabaseName(setting["dbname"].toString());
-    db.setUserName(setting["dbusername"].toString());
-    db.setPassword(setting["dbpassword"].toString());
+    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+    db.setHostName("localhost");
+    db.setDatabaseName("witchcraft");
+    db.setUserName("admin");
+    db.setPassword("azsx312");
+    db.setPort(3306);
     bool ok = db.open();
     if (ok){
         return db;
     } else {
-        //qDebug() << "ERROR: "+ db.lastError().text();
+        QTextStream(stdout) << "ERROR: "+ db.lastError().text() + "\n";
         return db;
     }
 }

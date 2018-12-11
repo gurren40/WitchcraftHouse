@@ -1,5 +1,5 @@
 #include "devicecontroller.h"
-
+#include <QTextStream>
 
 DeviceController::DeviceController(QObject *parent)
 {
@@ -16,8 +16,9 @@ void DeviceController::getDeviceList(QUrl url, QJsonObject json)
     DeviceModel model;
     model.setDatabase(&db);
     QJsonObject toReturn;
-    toReturn = model.getOwnerDevicesList(url.userName());
+    toReturn = model.getOwnerDevicesList("aditiyasidabutar@student.undip.ac.id");
     sendMessegeToControllDevice(url,toReturn);
+    QTextStream(stdout) << url.userName() << '\n';
 }
 
 void DeviceController::setDeviceValue(QUrl url, QJsonObject json)

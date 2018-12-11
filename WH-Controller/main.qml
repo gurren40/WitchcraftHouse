@@ -1,6 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Window 2.3
+import Device 1.0
 
 ApplicationWindow {
     id: window
@@ -41,11 +42,9 @@ ApplicationWindow {
             topPadding: 15
 
             ItemDelegate {
-                text: qsTr("Page 1")
-                width: parent.width
+                text:qsTr("Reload")
                 onClicked: {
-                    stackView.push("Page1Form.ui.qml")
-                    drawer.close()
+                    backend.initDevicesValue()
                 }
             }
             ItemDelegate {
