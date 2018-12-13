@@ -34,6 +34,9 @@ void WebsocketConnection::onTextMessageReceived(QString message)
     if(jsonObj["function"].toString() == "getDeviceList"){
         m_webSocket.sendTextMessage(QStringLiteral("messege recivied"));
         emit getDeviceList(jsonObj);
+    } else if(jsonObj["function"].toString() == "setDeviceValue"){
+        m_webSocket.sendTextMessage(QStringLiteral("messege recivied"));
+        emit setDeviceValue(jsonObj);
     }
 }
 

@@ -11,10 +11,12 @@ public:
 
 signals:
     void getDeviceValueDammnit();
+    void setValueDevice(QString uuid, QString value);
 
 public slots:
 
     void initDevicesValue();
+    void setValue(QString uuid, QString value);
 };
 
 #endif // BACKEND_H

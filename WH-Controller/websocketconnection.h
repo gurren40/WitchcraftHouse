@@ -18,6 +18,7 @@ public:
 signals:
     void closed();
     void getDeviceList(QJsonObject json);
+    void setDeviceValue(QJsonObject json);
 
 private slots:
     void onConnected();

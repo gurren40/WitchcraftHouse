@@ -13,17 +13,21 @@ void DeviceModel::setDatabase(QSqlDatabase *database)
 bool DeviceModel::setDeviceValue(QString uuid, QString value)
 {
     if(db.open()){
+        QTextStream(stdout) << "setvalue uuid : "<< uuid <<"\n";
+        QTextStream(stdout) << "setvalue value : "<< value <<"\n";
         bool ok;
         QString theQuery;
         QSqlQuery query(db);
         theQuery = "\
-         update device\
-         set value = "+value+"\
-         where uuid = "+uuid+"\
+         update Device \
+         set value = '"+value+"'\
+         where uuid = '"+uuid+"'\
         ";
         ok = query.exec(theQuery);
+        QTextStream(stdout) << "error query : "<< query.lastError().text() <<"\n";
         return ok;
     }
+    QTextStream(stdout) << "error db "<< db.lastError().text() <<"\n";
     return false;
 }
 

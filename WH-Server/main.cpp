@@ -19,13 +19,13 @@ static QJsonObject loadSetting(){
 
     QJsonDocument loadDoc(QJsonDocument::fromJson(saveData));
 
-    QJsonObject json = loadDoc.object();
-    return json;
+    return loadDoc.object();;
 }
 
 static QSqlDatabase setDatabase() {
     QJsonObject setting = loadSetting();
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+    QTextStream(stdout) << setting["dbhostname"].toString() << "\n";
     db.setHostName("localhost");
     db.setDatabaseName("witchcraft");
     db.setUserName("admin");

@@ -1,4 +1,5 @@
 #include "websocketserver.h"
+#include <QUrl>
 
 #include <cstdio>
 using namespace std;
@@ -30,6 +31,11 @@ WebsocketServer::~WebsocketServer(){
 void WebsocketServer::onNewConnection(){
     auto pSocket = m_pWebSocketServer->nextPendingConnection();
     QTextStream(stdout) << getIdentifier(pSocket) << " connected!\n";
+    QTextStream(stdout) << "user : " << pSocket->requestUrl().path() << " is connected!\n";
+    QTextStream(stdout) << "Query : " << pSocket->requestUrl().query() << "\n";
+    QUrlQuery x(pSocket->requestUrl().query());
+    QTextStream(stdout) << "username : " << x.queryItemValue("username") << "\n";
+    QTextStream(stdout) << "password : " << x.queryItemValue("password") << "\n";
     pSocket->setParent(this);
 
     connect(pSocket, &QWebSocket::textMessageReceived,
@@ -73,11 +79,19 @@ void WebsocketServer::sendMessageToDevice(QString uuid, QUrl url, QJsonObject js
     //QWebSocket *pSender = qobject_cast<QWebSocket *>(sender());
     QJsonDocument doc(json);
     QString message(doc.toJson());
+    QUrlQuery urlquery1(url.path());
+
+    QTextStream(stdout) << "Send to device : " << message << '\n';
+
     for (QWebSocket *pClient : qAsConst(m_clients)){
-        if (pClient->requestUrl().path()==url.path()){
-            if("/device/"+uuid == pClient->requestUrl().path()){
+        /*if (pClient->requestUrl().path()==url.path()){
+            if("/device?uuid="+uuid == pClient->requestUrl().path()){
                 pClient->sendTextMessage(message);
             }
+        }*/
+        QUrlQuery urlquery2(pClient->requestUrl().path());
+        if (urlquery1.queryItemValue("uuid")==urlquery2.queryItemValue("uuid")){
+            pClient->sendTextMessage(message);
         }
     }
 }
@@ -87,10 +101,18 @@ void WebsocketServer::sendMessageToControllDevice(QUrl url, QJsonObject json)
     //QWebSocket *pSender = qobject_cast<QWebSocket *>(sender());
     QJsonDocument doc(json);
     QString message(doc.toJson());
+    QUrlQuery urlquery1(url.query());
+
+    QTextStream(stdout) << "Send to Controll device : " << message << '\n';
+
     for (QWebSocket *pClient : qAsConst(m_clients)){
-        if (pClient->requestUrl().path()==url.path()){
+        /*if (pClient->requestUrl().path()==url.path()){
             pClient->sendTextMessage(message);
             QTextStream(stdout) << message << "\n";
+        }*/
+        QUrlQuery urlquery2(pClient->requestUrl().query());
+        if(urlquery1.queryItemValue("username")==urlquery2.queryItemValue("username")){
+            QTextStream(stdout)<< pClient->sendTextMessage(message);
         }
     }
 }

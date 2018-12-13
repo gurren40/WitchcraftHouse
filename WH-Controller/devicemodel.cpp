@@ -5,6 +5,7 @@ DeviceModel::DeviceModel(QObject *parent)
     : QAbstractListModel(parent)
     , mList(nullptr)
 {
+    connect(mList, &DeviceList::deviceValueIsSet, this, &DeviceModel::setDataAt);
 }
 
 int DeviceModel::rowCount(const QModelIndex &parent) const
@@ -46,6 +47,21 @@ bool DeviceModel::setData(const QModelIndex &index, const QVariant &value, int r
     switch(role){
     case ValueRole:
         item.value = value.toString();
+        break;
+    case UuidRole :
+        item.uuid = value.toString();
+        break;
+    case TypeRole :
+        item.type = value.toString();
+        break;
+    case GroupRole :
+        item.group = value.toString();
+        break;
+    case NameRole :
+        item.name = value.toString();
+        break;
+    case OwnerEmailRole :
+        item.ownerEmail = value.toString();
         break;
     }
     if (mList->setItemAt(index.row(), item)) {
@@ -104,7 +120,17 @@ void DeviceModel::setList(DeviceList *list)
         connect(mList, &DeviceList::postItemRemoved, this, [=](){
             endRemoveRows();
         });
+        connect(mList, &DeviceList::deviceValueIsSet, this, [=](){
+            setDataAt();
+        });
     }
 
+    endResetModel();
+}
+
+void DeviceModel::setDataAt()
+{
+    beginResetModel();
+    dataChanged(QModelIndex(),QModelIndex(),QVector<int>() << ValueRole);
     endResetModel();
 }

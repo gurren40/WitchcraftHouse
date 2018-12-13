@@ -9,3 +9,8 @@ void backend::initDevicesValue()
 {
     emit getDeviceValueDammnit();
 }
+
+void backend::setValue(QString uuid, QString value)
+{
+    emit setValueDevice(uuid,value);
+}

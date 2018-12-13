@@ -23,14 +23,23 @@ void DeviceController::getDeviceList(QUrl url, QJsonObject json)
 
 void DeviceController::setDeviceValue(QUrl url, QJsonObject json)
 {
-    QUrl urlToSend("http://www.example.com/controll");
+    //QUrlQuery theQuery(url.query());
+    QUrl urlToSend("http://www.example.com/controll?\
+                   username=aditiyasidabutar@student.undip.ac.id\
+                   password=qwerty1234" );
     QJsonObject toSend;
     DeviceModel model;
-    model.setDeviceValue(json["uuid"].toString(),json["value"].toString());
+    model.setDatabase(&db);
+    bool ok;
+    ok = model.setDeviceValue(json["uuid"].toString(),json["value"].toString());
+    toSend["function"]="setDeviceValue";
     toSend["uuid"]=json["uuid"].toString();
     toSend["value"]=json["value"].toString();
-    urlToSend.setUserName(url.userName());
-    urlToSend.setPassword(url.password());
+    if(ok){
+        QTextStream(stdout) << "setvalue ok \n";
+    }else{
+        QTextStream(stdout) << "setvalue error \n";
+    }
     emit sendMessegeToControllDevice(urlToSend,toSend);
 }
 
@@ -40,9 +49,9 @@ void DeviceController::requestSetDeviceValue(QUrl url, QJsonObject json)
     toSend["function"] = QStringLiteral("setValue");
     toSend["uuid"] = json["uuid"].toString();
     toSend["value"] = json["value"].toString();
-    QUrl urlToSend("http://www.example.com/device/"+json["uuid"].toString());
-    urlToSend.setUserName(url.userName());
-    urlToSend.setPassword(url.password());
+    QUrl urlToSend("http://www.example.com/device?uuid="+json["uuid"].toString());
+    //urlToSend.setUserName(url.userName());
+    //urlToSend.setPassword(url.password());
     emit sendMessegeToDevice(json["uuid"].toString(),urlToSend,toSend);
 }
 

@@ -7,6 +7,7 @@
 #include <QJsonObject>
 #include <QSqlDatabase>
 #include <QUrl>
+#include <QUrlQuery>
 #include <QList>
 
 #include "Model/devicemodel.h"

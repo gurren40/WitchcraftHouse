@@ -98,8 +98,18 @@ Pane {
             Switch{
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
-                checked: getPosition()
-                function getPosition(){
+                checked: getValue()
+                onClicked: setValue()
+                function setValue(){
+                    if(checked == true){
+                        //value = "true"
+                        backend.setValue(uuid,"true")
+                    }else if (checked == false){
+                        //value = "false"
+                        backend.setValue(uuid,"false")
+                    }
+                }
+                function getValue(){
                     if(value == "true"){
                         return true;
                     }else if(value == "false"){
@@ -326,6 +336,7 @@ Pane {
 
                 property string labelText: model.name
                 property var value : model.value
+                property var uuid: model.uuid
                 property ListView view: listView
                 property int ourIndex: index
 

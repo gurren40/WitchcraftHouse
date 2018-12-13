@@ -32,6 +32,7 @@ signals:
     void postRewriteAllItem();
     void preItemAppended();
     void postItemAppended();
+    void deviceValueIsSet();
 
     void preItemRemoved(int index);
     void postItemRemoved();
@@ -42,6 +43,7 @@ public slots:
     void appendItem(DeviceItem item);
     void removeItem(DeviceItem item);
     void removeItemAtIndex(int index);
+    void setDeviceValue(QJsonObject json);
 
 private:
     QVector<DeviceItem> mItems;

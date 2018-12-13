@@ -41,6 +41,10 @@ public:
 
 private:
     DeviceList *mList;
+
+public slots:
+    void setDataAt();
+
 };
 
 #endif // DEVICEMODEL_H

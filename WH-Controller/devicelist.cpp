@@ -99,3 +99,17 @@ void DeviceList::removeItemAtIndex(int index)
 
     emit postItemRemoved();
 }
+
+void DeviceList::setDeviceValue(QJsonObject json)
+{
+    for(int i = 0; i < mItems.size(); i++){
+        if(mItems.at(i).uuid == json["uuid"].toString()){
+            DeviceItem item = mItems.at(i);
+            item.uuid = json["uuid"].toString();
+            item.value = json["value"].toString();
+            mItems[i] = item;
+            emit deviceValueIsSet();
+        }
+    }
+    initRequestAllDevice();
+}

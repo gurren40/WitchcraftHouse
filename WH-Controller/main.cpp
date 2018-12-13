@@ -15,9 +15,7 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    QUrl url("ws://localhost:1234/controll");
-    url.setUserName("aditiyasidabutar@student.undip.ac.id");
-    url.setPassword("qwert123");
+    QUrl url("ws://localhost:1234/controll/?username=aditiyasidabutar@student.undip.ac.id&password=qwerty1234");
 
     //qdebug thing
     QCommandLineParser parser;
@@ -41,12 +39,14 @@ int main(int argc, char *argv[])
     backend backhand;
     WebsocketConnection client(url, debug);
 
-    QObject::connect(&backhand,&backend::getDeviceValueDammnit,&deviceList,&DeviceList::initRequestAllDevice);
-    QObject::connect(&deviceList,&DeviceList::sendMessageToServer,&client,&WebsocketConnection::sendMessage);
-    QObject::connect(&client,&WebsocketConnection::getDeviceList,&deviceList,&DeviceList::rewriteAllItem);
+    QObject::connect(&backhand,&backend::getDeviceValueDammnit,&deviceList,&DeviceList::initRequestAllDevice); //ok
+    QObject::connect(&backhand,&backend::setValueDevice,&deviceList,&DeviceList::requestSetDeviceValue); //ok
+    QObject::connect(&deviceList,&DeviceList::sendMessageToServer,&client,&WebsocketConnection::sendMessage); //ok
+    QObject::connect(&client,&WebsocketConnection::getDeviceList,&deviceList,&DeviceList::rewriteAllItem); //ok
+    QObject::connect(&client,&WebsocketConnection::setDeviceValue,&deviceList,&DeviceList::setDeviceValue);
 
     QQmlApplicationEngine engine;
-    engine.rootContext()->setContextProperty(QStringLiteral("deviceList"), &deviceList);
+    engine.rootContext()->setContextProperty("deviceList", &deviceList);
     engine.rootContext()->setContextProperty("backend", &backhand);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())
