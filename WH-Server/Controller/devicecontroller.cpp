@@ -17,8 +17,8 @@ void DeviceController::getDeviceList(QUrl url, QJsonObject json)
     model.setDatabase(&db);
     QJsonObject toReturn;
     toReturn = model.getOwnerDevicesList("aditiyasidabutar@student.undip.ac.id");
-    sendMessegeToControllDevice(url,toReturn);
     QTextStream(stdout) << url.userName() << '\n';
+    emit sendMessegeToControllDevice(url,toReturn);
 }
 
 void DeviceController::setDeviceValue(QUrl url, QJsonObject json)
@@ -41,6 +41,7 @@ void DeviceController::setDeviceValue(QUrl url, QJsonObject json)
         QTextStream(stdout) << "setvalue error \n";
     }
     emit sendMessegeToControllDevice(urlToSend,toSend);
+    //getDeviceList(urlToSend,toSend);
 }
 
 void DeviceController::requestSetDeviceValue(QUrl url, QJsonObject json)
