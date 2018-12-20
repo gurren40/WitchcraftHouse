@@ -1,4 +1,4 @@
-QT += quick core websockets
+QT += quick core websockets remoteobjects
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use

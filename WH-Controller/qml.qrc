@@ -52,5 +52,6 @@
         <file>Breeze/ToolBarStyle.qml</file>
         <file>Breeze/ToolButtonStyle.qml</file>
         <file>Breeze/Triangle.qml</file>
+        <file>setConnection.qml</file>
     </qresource>
 </RCC>

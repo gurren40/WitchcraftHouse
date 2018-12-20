@@ -63,6 +63,14 @@ ApplicationWindow {
                     drawer.close()
                 }
             }
+            ItemDelegate {
+                text : qsTr("Set Connection")
+                width: parent.width
+                onClicked: {
+                    stackView.push("setConnection.qml")
+                    drawer.close()
+                }
+            }
         }
     }
 
