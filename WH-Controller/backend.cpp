@@ -14,3 +14,9 @@ void backend::setValue(QString uuid, QString value)
 {
     emit setValueDevice(uuid,value);
 }
+
+void backend::setWebSocket(QString urlString)
+{
+    QUrl urlToSend(urlString);
+    emit setWebSocketCreate(urlToSend);
+}

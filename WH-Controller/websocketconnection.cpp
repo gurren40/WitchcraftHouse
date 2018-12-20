@@ -14,6 +14,20 @@ WebsocketConnection::WebsocketConnection(const QUrl &url, bool debug, QObject *p
     m_webSocket.open(QUrl(url));
 }
 
+WebsocketConnection::WebsocketConnection(bool debug, QObject *parent) : m_debug(debug)
+{
+
+}
+
+void WebsocketConnection::createConnection(QUrl url)
+{
+    if (m_debug)
+        qDebug() << "WebSocket server:" << url;
+    connect(&m_webSocket, &QWebSocket::connected, this, &WebsocketConnection::onConnected);
+    connect(&m_webSocket, &QWebSocket::disconnected, this, &WebsocketConnection::closed);
+    m_webSocket.open(QUrl(url));
+}
+
 void WebsocketConnection::onConnected()
 {
     if (m_debug)

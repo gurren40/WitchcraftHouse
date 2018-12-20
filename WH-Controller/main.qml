@@ -15,7 +15,7 @@ ApplicationWindow {
 
         ToolButton {
             id: toolButton
-            text: stackView.depth > 1 ? "\u25C0" : "\u2630"
+            text: stackView.depth > 1 ? "\u25C0" : "\u268C"
             font.pixelSize: Qt.application.font.pixelSize * 1.6
             onClicked: {
                 if (stackView.depth > 1) {
@@ -29,6 +29,14 @@ ApplicationWindow {
         Label {
             text: stackView.currentItem.title
             anchors.centerIn: parent
+        }
+        ToolButton{
+            text: "\u27f3"
+            anchors.right : parent.right
+            font.pixelSize: Qt.application.font.pixelSize * 1.6
+            onClicked: {
+                backend.initDevicesValue()
+            }
         }
     }
 
@@ -52,6 +60,14 @@ ApplicationWindow {
                 width: parent.width
                 onClicked: {
                     stackView.push("Page2Form.ui.qml")
+                    drawer.close()
+                }
+            }
+            ItemDelegate {
+                text : qsTr("Set Connection")
+                width: parent.width
+                onClicked: {
+                    stackView.push("setConnection.qml")
                     drawer.close()
                 }
             }

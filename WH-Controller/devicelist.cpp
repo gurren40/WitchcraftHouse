@@ -111,5 +111,5 @@ void DeviceList::setDeviceValue(QJsonObject json)
             emit deviceValueIsSet();
         }
     }
-    initRequestAllDevice();
+    //initRequestAllDevice();
 }

@@ -89,10 +89,10 @@ void WebsocketServer::sendMessageToDevice(QString uuid, QUrl url, QJsonObject js
                 pClient->sendTextMessage(message);
             }
         }*/
-        QUrlQuery urlquery2(pClient->requestUrl().path());
-        if (urlquery1.queryItemValue("uuid")==urlquery2.queryItemValue("uuid")){
+        //QUrlQuery urlquery2(pClient->requestUrl().path());
+        //if (urlquery1.queryItemValue("uuid")==urlquery2.queryItemValue("uuid")){
             pClient->sendTextMessage(message);
-        }
+        //}
     }
 }
 
@@ -110,9 +110,9 @@ void WebsocketServer::sendMessageToControllDevice(QUrl url, QJsonObject json)
             pClient->sendTextMessage(message);
             QTextStream(stdout) << message << "\n";
         }*/
-        QUrlQuery urlquery2(pClient->requestUrl().query());
-        if(urlquery1.queryItemValue("username")==urlquery2.queryItemValue("username")){
-            QTextStream(stdout)<< pClient->sendTextMessage(message);
-        }
+        //QUrlQuery urlquery2(pClient->requestUrl().query());
+        //if(urlquery1.queryItemValue("username")==urlquery2.queryItemValue("username")){
+            pClient->sendTextMessage(message);
+        //}
     }
 }

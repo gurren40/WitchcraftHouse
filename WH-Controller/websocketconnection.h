@@ -14,6 +14,7 @@ class WebsocketConnection : public QObject
     Q_OBJECT
 public:
     explicit WebsocketConnection(const QUrl &url, bool debug = false, QObject *parent = nullptr);
+    explicit WebsocketConnection(bool debug = false, QObject *parent = nullptr);
 
 signals:
     void closed();
@@ -26,6 +27,7 @@ private slots:
 
 public slots:
     void sendMessage(QJsonObject json);
+    void createConnection(QUrl url);
 
 private:
     QWebSocket m_webSocket;

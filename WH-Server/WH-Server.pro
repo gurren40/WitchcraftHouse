@@ -17,11 +17,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-    websocketserver.cpp \
-    Model/devicemodel.cpp \
-    Controller/devicecontroller.cpp
+    Boundary/websocketserver.cpp \
+    Entity/devicemodel.cpp \
+    Controll/devicecontroller.cpp
 
 HEADERS += \
-    websocketserver.h \
-    Model/devicemodel.h \
-    Controller/devicecontroller.h
+    Boundary/websocketserver.h \
+    Entity/devicemodel.h \
+    Controll/devicecontroller.h

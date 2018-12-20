@@ -10,7 +10,7 @@
 #include <QUrlQuery>
 #include <QList>
 
-#include "Model/devicemodel.h"
+#include "Entity/devicemodel.h"
 
 class DeviceController : public QObject
 {

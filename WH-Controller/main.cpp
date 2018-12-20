@@ -3,6 +3,7 @@
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 #include <QQmlContext>
+#include <QtRemoteObjects>
 
 #include "websocketconnection.h"
 #include "devicelist.h"
@@ -15,7 +16,7 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    QUrl url("ws://localhost:1234/controll/?username=aditiyasidabutar@student.undip.ac.id&password=qwerty1234");
+    QUrl url("ws://localhost:9000/controll/?username=aditiyasidabutar@student.undip.ac.id&password=qwerty1234");
 
     //qdebug thing
     QCommandLineParser parser;
@@ -37,13 +38,14 @@ int main(int argc, char *argv[])
 
     DeviceList deviceList;
     backend backhand;
-    WebsocketConnection client(url, debug);
+    WebsocketConnection client(url,debug);
 
     QObject::connect(&backhand,&backend::getDeviceValueDammnit,&deviceList,&DeviceList::initRequestAllDevice); //ok
     QObject::connect(&backhand,&backend::setValueDevice,&deviceList,&DeviceList::requestSetDeviceValue); //ok
     QObject::connect(&deviceList,&DeviceList::sendMessageToServer,&client,&WebsocketConnection::sendMessage); //ok
     QObject::connect(&client,&WebsocketConnection::getDeviceList,&deviceList,&DeviceList::rewriteAllItem); //ok
-    QObject::connect(&client,&WebsocketConnection::setDeviceValue,&deviceList,&DeviceList::setDeviceValue);
+    QObject::connect(&client,&WebsocketConnection::setDeviceValue,&deviceList,&DeviceList::setDeviceValue); //ok
+    QObject::connect(&backhand,&backend::setWebSocketCreate,&client,&WebsocketConnection::createConnection);
 
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("deviceList", &deviceList);

@@ -2,6 +2,7 @@
 #define BACKEND_H
 
 #include <QObject>
+#include <QUrl>
 
 class backend : public QObject
 {
@@ -12,11 +13,13 @@ public:
 signals:
     void getDeviceValueDammnit();
     void setValueDevice(QString uuid, QString value);
+    void setWebSocketCreate(QUrl url);
 
 public slots:
 
     void initDevicesValue();
     void setValue(QString uuid, QString value);
+    void setWebSocket(QString urlString);
 };
 
 #endif // BACKEND_H

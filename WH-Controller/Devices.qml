@@ -1,6 +1,6 @@
 import QtQuick 2.6
-import QtQuick.Layouts 1.1
-import QtQuick.Controls 2.1
+import QtQuick.Layouts 1.3
+import QtQuick.Controls 2.2
 import Device 1.0
 
 Pane {
@@ -10,9 +10,10 @@ Pane {
     property var delegateComponentMap: {
         "LampDelegate": lampDelegateComponent,
         "lock": lockDelegateComponent,
+        "theronof": theronofDelegateComponent,
         "OutletDelegate": outletDelegateComponent,
-        "ThermostatDelegate": thermostatDelegateComponent,
-        "ThermometerDelegate": thermometerDelegateComponent,
+        "thermostat": thermostatDelegateComponent,
+        "termometer": thermometerDelegateComponent,
         "CCTVDelegate": cctvDelegateComponent,
         "SwitchDelegate": switchDelegateComponent
     }
@@ -110,9 +111,64 @@ Pane {
                     }
                 }
                 function getValue(){
-                    if(value == "true"){
+                    if(thevalue == "true"){
                         return true;
-                    }else if(value == "false"){
+                    }else if(thevalue == "false"){
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+
+    Component{
+        id: theronofDelegateComponent
+
+        ItemDelegate{
+            Rectangle{
+                id: lockimg
+                anchors.left: parent.left
+                anchors.leftMargin:15
+                anchors.verticalCenter: parent.verticalCenter
+                height: parent.height * 0.9
+                width: parent.height * 0.9
+                color: "#FFFFFF"
+                border.width: 1
+                border.color: "#000000"
+                Image{
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    height: parent.height * 0.9
+                    width: parent.height * 0.9
+                    source: "./images/thermostat.png"
+                }
+            }
+            Label{
+                text: labelText
+                anchors.left: lockimg.right
+                anchors.leftMargin:5
+                anchors.verticalCenter: parent.verticalCenter
+            }
+            Switch{
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+                checked: getValue2()
+                onClicked: setValue2()
+                function setValue2(){
+                    if(checked == true){
+                        //value = "true"
+                        backend.setValue(uuid,"true")
+                    }else if (checked == false){
+                        //value = "false"
+                        backend.setValue(uuid,"false")
+                    }
+                }
+                function getValue2(){
+                    if(thevalue == "true"){
+                        checked = true;
+                        return true;
+                    }else if(thevalue == "false"){
+                        checked = false;
                         return false;
                     }
                 }
@@ -187,7 +243,13 @@ Pane {
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
                 width: parent.width * 0.25
-                value: value
+                value: parseInt(thevalue.toString())
+                onValueChanged: setValue3()
+                function setValue3(){
+                    if(!(value === parseInt(thevalue.toString()))){
+                        backend.setValue(uuid,value.toString())
+                    }
+                }
             }
         }
     }
@@ -221,7 +283,7 @@ Pane {
                 anchors.verticalCenter: parent.verticalCenter
             }
             Label{
-                text: value
+                text: thevalue
                 anchors.right: parent.right
                 anchors.rightMargin:15
                 anchors.verticalCenter: parent.verticalCenter
@@ -335,7 +397,7 @@ Pane {
                 sourceComponent: delegateComponentMap[model.type]
 
                 property string labelText: model.name
-                property var value : model.value
+                property var thevalue : model.value
                 property var uuid: model.uuid
                 property ListView view: listView
                 property int ourIndex: index
