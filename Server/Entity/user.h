@@ -8,6 +8,15 @@
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QTextStream>
+#include <QVector>
+
+struct user{
+    int userID;
+    QString email;
+    QString password;
+    QString name;
+};
 
 class User : public QObject
 {
@@ -27,16 +36,18 @@ public:
     explicit User(QObject *parent = nullptr);
     explicit User(QSqlDatabase *database, QObject *parent = nullptr);
 
+    QVector<user> mUsers;
+
 signals:
 
 public slots:
 
     void setDatabase(QSqlDatabase *database);
 
-    QJsonObject createUser(QJsonObject json);
-    QJsonObject readUser(QJsonObject json);
-    QJsonObject updateUser(QJsonObject json);
-    QJsonObject deleteUser(QJsonObject json);
+    QJsonObject create(QString email, QString password, QString name);
+    QJsonObject read(QString wherequery = "1");
+    QJsonObject update(int userID, QString email, QString password, QString name);
+    QJsonObject deletes(QString wherequery);
 
 private:
     QSqlDatabase db;

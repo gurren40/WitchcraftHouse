@@ -10,32 +10,95 @@ User::User(QSqlDatabase *database, QObject *parent) : QObject(parent)
     this->db = *database;
 }
 
-QJsonObject User::createUser(QJsonObject json)
+void User::setDatabase(QSqlDatabase *database)
 {
-    QString query;
-    QJsonArray users;
-    QJsonObject user;
-    QSqlQuery queryObject(db);
-    int i;
-    bool ok;
-    QJsonObject response;
-    if(db.open()){
-        query = "INSERT INTO `User` (`email`,`password`,`name`) VALUES";
-        users = json["CreateNewUser"].toArray();
+    this->db = *database;
+}
 
-        for (i=1;i<=users.size();i++) {
-            user = users[i].toObject();
-            query = query + " (`"+user["email"].toString()+"`,`"+user["password"].toString()+"`,`"+user["name"].toString()+"`)";
-            if(i == users.size()){
-                query = query + ";";
-            } else {
-                query = query + ",";
-            }
-        }
-        ok = queryObject.exec(query);
+QJsonObject User::create(QString email, QString password, QString name)
+{
+    QString textQuery = "INSERT INTO `User` (`email`,`password`,`name`) VALUES ('"+email+"','"+password+"','"+name+"');";
+    QSqlQuery query;
+    QJsonObject response;
+    bool ok;
+
+    if(db.open()){
+        QTextStream(stdout) << textQuery << "\n\n";
+        ok = query.exec(textQuery);
         if(ok) response["error"] = "0";
-        else response["error"] = "1";
+        else {
+            QTextStream(stdout) << "Error Query : " << query.lastError().text() << "\n";
+            response["error"] = query.lastError().text();
+        }
     }
-    else response["error"] = "1";
+    else response["error"] = db.lastError().text();
+    return response;
+}
+
+QJsonObject User::read(QString wherequery)
+{
+    QJsonObject response;
+    QSqlQuery query;
+    bool ok;
+    QString textQuery = "SELECT * FROM User WHERE "+wherequery+";";
+    if(db.open()){
+        QTextStream(stdout) << textQuery << "\n\n";
+        ok = query.exec(textQuery);
+        if(ok){
+            mUsers.clear();
+            while (query.next()){
+                user userObject;
+                userObject.userID = query.value("userID").toInt();
+                userObject.email = query.value("email").toString();
+                userObject.password = query.value("password").toString();
+                userObject.name = query.value("name").toString();
+                mUsers.append(userObject);
+            }
+            mUsers.squeeze();
+            response["error"] = "0";
+        }
+        else response["error"] = query.lastError().text();
+    }
+    else response["error"] = db.lastError().text();
+    return response;
+}
+
+QJsonObject User::update(int userID, QString email, QString password, QString name)
+{
+    QString textQuery = "UPDATE `User` SET email='"+email+"',password='"+password+"',name='"+name+"' WHERE userID='"+QString::number(userID)+"';";
+    QSqlQuery query;
+    QJsonObject response;
+    bool ok;
+
+    if(db.open()){
+        QTextStream(stdout) << textQuery << "\n\n";
+        ok = query.exec(textQuery);
+        if(ok) response["error"] = "0";
+        else {
+            QTextStream(stdout) << "Error Query : " << query.lastError().text() << "\n";
+            response["error"] = query.lastError().text();
+        }
+    }
+    else response["error"] = db.lastError().text();
+    return response;
+}
+
+QJsonObject User::deletes(QString wherequery)
+{
+    QString textQuery = "DELETE FROM `User` WHERE "+wherequery+";";
+    QSqlQuery query;
+    QJsonObject response;
+    bool ok;
+
+    if(db.open()){
+        QTextStream(stdout) << textQuery << "\n\n";
+        ok = query.exec(textQuery);
+        if(ok) response["error"] = "0";
+        else {
+            QTextStream(stdout) << "Error Query : " << query.lastError().text() << "\n";
+            response["error"] = query.lastError().text();
+        }
+    }
+    else response["error"] = db.lastError().text();
     return response;
 }
