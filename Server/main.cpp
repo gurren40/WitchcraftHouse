@@ -14,6 +14,8 @@
 #include "Entity/device.h"
 #include "Entity/controlldevice.h"
 #include "Entity/pin.h"
+#include "Entity/schedule.h"
+#include "Entity/shared.h"
 
 //Boundary
 #include "Boundary/websocketserver.h"
@@ -48,61 +50,53 @@ int main(int argc, char *argv[])
     int i;
     QString data;
 
-    Pin obj(&db);
+    Shared obj(&db);
     //user.setDatabase(&db);
-    json = obj.create(QUuid().createUuid(),21,2,4,3,1,"Colokan Wifi","off","on,off","hanya sedikit deskripsi disini byee");
+    json = obj.create(8,6,1,4,2,"Kakakakakakak","Wkwkwkwkwk");
     QTextStream(stdout) << json["error"].toString() << "\n";
 
     json = obj.read();
     QTextStream(stdout) << json["error"].toString() << "\n";
 
-    for (i=0;i<obj.mPins.size();i++) {
-        data += "pinID : "+QString::number(obj.mPins.at(i).pinID)+", ";
-        data += "UUID : "+obj.mPins.at(i).UUID.toString(QUuid::WithoutBraces)+", ";
-        data += "userID : "+QString::number(obj.mPins.at(i).userID)+", ";
-        data += "userName : "+obj.mPins.at(i).userName+", ";
-        data += "groupID : "+QString::number(obj.mPins.at(i).groupID)+", ";
-        data += "groupName : "+obj.mPins.at(i).groupName+", ";
-        data += "deviceID : "+QString::number(obj.mPins.at(i).deviceID)+", ";
-        data += "deviceName : "+obj.mPins.at(i).deviceName+", ";
-        data += "iconID : "+QString::number(obj.mPins.at(i).iconID)+", ";
-        data += "iconName : "+obj.mPins.at(i).iconName+", ";
-        data += "pinTypeID : "+QString::number(obj.mPins.at(i).pinTypeID)+", ";
-        data += "pinTypeName : "+obj.mPins.at(i).pinTypeName+", ";
-        data += "pinName : "+obj.mPins.at(i).pinName+", ";
-        data += "value : "+obj.mPins.at(i).value+", ";
-        data += "option : "+obj.mPins.at(i).option+", ";
-        data += "expireDate : "+obj.mPins.at(i).description+"\n";
+    for (i=0;i<obj.mShareds.size();i++) {
+        data += "sharedID : "+QString::number(obj.mShareds.at(i).sharedID)+", ";
+        data += "sharedBy : "+QString::number(obj.mShareds.at(i).sharedBy)+", ";
+        data += "sharedByName : "+obj.mShareds.at(i).sharedByName+", ";
+        data += "sharedTo : "+QString::number(obj.mShareds.at(i).sharedTo)+", ";
+        data += "sharedToName : "+obj.mShareds.at(i).sharedToName+", ";
+        data += "groupID : "+QString::number(obj.mShareds.at(i).groupID)+", ";
+        data += "groupName : "+obj.mShareds.at(i).groupName+", ";
+        data += "pinID : "+QString::number(obj.mShareds.at(i).pinID)+", ";
+        data += "pinUUID : "+obj.mShareds.at(i).pinUUID.toString(QUuid::WithoutBraces)+", ";
+        data += "pinName : "+obj.mShareds.at(i).pinName+", ";
+        data += "sharedName : "+obj.mShareds.at(i).sharedName+", ";
+        data += "description : "+obj.mShareds.at(i).description+"\n";
     }
     QTextStream(stdout) << data << "\n";
 
-    json = obj.update(1,QUuid().createUuid(),21,2,4,3,1,"Colokan Wifi","off","on,off","hanya sedikit deskripsi disini byee");
+    json = obj.update(2,21,6,1,4,2,"LALALALALA","harharhar");
     QTextStream(stdout) << json["error"].toString() << "\n";
 
-    json = obj.deletes("pinID='4'");
+    json = obj.deletes("sharedID='3'");
     QTextStream(stdout) << json["error"].toString() << "\n";
 
     json = obj.read();
     QTextStream(stdout) << json["error"].toString() << "\n";
 
     data = "";
-    for (i=0;i<obj.mPins.size();i++) {
-        data += "pinID : "+QString::number(obj.mPins.at(i).pinID)+", ";
-        data += "UUID : "+obj.mPins.at(i).UUID.toString(QUuid::WithoutBraces)+", ";
-        data += "userID : "+QString::number(obj.mPins.at(i).userID)+", ";
-        data += "userName : "+obj.mPins.at(i).userName+", ";
-        data += "groupID : "+QString::number(obj.mPins.at(i).groupID)+", ";
-        data += "groupName : "+obj.mPins.at(i).groupName+", ";
-        data += "deviceID : "+QString::number(obj.mPins.at(i).deviceID)+", ";
-        data += "deviceName : "+obj.mPins.at(i).deviceName+", ";
-        data += "iconID : "+QString::number(obj.mPins.at(i).iconID)+", ";
-        data += "iconName : "+obj.mPins.at(i).iconName+", ";
-        data += "pinTypeID : "+QString::number(obj.mPins.at(i).pinTypeID)+", ";
-        data += "pinTypeName : "+obj.mPins.at(i).pinTypeName+", ";
-        data += "pinName : "+obj.mPins.at(i).pinName+", ";
-        data += "value : "+obj.mPins.at(i).value+", ";
-        data += "option : "+obj.mPins.at(i).option+", ";
-        data += "expireDate : "+obj.mPins.at(i).description+"\n";
+    for (i=0;i<obj.mShareds.size();i++) {
+        data += "sharedID : "+QString::number(obj.mShareds.at(i).sharedID)+", ";
+        data += "sharedBy : "+QString::number(obj.mShareds.at(i).sharedBy)+", ";
+        data += "sharedByName : "+obj.mShareds.at(i).sharedByName+", ";
+        data += "sharedTo : "+QString::number(obj.mShareds.at(i).sharedTo)+", ";
+        data += "sharedToName : "+obj.mShareds.at(i).sharedToName+", ";
+        data += "groupID : "+QString::number(obj.mShareds.at(i).groupID)+", ";
+        data += "groupName : "+obj.mShareds.at(i).groupName+", ";
+        data += "pinID : "+QString::number(obj.mShareds.at(i).pinID)+", ";
+        data += "pinUUID : "+obj.mShareds.at(i).pinUUID.toString(QUuid::WithoutBraces)+", ";
+        data += "pinName : "+obj.mShareds.at(i).pinName+", ";
+        data += "sharedName : "+obj.mShareds.at(i).sharedName+", ";
+        data += "description : "+obj.mShareds.at(i).description+"\n";
     }
     QTextStream(stdout) << data << "\n";
 
