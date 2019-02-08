@@ -16,6 +16,7 @@
 #include "Entity/pin.h"
 #include "Entity/schedule.h"
 #include "Entity/shared.h"
+#include "Entity/log.h"
 
 //Boundary
 #include "Boundary/websocketserver.h"
@@ -50,53 +51,39 @@ int main(int argc, char *argv[])
     int i;
     QString data;
 
-    Shared obj(&db);
+    Log obj(&db);
     //user.setDatabase(&db);
-    json = obj.create(8,6,1,4,2,"Kakakakakakak","Wkwkwkwkwk");
+    json = obj.create(8,"Wkwkwkwkwk");
     QTextStream(stdout) << json["error"].toString() << "\n";
 
     json = obj.read();
     QTextStream(stdout) << json["error"].toString() << "\n";
 
-    for (i=0;i<obj.mShareds.size();i++) {
-        data += "sharedID : "+QString::number(obj.mShareds.at(i).sharedID)+", ";
-        data += "sharedBy : "+QString::number(obj.mShareds.at(i).sharedBy)+", ";
-        data += "sharedByName : "+obj.mShareds.at(i).sharedByName+", ";
-        data += "sharedTo : "+QString::number(obj.mShareds.at(i).sharedTo)+", ";
-        data += "sharedToName : "+obj.mShareds.at(i).sharedToName+", ";
-        data += "groupID : "+QString::number(obj.mShareds.at(i).groupID)+", ";
-        data += "groupName : "+obj.mShareds.at(i).groupName+", ";
-        data += "pinID : "+QString::number(obj.mShareds.at(i).pinID)+", ";
-        data += "pinUUID : "+obj.mShareds.at(i).pinUUID.toString(QUuid::WithoutBraces)+", ";
-        data += "pinName : "+obj.mShareds.at(i).pinName+", ";
-        data += "sharedName : "+obj.mShareds.at(i).sharedName+", ";
-        data += "description : "+obj.mShareds.at(i).description+"\n";
+    for (i=0;i<obj.mLogs.size();i++) {
+        data += "logID : "+QString::number(obj.mLogs.at(i).logID)+", ";
+        data += "userID : "+QString::number(obj.mLogs.at(i).userID)+", ";
+        data += "timeStamp : "+obj.mLogs.at(i).timeStamp.toString("yyyy-MM-dd HH:mm:ss")+", ";
+        data += "timeStamp (UTC): "+obj.mLogs.at(i).timeStamp.toUTC().toString("yyyy-MM-dd HH:mm:ss")+", ";
+        data += "description : "+obj.mLogs.at(i).description+"\n";
     }
     QTextStream(stdout) << data << "\n";
 
-    json = obj.update(2,21,6,1,4,2,"LALALALALA","harharhar");
+    json = obj.update(2,21,"LALALALALA");
     QTextStream(stdout) << json["error"].toString() << "\n";
 
-    json = obj.deletes("sharedID='3'");
+    json = obj.deletes("logID='3'");
     QTextStream(stdout) << json["error"].toString() << "\n";
 
     json = obj.read();
     QTextStream(stdout) << json["error"].toString() << "\n";
 
     data = "";
-    for (i=0;i<obj.mShareds.size();i++) {
-        data += "sharedID : "+QString::number(obj.mShareds.at(i).sharedID)+", ";
-        data += "sharedBy : "+QString::number(obj.mShareds.at(i).sharedBy)+", ";
-        data += "sharedByName : "+obj.mShareds.at(i).sharedByName+", ";
-        data += "sharedTo : "+QString::number(obj.mShareds.at(i).sharedTo)+", ";
-        data += "sharedToName : "+obj.mShareds.at(i).sharedToName+", ";
-        data += "groupID : "+QString::number(obj.mShareds.at(i).groupID)+", ";
-        data += "groupName : "+obj.mShareds.at(i).groupName+", ";
-        data += "pinID : "+QString::number(obj.mShareds.at(i).pinID)+", ";
-        data += "pinUUID : "+obj.mShareds.at(i).pinUUID.toString(QUuid::WithoutBraces)+", ";
-        data += "pinName : "+obj.mShareds.at(i).pinName+", ";
-        data += "sharedName : "+obj.mShareds.at(i).sharedName+", ";
-        data += "description : "+obj.mShareds.at(i).description+"\n";
+    for (i=0;i<obj.mLogs.size();i++) {
+        data += "logID : "+QString::number(obj.mLogs.at(i).logID)+", ";
+        data += "userID : "+QString::number(obj.mLogs.at(i).userID)+", ";
+        data += "timeStamp : "+obj.mLogs.at(i).timeStamp.toString("yyyy-MM-dd HH-mm-ss")+", ";
+        data += "timeStamp (UTC): "+obj.mLogs.at(i).timeStamp.toUTC().toString("yyyy-MM-dd HH:mm:ss")+", ";
+        data += "description : "+obj.mLogs.at(i).description+"\n";
     }
     QTextStream(stdout) << data << "\n";
 

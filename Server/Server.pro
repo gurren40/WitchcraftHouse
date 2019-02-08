@@ -25,12 +25,12 @@ SOURCES += \
     Entity/schedule.cpp \
     Entity/shared.cpp \
     Entity/controlldevice.cpp \
-    Entity/log.cpp \
     Control/usercontroller.cpp \
     Control/devicecontroller.cpp \
     Control/schedulecontroller.cpp \
     Control/sharedcontroller.cpp \
-    Boundary/websocketserver.cpp
+    Boundary/websocketserver.cpp \
+    Entity/log.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -47,9 +47,9 @@ HEADERS += \
     Entity/schedule.h \
     Entity/shared.h \
     Entity/controlldevice.h \
-    Entity/log.h \
     Control/usercontroller.h \
     Control/devicecontroller.h \
     Control/schedulecontroller.h \
     Control/sharedcontroller.h \
-    Boundary/websocketserver.h
+    Boundary/websocketserver.h \
+    Entity/log.h
