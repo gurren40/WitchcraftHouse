@@ -53,7 +53,7 @@ QJsonObject Log::read(QString wherequery)
                 logObject.userID = query.value("Log.userID").toInt();
                 logObject.userName = query.value("User.name").toString();
                 logObject.description = query.value("Log.description").toString();
-                logObject.timeStamp = query.value("Log.description").toDateTime();
+                logObject.timeStamp = query.value("Log.timeStamp").toDateTime();
                 mLogs.append(logObject);
             }
             mLogs.squeeze();

@@ -9,9 +9,10 @@
 #include <QVector>
 #include <QTextStream>
 #include <QDate>
+#include <QUuid>
 
 struct controlDevice{
-    int controlDeviceID;
+    QUuid controlDeviceID;
     int userID;
     QString userName;
     QString controlDeviceName;
@@ -35,9 +36,9 @@ public slots:
 
     void setDatabase(QSqlDatabase *database);
 
-    QJsonObject create(int userID, QString controlDeviceName, QString controlDeviceToken, bool isControlDeviceOnline, QDate expireDate);
+    QJsonObject create(QUuid controlDeviceID, int userID, QString controlDeviceName, QString controlDeviceToken, bool isControlDeviceOnline, QDate expireDate);
     QJsonObject read(QString wherequery = "1");
-    QJsonObject update(int controlDeviceID, int userID, QString controlDeviceName, QString controlDeviceToken, bool isControlDeviceOnline, QDate expireDate);
+    QJsonObject update(QUuid controlDeviceID, int userID, QString controlDeviceName, QString controlDeviceToken, bool isControlDeviceOnline, QDate expireDate);
     QJsonObject deletes(QString wherequery);
 
 private:

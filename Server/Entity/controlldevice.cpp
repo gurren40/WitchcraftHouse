@@ -15,10 +15,10 @@ void ControllDevice::setDatabase(QSqlDatabase *database)
     this->db = *database;
 }
 
-QJsonObject ControllDevice::create(int userID, QString controlDeviceName, QString controlDeviceToken, bool isControlDeviceOnline, QDate expireDate)
+QJsonObject ControllDevice::create(QUuid controlDeviceID, int userID, QString controlDeviceName, QString controlDeviceToken, bool isControlDeviceOnline, QDate expireDate)
 {
-    QString textQuery = "INSERT INTO `ControlDevice` (`userID`,`ControlDeviceName`,`ControlDeviceToken`,`isControlDeviceOnline`,`expireDate`) VALUES ('"+QString::number(userID)+"','"+controlDeviceName+"','"+controlDeviceToken+"','"+QString::number(isControlDeviceOnline)+"','"+expireDate.toString("yyyy-MM-dd")+"');";
-    QSqlQuery query;
+    QString textQuery = "INSERT INTO `ControlDevice` (`controlDeviceID`,`userID`,`ControlDeviceName`,`ControlDeviceToken`,`isControlDeviceOnline`,`expireDate`) VALUES (UuidToBin('"+controlDeviceID.toString(QUuid::WithoutBraces)+"'),'"+QString::number(userID)+"','"+controlDeviceName+"','"+controlDeviceToken+"','"+QString::number(isControlDeviceOnline)+"','"+expireDate.toString("yyyy-MM-dd")+"');";
+    QSqlQuery query; //(,
     QJsonObject response;
     bool ok;
 
@@ -40,7 +40,7 @@ QJsonObject ControllDevice::read(QString wherequery)
     QJsonObject response;
     QSqlQuery query;
     bool ok;
-    QString textQuery = "SELECT ControlDevice.controlDeviceID,ControlDevice.userID,User.name,ControlDevice.controlDeviceName,ControlDevice.controlDeviceToken,ControlDevice.isControlDeviceOnline,ControlDevice.expireDate FROM ControlDevice INNER JOIN User ON ControlDevice.userID = User.userID WHERE "+wherequery+";";
+    QString textQuery = "SELECT UuidFromBin(ControlDevice.controlDeviceID),ControlDevice.userID,User.name,ControlDevice.controlDeviceName,ControlDevice.controlDeviceToken,ControlDevice.isControlDeviceOnline,ControlDevice.expireDate FROM ControlDevice INNER JOIN User ON ControlDevice.userID = User.userID WHERE "+wherequery+";";
     if(db.open()){
         QTextStream(stdout) << textQuery << "\n\n";
         ok = query.exec(textQuery);
@@ -48,7 +48,7 @@ QJsonObject ControllDevice::read(QString wherequery)
             mControlDevices.clear();
             while (query.next()){
                 controlDevice controlDeviceObject;
-                controlDeviceObject.controlDeviceID = query.value("ControlDevice.controlDeviceID").toInt();
+                controlDeviceObject.controlDeviceID = query.value("UuidFromBin(ControlDevice.controlDeviceID)").toUuid();
                 controlDeviceObject.userID = query.value("ControlDevice.userID").toInt();
                 controlDeviceObject.userName = query.value("User.name").toString();
                 controlDeviceObject.controlDeviceName = query.value("ControlDevice.controlDeviceName").toString();
@@ -66,9 +66,9 @@ QJsonObject ControllDevice::read(QString wherequery)
     return response;
 }
 
-QJsonObject ControllDevice::update(int controlDeviceID, int userID, QString controlDeviceName, QString controlDeviceToken, bool isControlDeviceOnline, QDate expireDate)
+QJsonObject ControllDevice::update(QUuid controlDeviceID, int userID, QString controlDeviceName, QString controlDeviceToken, bool isControlDeviceOnline, QDate expireDate)
 {
-    QString textQuery = "UPDATE `ControlDevice` SET `userID`='"+QString::number(userID)+"',`ControlDeviceName`='"+controlDeviceName+"',`ControlDeviceToken`='"+controlDeviceToken+"',`isControlDeviceOnline`='"+QString::number(isControlDeviceOnline)+"',`expireDate`='"+expireDate.toString("yyyy-MM-dd")+"' WHERE controlDeviceID='"+QString::number(controlDeviceID)+"'";
+    QString textQuery = "UPDATE `ControlDevice` SET `userID`='"+QString::number(userID)+"',`ControlDeviceName`='"+controlDeviceName+"',`ControlDeviceToken`='"+controlDeviceToken+"',`isControlDeviceOnline`='"+QString::number(isControlDeviceOnline)+"',`expireDate`='"+expireDate.toString("yyyy-MM-dd")+"' WHERE controlDeviceID=UuidToBin('"+controlDeviceID.toString(QUuid::WithoutBraces)+"')";
     QSqlQuery query;
     QJsonObject response;
     bool ok;

@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QTextStream>
 
+
 //Entitiy
 #include "Entity/user.h"
 #include "Entity/icon.h"
@@ -17,6 +18,7 @@
 #include "Entity/schedule.h"
 #include "Entity/shared.h"
 #include "Entity/log.h"
+
 
 //Boundary
 #include "Boundary/websocketserver.h"
@@ -40,10 +42,7 @@ static QSqlDatabase setDatabase() {
     }
 }
 
-int main(int argc, char *argv[])
-{
-    QCoreApplication a(argc, argv);
-
+static void percobaanEntity(){
     //>percobaan
     QJsonObject json;
     QSqlDatabase db = setDatabase();
@@ -81,13 +80,52 @@ int main(int argc, char *argv[])
     for (i=0;i<obj.mLogs.size();i++) {
         data += "logID : "+QString::number(obj.mLogs.at(i).logID)+", ";
         data += "userID : "+QString::number(obj.mLogs.at(i).userID)+", ";
-        data += "timeStamp : "+obj.mLogs.at(i).timeStamp.toString("yyyy-MM-dd HH-mm-ss")+", ";
+        data += "timeStamp : "+obj.mLogs.at(i).timeStamp.toString("yyyy-MM-dd HH:mm:ss")+", ";
         data += "timeStamp (UTC): "+obj.mLogs.at(i).timeStamp.toUTC().toString("yyyy-MM-dd HH:mm:ss")+", ";
         data += "description : "+obj.mLogs.at(i).description+"\n";
     }
     QTextStream(stdout) << data << "\n";
 
-    //<percobaan
+    QTextStream(stdout) << QUrl(QUrl("http://localhost:8000/device?token=asdfasdfasdfewrawer45wrg").toString(QUrl::RemoveUserInfo)).query() << "\n";
 
+    //<percobaan
+}
+
+static void percobaanController(){
+    QJsonObject jsonIn;
+    QJsonObject user;
+    QJsonArray jsonArrayIn;
+    QJsonObject jsonOut;
+    QSqlDatabase db = setDatabase();
+    QString secret = "OGt8oV8b0RvaQnz";
+    UserController uc(&db);
+
+    user["email"] = "aditiyasidabutar@gmail.com";
+    user["password"] = "somepass";
+    user["name"] = "aditiya";
+    jsonArrayIn.append(user);
+/*
+    user["email"] = "sidabutaraditiya@gmail.com";
+    user["password"] = "somepass";
+    user["name"] = "dwi putra";
+    jsonArrayIn.append(user);
+
+    user["email"] = "sidabutarsidabutar@gmail.com";
+    user["password"] = "somepass";
+    user["name"] = "sidabutar";
+    jsonArrayIn.append(user);
+*/
+    jsonIn["requestLoginToken"] = jsonArrayIn;
+
+    jsonOut = uc.requestLoginToken(jsonIn);
+    QJsonDocument document(jsonOut);
+    QTextStream(stdout) << document.toJson() << "\n";
+}
+
+int main(int argc, char *argv[])
+{
+    QCoreApplication a(argc, argv);
+    QString secret = "OGt8oV8b0RvaQnz";
+    percobaanController();
     return a.exec();
 }
