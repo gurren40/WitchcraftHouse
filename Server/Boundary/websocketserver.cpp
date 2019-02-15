@@ -30,7 +30,7 @@ void WebsocketServer::onNewConnection()
 
     if(url.path() == "/authentication"){
         m_auth << pSocket;
-
+        QTextStream(stdout) << "an aplication want to authenticate : " << pSocket << "\n";
         connect(pSocket, &QWebSocket::textMessageReceived, this, &WebsocketServer::authProcessTextMessage);
         connect(pSocket, &QWebSocket::binaryMessageReceived, this, &WebsocketServer::authProcessBinaryMessage);
         connect(pSocket, &QWebSocket::disconnected, this, &WebsocketServer::authSocketDisconnected);
@@ -56,6 +56,11 @@ void WebsocketServer::onNewConnection()
     */
 }
 
+void WebsocketServer::setDatabase(QSqlDatabase *database)
+{
+    this->db = *database;
+}
+
 void WebsocketServer::forceDisconnect(QWebSocket *pClient)
 {
     QTextStream(stdout) << "socketDisconnected:" << pClient;
@@ -77,6 +82,11 @@ void WebsocketServer::authProcessTextMessage(QString message)
     UserController UC(&db);
     UC.setSecret(secret);
 
+    //connect signal lol
+    connect(&UC,SIGNAL(sendMail(QString,QString,QString)),this,SIGNAL(sendMail(QString,QString,QString)));
+
+    QTextStream(stdout) << jsonDoc.toJson();
+
     if(jsonObj.contains("createNewUser")){
 
         QJsonObject response = UC.createUser(jsonObj);
@@ -97,7 +107,12 @@ void WebsocketServer::authProcessBinaryMessage(QByteArray message)
 
 void WebsocketServer::authSocketDisconnected()
 {
-
+    QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
+    QTextStream(stdout) << "socketDisconnected:" << pClient;
+    if (pClient) {
+        m_auth.removeAll(pClient);
+        pClient->deleteLater();
+    }
 }
 
 QJsonObject WebsocketServer::getJwtPayload(QNetworkRequest request)

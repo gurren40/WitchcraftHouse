@@ -28,9 +28,11 @@ public:
 
 signals:
     void closed();
+    void sendMail(QString sendTo, QString title, QString body);
 
 public slots:
     void onNewConnection();
+    void setDatabase(QSqlDatabase *database);
     void forceDisconnect(QWebSocket *pClient);
     void setSecret(QString secr);
 

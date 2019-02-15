@@ -1,4 +1,4 @@
-QT += core websockets sql widgets
+QT += core websockets sql widgets network
 QT -= gui
 CONFIG += c++11 console
 CONFIG -= app_bundle
@@ -33,7 +33,8 @@ SOURCES += \
     Control/schedulecontroller.cpp \
     Control/sharedcontroller.cpp \
     Boundary/websocketserver.cpp \
-    Entity/log.cpp
+    Entity/log.cpp \
+    Boundary/simplesmtp.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -55,4 +56,5 @@ HEADERS += \
     Control/schedulecontroller.h \
     Control/sharedcontroller.h \
     Boundary/websocketserver.h \
-    Entity/log.h
+    Entity/log.h \
+    Boundary/simplesmtp.h

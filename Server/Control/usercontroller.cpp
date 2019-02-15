@@ -51,6 +51,9 @@ QJsonObject UserController::createUser(QJsonObject json)
             if(errorValue["error"].toString() == "0"){
                 notificationValue["title"] = "User has been created";
                 notificationValue["description"] = "User with email "+jsonObject["email"].toString()+" has been created\nPlease login with your email and password";
+                QString title = "User Has Been Created";
+                QString body = "Thankyou "+jsonObject["name"].toString()+".\nYou have created account with this email\nplease do not reveal your password to anyone\nThank you";
+                emit sendMail(jsonObject["email"].toString(),title,body);
             }
             else {
                 notificationValue["title"] = "Error";
@@ -146,5 +149,11 @@ QJsonObject UserController::requestLoginToken(QJsonObject json)
     QJsonArray errorArray;
     errorArray.append(createError);
     response["error"] = errorArray;
+
+    //send email notification
+    QString title = "Token has been created";
+    QString body = "Your token has been created. your token for "+jsonObject["name"].toString()+" is \n\n"+jwt.getToken()+"\n\nIf this is not you, you can disable this token from Witchcraft House application.\nplease do not reveal your password to anyone\nThank you";
+    emit sendMail(jsonObject["email"].toString(),title,body);
+
     return  response;
 }

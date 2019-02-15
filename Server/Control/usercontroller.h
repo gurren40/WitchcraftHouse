@@ -9,6 +9,7 @@
 #include <QCryptographicHash>
 #include <QMessageAuthenticationCode>
 #include "Library/QJsonWebToken/qjsonwebtoken.h"
+#include "Boundary/simplesmtp.h"
 
 //entity
 #include "Entity/user.h"
@@ -22,6 +23,7 @@ public:
     explicit UserController(QSqlDatabase *database, QObject *parent = nullptr);
 
 signals:
+    void sendMail(QString sendTo, QString title, QString body);
 
 public slots:
     void setDatabase(QSqlDatabase *database);

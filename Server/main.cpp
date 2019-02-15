@@ -18,6 +18,7 @@
 #include "Entity/schedule.h"
 #include "Entity/shared.h"
 #include "Entity/log.h"
+#include "Boundary/simplesmtp.h"
 
 
 //Boundary
@@ -122,10 +123,35 @@ static void percobaanController(){
     QTextStream(stdout) << document.toJson() << "\n";
 }
 
+static bool percobaanEmail(){
+
+    SimpleSMTP smtp("witchcraftsystem@gmail.com","xxxxx","smtp.gmail.com");
+
+    QString token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJldmVyeWJvZHkiLCJleHAiOiIxNTUwODU2NjgxIiwiaWF0IjoiMTU1MDI1MTg4MSIsImlzcyI6Imp1YW5nYnVyZ29zIiwic3ViIjoiaGV5IHRoZXJlIn0=.Xpcno5y1d0vD67hnPxGdFg5rduWCSqwmnFXwujaVW0M=";
+    QString sentTo = "redhomu87@gmail.com";
+    QString title = "FLASH SALE!! OBAT KUAT PRIA";
+    QString body = "coba obat kuat terbaru kami sekarang!\nsegera kunjungi :\nWitchcraftHouse.smarthome.solution\n\nGunakan token "+token+"\n\nUntuk mendapatkan diskon 0% dan rasakan langsung ocehan ga jelas ini!\nregards, tim witchcraft\nps : cuma bercanda yaa\n:P\n\n\n\n\nWITCHCRAFTHOUSE";
+    smtp.sendMail(sentTo,title,body);
+    return 0;
+}
+
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
     QString secret = "OGt8oV8b0RvaQnz";
-    percobaanController();
+    //percobaanEntity();
+    //percobaanController();
+    //percobaanEmail();
+
+    QSqlDatabase db = setDatabase();
+    WebsocketServer *server = new WebsocketServer(7000);
+    server->setDatabase(&db);
+
+    //smtp
+    SimpleSMTP smtp("xxxx@gmail.com","xxxxx","smtp.gmail.com");
+    QObject::connect(server,SIGNAL(sendMail(QString,QString,QString)),&smtp,SLOT(sendMail(QString,QString,QString)));
+
+    QObject::connect(server, &WebsocketServer::closed, &a, &QCoreApplication::quit);
+
     return a.exec();
 }
