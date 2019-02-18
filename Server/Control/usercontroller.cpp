@@ -20,6 +20,42 @@ void UserController::setSecret(QString secret)
     this->secret = secret;
 }
 
+bool UserController::isJwtValid(QJsonObject jwt, QString path)
+{
+    if(path == "/control"){
+        if(jwt["iss"].toString() != "WitchcraftHouse") return false;
+        User user(&db);
+        user.read("email='"+jwt["aud"].toString()+"'");
+        if(user.mUsers.size() != 1) return false;
+        ControllDevice cd(&db);
+        cd.read("controlDeviceID=UuidToBin('"+jwt["jti"].toString()+"')");
+        if(cd.mControlDevices.size() != 1) return  false;
+        QDateTime dt(cd.mControlDevices.at(0).expireDate);
+        if(dt.toSecsSinceEpoch() > jwt["exp"].toString().toInt()) return false;
+        if(cd.mControlDevices.at(0).isControlDeviceOnline) return false;
+        if(!toggleControlDeviceOnline(cd.mControlDevices.at(0).controlDeviceID,true)) return false;
+    }
+    else {
+        return false;
+    }
+    return  true;
+}
+
+bool UserController::toggleControlDeviceOnline(QUuid controlDeviceID, bool toggle)
+{
+    ControllDevice device(&db);
+    device.read("controlDeviceID=UuidToBin('"+controlDeviceID.toString(QUuid::WithoutBraces)+"')");
+    if(device.mControlDevices.size() != 1){
+        return false;
+    }
+    if(device.mControlDevices.at(0).isControlDeviceOnline == toggle){
+        return false;
+    }
+    controlDevice dvc = device.mControlDevices.at(0);
+    device.update(dvc.controlDeviceID,dvc.userID,dvc.controlDeviceName,dvc.controlDeviceToken,toggle,dvc.expireDate);
+    return true;
+}
+
 QJsonObject UserController::createUser(QJsonObject json)
 {
     QJsonObject response;
@@ -54,6 +90,9 @@ QJsonObject UserController::createUser(QJsonObject json)
                 QString title = "User Has Been Created";
                 QString body = "Thankyou "+jsonObject["name"].toString()+".\nYou have created account with this email\nplease do not reveal your password to anyone\nThank you";
                 emit sendMail(jsonObject["email"].toString(),title,body);
+                Log log(&db);
+                user.read("email='"+jsonObject["email"].toString()+"'");
+                log.create(user.mUsers.at(0).userID,"User with email "+jsonObject["email"].toString()+" has been created");
             }
             else {
                 notificationValue["title"] = "Error";
@@ -154,6 +193,8 @@ QJsonObject UserController::requestLoginToken(QJsonObject json)
     QString title = "Token has been created";
     QString body = "Your token has been created. your token for "+jsonObject["name"].toString()+" is \n\n"+jwt.getToken()+"\n\nIf this is not you, you can disable this token from Witchcraft House application.\nplease do not reveal your password to anyone\nThank you";
     emit sendMail(jsonObject["email"].toString(),title,body);
+    Log log(&db);
+    log.create(user.mUsers.at(0).userID,"Created token for "+jsonObject["name"].toString()+".");
 
     return  response;
 }

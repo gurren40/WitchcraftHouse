@@ -8,9 +8,11 @@
 #include <QJsonObject>
 #include <QVector>
 #include <QTextStream>
+#include <QUuid>
 
 struct device{
     int deviceID;
+    QUuid deviceUUID;
     int userID;
     QString userName;
     QString deviceName;
@@ -34,9 +36,9 @@ public slots:
 
     void setDatabase(QSqlDatabase *database);
 
-    QJsonObject create(int userID, QString deviceName, QString deviceToken, bool isDeviceOnline, QString description);
+    QJsonObject create(QUuid deviceUUID, int userID, QString deviceName, QString deviceToken, bool isDeviceOnline, QString description);
     QJsonObject read(QString wherequery = "1");
-    QJsonObject update(int deviceID, int userID, QString deviceName, QString deviceToken, bool isDeviceOnline, QString description);
+    QJsonObject update(int deviceID, QUuid deviceUUID, int userID, QString deviceName, QString deviceToken, bool isDeviceOnline, QString description);
     QJsonObject deletes(QString wherequery);
 
 private:

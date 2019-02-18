@@ -15,9 +15,9 @@ void Device::setDatabase(QSqlDatabase *database)
     this->db = *database;
 }
 
-QJsonObject Device::create(int userID, QString deviceName, QString deviceToken, bool isDeviceOnline, QString description)
+QJsonObject Device::create(QUuid deviceUUID, int userID, QString deviceName, QString deviceToken, bool isDeviceOnline, QString description)
 {
-    QString textQuery = "INSERT INTO `Device` (`userID`,`deviceName`,`deviceToken`,`isDeviceOnline`,`description`) VALUES ('"+QString::number(userID)+"','"+deviceName+"','"+deviceToken+"','"+QString::number(isDeviceOnline)+"','"+description+"');";
+    QString textQuery = "INSERT INTO `Device` (`deviceUUID`,`userID`,`deviceName`,`deviceToken`,`isDeviceOnline`,`description`) VALUES ((UuidToBin('"+deviceUUID.toString(QUuid::WithoutBraces)+"'),'"+QString::number(userID)+"','"+deviceName+"','"+deviceToken+"','"+QString::number(isDeviceOnline)+"','"+description+"');";
     QSqlQuery query;
     QJsonObject response;
     bool ok;
@@ -40,7 +40,7 @@ QJsonObject Device::read(QString wherequery)
     QJsonObject response;
     QSqlQuery query;
     bool ok;
-    QString textQuery = "SELECT Device.deviceID,Device.userID,User.name,Device.deviceName,Device.deviceToken,Device.isDeviceOnline,Device.description FROM Device INNER JOIN User ON Device.userID = User.userID WHERE "+wherequery+";";
+    QString textQuery = "SELECT UuidFromBin(Device.deviceUUID),Device.deviceID,Device.userID,User.name,Device.deviceName,Device.deviceToken,Device.isDeviceOnline,Device.description FROM Device INNER JOIN User ON Device.userID = User.userID WHERE "+wherequery+";";
     if(db.open()){
         QTextStream(stdout) << textQuery << "\n\n";
         ok = query.exec(textQuery);
@@ -49,6 +49,7 @@ QJsonObject Device::read(QString wherequery)
             while (query.next()){
                 device deviceObject;
                 deviceObject.deviceID = query.value("Device.deviceID").toInt();
+                deviceObject.deviceUUID = query.value("UuidFromBin(Device.deviceUUID)").toUuid();
                 deviceObject.userID = query.value("Device.userID").toInt();
                 deviceObject.userName = query.value("User.name").toString();
                 deviceObject.deviceName = query.value("Device.deviceName").toString();
@@ -66,9 +67,9 @@ QJsonObject Device::read(QString wherequery)
     return response;
 }
 
-QJsonObject Device::update(int deviceID, int userID, QString deviceName, QString deviceToken, bool isDeviceOnline, QString description)
+QJsonObject Device::update(int deviceID, QUuid deviceUUID, int userID, QString deviceName, QString deviceToken, bool isDeviceOnline, QString description)
 {
-    QString textQuery = "UPDATE `Device` SET userID='"+QString::number(userID)+"',deviceName='"+deviceName+"',deviceToken='"+deviceToken+"',isDeviceOnline='"+QString::number(isDeviceOnline)+"',description='"+description+"' WHERE deviceID='"+QString::number(deviceID)+"';";
+    QString textQuery = "UPDATE `Device` SET deviceUUID=UuidToBin('"+deviceUUID.toString(QUuid::WithoutBraces)+"'),userID='"+QString::number(userID)+"',deviceName='"+deviceName+"',deviceToken='"+deviceToken+"',isDeviceOnline='"+QString::number(isDeviceOnline)+"',description='"+description+"' WHERE deviceID='"+QString::number(deviceID)+"';";
     QSqlQuery query;
     QJsonObject response;
     bool ok;

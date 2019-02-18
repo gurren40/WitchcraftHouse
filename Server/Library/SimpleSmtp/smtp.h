@@ -16,7 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <QString>
 #include <QTextStream>
 #include <QDebug>
-#include <QtWidgets/QMessageBox>
+//#include <QtWidgets/QMessageBox>
 #include <QByteArray>
 
 

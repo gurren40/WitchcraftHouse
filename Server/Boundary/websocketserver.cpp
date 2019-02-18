@@ -27,15 +27,17 @@ void WebsocketServer::onNewConnection()
     QWebSocket *pSocket = m_pWebSocketServer->nextPendingConnection();
     QNetworkRequest request = pSocket->request();
     QUrl url = request.url();
+    QJsonObject jwt = getJwtPayload(request);
+    UserController UC(&db);
+    DeviceController DC(&db);
 
     if(url.path() == "/authentication"){
         m_auth << pSocket;
-        QTextStream(stdout) << "an aplication want to authenticate : " << pSocket << "\n";
+        QTextStream(stdout) << "an application want to authenticate : " << pSocket << "\n";
         connect(pSocket, &QWebSocket::textMessageReceived, this, &WebsocketServer::authProcessTextMessage);
         connect(pSocket, &QWebSocket::binaryMessageReceived, this, &WebsocketServer::authProcessBinaryMessage);
         connect(pSocket, &QWebSocket::disconnected, this, &WebsocketServer::authSocketDisconnected);
     }
-    /*
     else if(url.path() == "/control"){
         QString header = "jwt";
         if(!request.hasRawHeader(header.toUtf8())){
@@ -43,17 +45,58 @@ void WebsocketServer::onNewConnection()
         }
         else {
             QString token = QString::fromUtf8(request.rawHeader(header.toUtf8()));
-            if(isTokenExpired(token)){
+            if(!UC.isJwtValid(jwt,url.path())){
                 QJsonObject response;
-                response["error"] = "Tokeh has expired, please re-login with your account";
-                response["errorCode"] = "1";
+                QJsonArray errorArray;
+                QJsonObject error;
+                error["error"] = "Tokeh has expired or deleted, please re-login with your account";
+                error["errorCode"] = "4";
+                errorArray.append(error);
+                response["error"] = errorArray;
                 QJsonDocument responseDoc(response);
                 pSocket->sendTextMessage(responseDoc.toJson());
                 forceDisconnect(pSocket);
             }
+            else {
+                m_controlDevice.insert(jwt["jti"].toString(),pSocket);
+                QTextStream(stdout) << "a control device is connected : " << pSocket << "\n";
+                connect(pSocket, &QWebSocket::textMessageReceived, this, &WebsocketServer::controlProcessTextMessage);
+                //connect(pSocket, &QWebSocket::binaryMessageReceived, this, &WebsocketServer::controlProcessBinaryMessage);
+                //connect(pSocket, &QWebSocket::disconnected, this, &WebsocketServer::controlSocketDisconnected);
+            }
         }
     }
-    */
+    else if(url.path() == "/device"){
+        QString header = "jwt";
+        if(!request.hasRawHeader(header.toUtf8())){
+            forceDisconnect(pSocket);
+        }
+        else {
+            QString token = QString::fromUtf8(request.rawHeader(header.toUtf8()));
+            if(!DC.isJwtValid(jwt,url.path())){
+                QJsonObject response;
+                QJsonArray errorArray;
+                QJsonObject error;
+                error["error"] = "Tokeh has expired or deleted, please re-login with your account";
+                error["errorCode"] = "4";
+                errorArray.append(error);
+                response["error"] = errorArray;
+                QJsonDocument responseDoc(response);
+                pSocket->sendTextMessage(responseDoc.toJson());
+                forceDisconnect(pSocket);
+            }
+            else {
+                m_device.insert(jwt["jti"].toString(),pSocket);
+                QTextStream(stdout) << "a device is connected : " << pSocket << "\n";
+                //connect(pSocket, &QWebSocket::textMessageReceived, this, &WebsocketServer::deviceProcessTextMessage);
+                //connect(pSocket, &QWebSocket::binaryMessageReceived, this, &WebsocketServer::deviceProcessBinaryMessage);
+                //connect(pSocket, &QWebSocket::disconnected, this, &WebsocketServer::deviceSocketDisconnected);
+            }
+        }
+    }
+    else {
+        forceDisconnect(pSocket);
+    }
 }
 
 void WebsocketServer::setDatabase(QSqlDatabase *database)
@@ -88,7 +131,6 @@ void WebsocketServer::authProcessTextMessage(QString message)
     QTextStream(stdout) << jsonDoc.toJson();
 
     if(jsonObj.contains("createNewUser")){
-
         QJsonObject response = UC.createUser(jsonObj);
         QJsonDocument toSend(response);
         pClient->sendTextMessage(toSend.toJson());
@@ -102,7 +144,7 @@ void WebsocketServer::authProcessTextMessage(QString message)
 
 void WebsocketServer::authProcessBinaryMessage(QByteArray message)
 {
-
+    QTextStream(stdout) << message;
 }
 
 void WebsocketServer::authSocketDisconnected()
@@ -113,6 +155,33 @@ void WebsocketServer::authSocketDisconnected()
         m_auth.removeAll(pClient);
         pClient->deleteLater();
     }
+}
+
+void WebsocketServer::controlProcessTextMessage(QString message)
+{/*
+    QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(message.toUtf8());
+    QJsonObject jsonObj = jsonDoc.object();
+    //QJsonObject jwt = getJwtPayload(pClient->request());
+    UserController UC(&db);
+    UC.setSecret(secret);
+
+    //connect signal lol
+    connect(&UC,SIGNAL(sendMail(QString,QString,QString)),this,SIGNAL(sendMail(QString,QString,QString)));
+
+    QTextStream(stdout) << jsonDoc.toJson();
+
+    if(jsonObj.contains("createNewUser")){
+        QJsonObject response = UC.createUser(jsonObj);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+    }
+    if(jsonObj.contains("requestLoginToken")){
+        QJsonObject response = UC.requestLoginToken(jsonObj);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+    }
+  */
 }
 
 QJsonObject WebsocketServer::getJwtPayload(QNetworkRequest request)

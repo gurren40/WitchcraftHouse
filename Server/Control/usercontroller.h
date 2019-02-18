@@ -14,6 +14,7 @@
 //entity
 #include "Entity/user.h"
 #include "Entity/controlldevice.h"
+#include "Entity/log.h"
 
 class UserController : public QObject
 {
@@ -28,6 +29,10 @@ signals:
 public slots:
     void setDatabase(QSqlDatabase *database);
     void setSecret(QString secret);
+
+    bool isJwtValid(QJsonObject jwt, QString path);
+    bool toggleControlDeviceOnline(QUuid controlDeviceID, bool toggle);
+
     QJsonObject createUser(QJsonObject json);
     QJsonObject requestLoginToken(QJsonObject json); //masa expirednya pakai currentSecsSinceEpoch()
 

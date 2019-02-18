@@ -148,7 +148,7 @@ int main(int argc, char *argv[])
     server->setDatabase(&db);
 
     //smtp
-    SimpleSMTP smtp("xxxx@gmail.com","xxxxx","smtp.gmail.com");
+    SimpleSMTP smtp("witchcraftsystem@gmail.com","W1tchCr4ftH0us3","smtp.gmail.com");
     QObject::connect(server,SIGNAL(sendMail(QString,QString,QString)),&smtp,SLOT(sendMail(QString,QString,QString)));
 
     QObject::connect(server, &WebsocketServer::closed, &a, &QCoreApplication::quit);

@@ -41,12 +41,12 @@ public slots:
     void authProcessBinaryMessage(QByteArray message);
     void authSocketDisconnected();
 
-    /*//for control device
+    //for control device
     void controlProcessTextMessage(QString message);
-    void controlProcessBinaryMessage(QByteArray message);
-    void controlSocketDisconnected();
+    //void controlProcessBinaryMessage(QByteArray message);
+    //void controlSocketDisconnected();
 
-    //for device
+    /*//for device
     void deviceProcessTextMessage(QString message);
     void deviceProcessBinaryMessage(QByteArray message);
     void deviceSocketDisconnected();
@@ -56,8 +56,8 @@ public slots:
 
 private:
     QWebSocketServer *m_pWebSocketServer;
-    QHash<int,QWebSocket *> m_controlDevice;
-    QHash<int,QWebSocket *> m_device;
+    QHash<QString,QWebSocket *> m_controlDevice;
+    QHash<QString,QWebSocket *> m_device;
     QList<QWebSocket *> m_auth;
     bool m_debug;
     QString secret;
