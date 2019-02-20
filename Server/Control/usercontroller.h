@@ -32,9 +32,19 @@ public slots:
 
     bool isJwtValid(QJsonObject jwt, QString path);
     bool toggleControlDeviceOnline(QUuid controlDeviceID, bool toggle);
+    QJsonObject selectAllControlDevice(int userID);
+    int getUserIDByControlDeviceID(QUuid controlDeviceID);
+    QString QUuidToQString(QUuid UUID);
+    QUuid QStringToQUuid(QString string);
 
+    //primary function
     QJsonObject createUser(QJsonObject json);
     QJsonObject requestLoginToken(QJsonObject json); //masa expirednya pakai currentSecsSinceEpoch()
+    //QJsonObject editUser(QJsonObject json, int userID);
+    //QJsonObject getUserInfo(int userID);
+    //QJsonObject getControlDeviceList(int userID);
+    //QJsonObject getAllDatalist(int userID);
+    //QJsonObject resetPassword(QJsonObject json);
 
 private:
     QSqlDatabase db;

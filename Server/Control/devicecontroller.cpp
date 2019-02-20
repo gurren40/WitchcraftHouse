@@ -10,6 +10,11 @@ DeviceController::DeviceController(QSqlDatabase *database, QObject *parent) : QO
     this->db = *database;
 }
 
+void DeviceController::setDatabase(QSqlDatabase *database)
+{
+    this->db = *database;
+}
+
 bool DeviceController::isJwtValid(QJsonObject jwt, QString path)
 {
     if(path == "/device"){

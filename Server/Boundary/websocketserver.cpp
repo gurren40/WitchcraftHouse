@@ -157,8 +157,25 @@ void WebsocketServer::authSocketDisconnected()
     }
 }
 
+void WebsocketServer::broadcastToAllUserControlDevice(int userID, QJsonObject json)
+{
+    UserController UC(&db);
+
+    //inisialisasi list control device
+    QJsonObject cdList = UC.selectAllControlDevice(userID);
+    QJsonArray array = cdList["controlDevice"].toArray();
+    QJsonDocument doc(json);
+
+    for (int i = 0;i<cdList.size();i++) {
+        QJsonObject cDevice = array[i].toObject();
+        if(cDevice["isControlDeviceOnline"].toBool()){
+            m_controlDevice.value(cDevice["controlDeviceID"].toString())->sendTextMessage(doc.toJson());
+        }
+    }
+}
+
 void WebsocketServer::controlProcessTextMessage(QString message)
-{/*
+{
     QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
     QJsonDocument jsonDoc = QJsonDocument::fromJson(message.toUtf8());
     QJsonObject jsonObj = jsonDoc.object();
@@ -181,7 +198,6 @@ void WebsocketServer::controlProcessTextMessage(QString message)
         QJsonDocument toSend(response);
         pClient->sendTextMessage(toSend.toJson());
     }
-  */
 }
 
 QJsonObject WebsocketServer::getJwtPayload(QNetworkRequest request)

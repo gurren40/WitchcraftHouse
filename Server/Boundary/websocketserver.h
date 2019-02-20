@@ -42,6 +42,7 @@ public slots:
     void authSocketDisconnected();
 
     //for control device
+    void broadcastToAllUserControlDevice(int userID, QJsonObject json);
     void controlProcessTextMessage(QString message);
     //void controlProcessBinaryMessage(QByteArray message);
     //void controlSocketDisconnected();

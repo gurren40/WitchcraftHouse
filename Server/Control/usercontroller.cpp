@@ -56,6 +56,62 @@ bool UserController::toggleControlDeviceOnline(QUuid controlDeviceID, bool toggl
     return true;
 }
 
+QJsonObject UserController::selectAllControlDevice(int userID)
+{
+    QJsonObject response;
+    QJsonArray responseArray;
+    ControllDevice cdv(&db);
+    cdv.read("userID='"+QString::number(userID)+"'");
+
+    //kalau ga ada device dengan userID yang sesuai
+    if(cdv.mControlDevices.size()<1){
+        QJsonObject error;
+        error["error"] = "the user has no control device registered";
+        error["errorCode"] = "5";
+        responseArray.append(error);
+        response["error"] = responseArray;
+        return response;
+    }
+    else {
+        for (int i = 0;i<cdv.mControlDevices.size();i++) {
+            QJsonObject controlDeviceObject;
+            controlDeviceObject["controlDeviceID"]= cdv.mControlDevices.at(i).controlDeviceID.toString(QUuid::WithoutBraces);
+            controlDeviceObject["userID"]= cdv.mControlDevices.at(i).userID;
+            controlDeviceObject["userName"]= cdv.mControlDevices.at(i).userName;
+            controlDeviceObject["controlDeviceName"]= cdv.mControlDevices.at(i).controlDeviceName;
+            controlDeviceObject["controlDeviceToken"]= cdv.mControlDevices.at(i).controlDeviceToken;
+            controlDeviceObject["isControlDeviceOnline"]= cdv.mControlDevices.at(i).isControlDeviceOnline;
+            controlDeviceObject["expireDate"]= cdv.mControlDevices.at(i).expireDate.toString();
+            responseArray.append(controlDeviceObject);
+        }
+        response["controlDevice"] = responseArray;
+        return response;
+    }
+}
+
+int UserController::getUserIDByControlDeviceID(QUuid controlDeviceID)
+{
+    ControllDevice cd(&db);
+    cd.read("controlDeviceID=(UuidToBin('"+controlDeviceID.toString(QUuid::WithoutBraces)+"')");
+    if(cd.mControlDevices.size()!=1){
+        return 0;
+    }
+    else{
+        return cd.mControlDevices.at(0).userID;
+    }
+}
+
+QString UserController::QUuidToQString(QUuid UUID)
+{
+    return UUID.toString(QUuid::WithoutBraces);
+}
+
+QUuid UserController::QStringToQUuid(QString string)
+{
+    QUuid UUID(string);
+    return UUID;
+}
+
 QJsonObject UserController::createUser(QJsonObject json)
 {
     QJsonObject response;
