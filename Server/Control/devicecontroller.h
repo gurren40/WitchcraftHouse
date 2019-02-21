@@ -7,6 +7,9 @@
 
 #include "Entity/device.h"
 #include "Entity/user.h"
+#include "Entity/group.h"
+#include "Entity/pin.h"
+#include "Library/QJsonWebToken/qjsonwebtoken.h"
 
 class DeviceController : public QObject
 {
@@ -16,20 +19,22 @@ public:
     explicit DeviceController(QSqlDatabase *database, QObject *parent = nullptr);
 
 signals:
+    void sendMail(QString sendTo, QString title, QString body);
 
 public slots:
     void setDatabase(QSqlDatabase *database);
+    void setSecret(QString secr);
     bool isJwtValid(QJsonObject jwt, QString path);
     bool toggleDeviceOnline(QUuid deviceUUID, bool toggle);
 
     //primary function
     //create
-    //QJsonObject createNewDevice(QJsonObject json, int userID);
-    //QJsonObject createNewGroup(QJsonObject json, int userID);
-    //QJsonObject createNewPin(QJsonObject json, int userID);
+    QJsonObject createNewDevice(QJsonObject json, int userID);
+    QJsonObject createNewGroup(QJsonObject json, int userID);
+    QJsonObject createNewPin(QJsonObject json, int userID);
 
     //edit
-    //QJsonObject editDevice(QJsonObject json, int userID);
+    QJsonObject editDevice(QJsonObject json, int userID);
     //QJsonObject editGroup(QJsonObject json, int userID);
     //QJsonObject editPin(QJsonObject json, int userID);
 
@@ -50,6 +55,7 @@ public slots:
 
 private:
     QSqlDatabase db;
+    QString secret;
 };
 
 #endif // DEVICECONTROLLER_H
