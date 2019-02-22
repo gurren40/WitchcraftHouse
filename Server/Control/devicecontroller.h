@@ -20,6 +20,8 @@ public:
 
 signals:
     void sendMail(QString sendTo, QString title, QString body);
+    void deletedPin(QUuid pinUUID,int userID);
+    void deletedGroup(int groupID, int userID);
 
 public slots:
     void setDatabase(QSqlDatabase *database);
@@ -39,18 +41,18 @@ public slots:
     QJsonObject editPin(QJsonObject json, int userID);
 
     //delete
-    //QJsonObject deleteDevice(QJsonObject json, int userID);
-    //QJsonObject deleteGroup(QJsonObject json, int userID);
-    //QJsonObject deletePin(QJsonObject json, int userID);
+    QJsonObject deleteDevice(QJsonObject json, int userID);
+    QJsonObject deleteGroup(QJsonObject json, int userID);
+    QJsonObject deletePin(QJsonObject json, int userID);
 
     //get list
-    //QJsonObject getDeviceList(int userID);
-    //QJsonObject getGroupList(int userID);
-    //QJsonObject getPinList(QJsonObject userID);
+    QJsonObject getDeviceList(int userID);
+    QJsonObject getGroupList(int userID);
+    QJsonObject getPinList(int userID);
 
     //set device value
-    //QJsonObject setPinValue(QJsonObject json);
-    //QJsonObject settedPinValue(QJsonObject json);
+    //QJsonObject setPinValue(QJsonObject json, int userID);
+    //QJsonObject settedPinValue(QJsonObject json, int userID);
 
 
 private:

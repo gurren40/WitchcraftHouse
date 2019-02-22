@@ -173,7 +173,7 @@ QJsonObject DeviceController::editDevice(QJsonObject json, int userID)
     jsonArray = json["editDevice"].toArray();
     if(jsonArray.size()<1){
         QJsonObject error,notification;
-        error["error"] = "no information to create object";
+        error["error"] = "no information to edit object";
         error["errorCode"] = "6";
         notification["title"]="error";
         notification["description"] = error["error"].toString();
@@ -203,7 +203,7 @@ QJsonObject DeviceController::editGroup(QJsonObject json, int userID)
     jsonArray = json["editGroup"].toArray();
     if(jsonArray.size()<1){
         QJsonObject error,notification;
-        error["error"] = "no information to create object";
+        error["error"] = "no information to edit object";
         error["errorCode"] = "6";
         notification["title"]="error";
         notification["description"] = error["error"].toString();
@@ -233,7 +233,7 @@ QJsonObject DeviceController::editPin(QJsonObject json, int userID)
     jsonArray = json["editPin"].toArray();
     if(jsonArray.size()<1){
         QJsonObject error,notification;
-        error["error"] = "no information to create object";
+        error["error"] = "no information to edit object";
         error["errorCode"] = "6";
         notification["title"]="error";
         notification["description"] = error["error"].toString();
@@ -251,6 +251,247 @@ QJsonObject DeviceController::editPin(QJsonObject json, int userID)
             errorArray.append(error);
         }
     }
+    response["error"] = errorArray;
+    response["notification"] = notificationArray;
+    return response;
+}
+
+QJsonObject DeviceController::deleteDevice(QJsonObject json, int userID)
+{
+    Device device(&db);
+    Pin pin(&db);
+    QJsonObject response;
+    QJsonArray jsonArray,errorArray,notificationArray;
+    jsonArray = json["deleteGroup"].toArray();
+    if(jsonArray.size()<1){
+        QJsonObject error,notification;
+        error["error"] = "no information to delete object";
+        error["errorCode"] = "6";
+        notification["title"]="error";
+        notification["description"] = error["error"].toString();
+        errorArray.append(error);
+        notificationArray.append(notification);
+    }
+    else {
+        for (int i = 0;i<jsonArray.size();i++) {
+            QJsonObject jsonObject = jsonArray.at(i).toObject();
+            QJsonObject error1 = device.read("deviceID='"+QString::number(jsonObject["deviceID"].toInt())+"'");
+            if(device.mDevices.size() == 1){
+
+                //delete pin
+                pin.read("deviceID='"+QString::number(device.mDevices.at(0).deviceID)+"'");
+                if(pin.mPins.size()>0){
+                    QJsonArray pinArray;
+                    for (int j = 0;j<pin.mPins.size();j++) {
+                        QJsonObject pinObject;
+                        pinObject["UUID"]=pin.mPins.at(j).UUID.toString(QUuid::WithoutBraces);
+                        pinArray.append(pinObject);
+                    }
+                    QJsonObject pinList;
+                    pinList["deletePin"] = pinArray;
+                    QJsonObject error2 = deletePin(pinList,userID);
+                    errorArray.append(error2);
+                }
+
+                //delete device
+                //emit deletedGroup(jsonObject["groupID"].toInt(),userID);
+                error1 = device.deletes("deviceID='"+QString::number(device.mDevices.at(0).deviceID)+"'");
+            }
+            errorArray.append(error1);
+        }
+    }
+    response["error"] = errorArray;
+    response["notification"] = notificationArray;
+    return response;
+}
+
+QJsonObject DeviceController::deleteGroup(QJsonObject json, int userID)
+{
+    Group group(&db);
+    Pin pin(&db);
+    QJsonObject response;
+    QJsonArray jsonArray,errorArray,notificationArray;
+    jsonArray = json["deleteGroup"].toArray();
+    if(jsonArray.size()<1){
+        QJsonObject error,notification;
+        error["error"] = "no information to delete object";
+        error["errorCode"] = "6";
+        notification["title"]="error";
+        notification["description"] = error["error"].toString();
+        errorArray.append(error);
+        notificationArray.append(notification);
+    }
+    else {
+        for (int i = 0;i<jsonArray.size();i++) {
+            QJsonObject jsonObject = jsonArray.at(i).toObject();
+            QJsonObject error1 = group.read("groupID='"+QString::number(jsonObject["groupID"].toInt())+"'");
+            if(group.mGroups.size() == 1){
+
+                //delete pin
+                pin.read("groupID='"+QString::number(group.mGroups.at(0).groupID)+"'");
+                if(pin.mPins.size()>0){
+                    QJsonArray pinArray;
+                    for (int j = 0;j<pin.mPins.size();j++) {
+                        QJsonObject pinObject;
+                        pinObject["UUID"]=pin.mPins.at(j).UUID.toString(QUuid::WithoutBraces);
+                        pinArray.append(pinObject);
+                    }
+                    QJsonObject pinList;
+                    pinList["deletePin"] = pinArray;
+                    QJsonObject error2 = deletePin(pinList,userID);
+                    errorArray.append(error2);
+                }
+
+                //delete group
+                emit deletedGroup(jsonObject["groupID"].toInt(),userID);
+                error1 = group.deletes("groupID='"+QString::number(group.mGroups.at(0).groupID)+"'");
+            }
+            errorArray.append(error1);
+        }
+    }
+    response["error"] = errorArray;
+    response["notification"] = notificationArray;
+    return response;
+}
+
+QJsonObject DeviceController::deletePin(QJsonObject json, int userID)
+{
+    Pin pin(&db);
+    QJsonObject response;
+    QJsonArray jsonArray,errorArray,notificationArray;
+    jsonArray = json["deletePin"].toArray();
+    if(jsonArray.size()<1){
+        QJsonObject error,notification;
+        error["error"] = "no information to delete object";
+        error["errorCode"] = "6";
+        notification["title"]="error";
+        notification["description"] = error["error"].toString();
+        errorArray.append(error);
+        notificationArray.append(notification);
+    }
+    else {
+        for (int i = 0;i<jsonArray.size();i++) {
+            QJsonObject jsonObject = jsonArray.at(i).toObject();
+            QUuid UUID = QUuid::fromString(jsonObject["UUID"].toString());
+            QJsonObject error = pin.read("UUID=UuidToBin('"+UUID.toString(QUuid::WithoutBraces)+"'");
+            if(pin.mPins.size() == 1){
+                error = pin.deletes("UUID=UuidToBin('"+UUID.toString(QUuid::WithoutBraces)+"'");
+                emit deletedPin(UUID,userID);
+            }
+            errorArray.append(error);
+        }
+    }
+    response["error"] = errorArray;
+    response["notification"] = notificationArray;
+    return response;
+}
+
+QJsonObject DeviceController::getDeviceList(int userID)
+{
+    Device device(&db);
+    QJsonObject response;
+    QJsonArray jsonArray,errorArray,notificationArray;
+    QJsonObject error = device.read("userID='"+QString::number(userID)+"'");
+
+    if(device.mDevices.size()<1){
+        QJsonObject error,notification;
+        error["error"] = "you do not have any device. please create one";
+        error["errorCode"] = "7";
+        notification["title"]="Error";
+        notification["description"] = error["error"].toString();
+        errorArray.append(error);
+        notificationArray.append(notification);
+    }
+    else {
+        for (int i = 0;i<device.mDevices.size();i++) {
+            QJsonObject deviceObject;
+            deviceObject["deviceID"] = device.mDevices.at(i).deviceID;
+            deviceObject["userName"] = device.mDevices.at(i).userName;
+            deviceObject["deviceName"] = device.mDevices.at(i).deviceName;
+            deviceObject["isDeviceOnline"] = device.mDevices.at(i).isDeviceOnline;
+            deviceObject["description"] = device.mDevices.at(i).description;
+            jsonArray.append(deviceObject);
+        }
+    }
+    response["deviceList"] = jsonArray;
+    response["error"] = errorArray;
+    response["notification"] = notificationArray;
+    return response;
+}
+
+QJsonObject DeviceController::getGroupList(int userID)
+{
+    Group group(&db);
+    QJsonObject response;
+    QJsonArray jsonArray,errorArray,notificationArray;
+    QJsonObject error = group.read("userID='"+QString::number(userID)+"'");
+
+    if(group.mGroups.size()<1){
+        QJsonObject error,notification;
+        error["error"] = "you do not have any device. please create one";
+        error["errorCode"] = "7";
+        notification["title"]="Error";
+        notification["description"] = error["error"].toString();
+        errorArray.append(error);
+        notificationArray.append(notification);
+    }
+    else {
+        for (int i = 0;i<group.mGroups.size();i++) {
+            QJsonObject groupObject;
+            groupObject["groupID"] = group.mGroups.at(i).groupID;
+            //groupObject["userID"] = group.mGroups.at(i).userID;
+            groupObject["iconID"] = group.mGroups.at(i).iconID;
+            groupObject["groupName"] = group.mGroups.at(i).groupName;
+            groupObject["userName"] = group.mGroups.at(i).userName;
+            groupObject["iconName"] = group.mGroups.at(i).iconName;
+            groupObject["description"] = group.mGroups.at(i).description;
+            jsonArray.append(groupObject);
+        }
+    }
+    response["groupList"] = jsonArray;
+    response["error"] = errorArray;
+    response["notification"] = notificationArray;
+    return response;
+}
+
+QJsonObject DeviceController::getPinList(int userID)
+{
+    Pin pin(&db);
+    QJsonObject response;
+    QJsonArray jsonArray,errorArray,notificationArray;
+    QJsonObject error = pin.read("userID='"+QString::number(userID)+"'");
+
+    if(pin.mPins.size()<1){
+        QJsonObject error,notification;
+        error["error"] = "you do not have any device. please create one";
+        error["errorCode"] = "7";
+        notification["title"]="Error";
+        notification["description"] = error["error"].toString();
+        errorArray.append(error);
+        notificationArray.append(notification);
+    }
+    else {
+        for (int i = 0;i<pin.mPins.size();i++) {
+            QJsonObject pinObject;
+            pinObject["pinID"] = pin.mPins.at(i).pinID;
+            pinObject["UUID"] = pin.mPins.at(i).UUID.toString(QUuid::WithoutBraces);
+            //groupObject["userID"] = pin.mPins.at(i).userID;
+            pinObject["userName"] = pin.mPins.at(i).userName;
+            pinObject["groupID"] = pin.mPins.at(i).groupID;
+            pinObject["groupName"] = pin.mPins.at(i).groupName;
+            pinObject["deviceID"] = pin.mPins.at(i).deviceID;
+            pinObject["deviceName"] = pin.mPins.at(i).deviceName;
+            pinObject["iconID"] = pin.mPins.at(i).iconID;
+            pinObject["iconName"] = pin.mPins.at(i).iconName;
+            pinObject["pinTypeID"] = pin.mPins.at(i).pinTypeID;
+            pinObject["pinTypeName"] = pin.mPins.at(i).pinTypeName;
+            pinObject["value"] = pin.mPins.at(i).value;
+            pinObject["option"] = pin.mPins.at(i).option;
+            pinObject["description"] = pin.mPins.at(i).description;
+            jsonArray.append(pinObject);
+        }
+    }
+    response["pinList"] = jsonArray;
     response["error"] = errorArray;
     response["notification"] = notificationArray;
     return response;
