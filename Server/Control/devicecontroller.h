@@ -35,8 +35,8 @@ public slots:
 
     //edit
     QJsonObject editDevice(QJsonObject json, int userID);
-    //QJsonObject editGroup(QJsonObject json, int userID);
-    //QJsonObject editPin(QJsonObject json, int userID);
+    QJsonObject editGroup(QJsonObject json, int userID);
+    QJsonObject editPin(QJsonObject json, int userID);
 
     //delete
     //QJsonObject deleteDevice(QJsonObject json, int userID);

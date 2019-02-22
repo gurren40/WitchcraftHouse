@@ -66,7 +66,7 @@ QJsonObject DeviceController::createNewDevice(QJsonObject json, int userID)
     if(jsonArray.size()>0){
         for (int i = 0;i < jsonArray.size();i++) {
             QJsonWebToken jwt;
-            QJsonObject jsonObject = jsonArray[i].toObject();
+            QJsonObject jsonObject = jsonArray.at(i).toObject();
             QUuid newUUID = QUuid::createUuid();
             jwt.setSecret(secret);
             //set jwt
@@ -92,7 +92,6 @@ QJsonObject DeviceController::createNewDevice(QJsonObject json, int userID)
     }
     else {
         QJsonObject response;
-        QJsonArray errorArray,notificationArray;
         QJsonObject error,notification;
         error["error"] = "no information to create object";
         error["errorCode"] = "6";
@@ -100,9 +99,6 @@ QJsonObject DeviceController::createNewDevice(QJsonObject json, int userID)
         notification["description"] = error["error"].toString();
         errorArray.append(error);
         notificationArray.append(notification);
-        response["error"] = errorArray;
-        response["notification"] = notificationArray;
-        return  response;
     }
     QJsonObject response;
     response["error"] = errorArray;
@@ -115,9 +111,9 @@ QJsonObject DeviceController::createNewGroup(QJsonObject json, int userID)
     Group newGroup(&db);
     QJsonObject response;
     QJsonArray jsonArray;
+    QJsonArray errorArray,notificationArray;
     jsonArray = json["createNewGroup"].toArray();
     if(jsonArray.size()<1){
-        QJsonArray errorArray,notificationArray;
         QJsonObject error,notification;
         error["error"] = "no information to create object";
         error["errorCode"] = "6";
@@ -125,18 +121,16 @@ QJsonObject DeviceController::createNewGroup(QJsonObject json, int userID)
         notification["description"] = error["error"].toString();
         errorArray.append(error);
         notificationArray.append(notification);
-        response["error"] = errorArray;
-        response["notification"] = notificationArray;
     }
     else {
         for (int i = 0;i<jsonArray.size();i++) {
-            QJsonObject jsonObject = jsonArray[i].toObject();
+            QJsonObject jsonObject = jsonArray.at(i).toObject();
             QJsonObject error = newGroup.create(userID,json["iconID"].toInt(),json["groupName"].toString(),json["description"].toString());
-            QJsonArray errorArray;
             errorArray.append(error);
-            response["error"] = errorArray;
         }
     }
+    response["notification"] = notificationArray;
+    response["error"] = errorArray;
     return response;
 }
 
@@ -145,9 +139,10 @@ QJsonObject DeviceController::createNewPin(QJsonObject json, int userID)
     Pin newPin(&db);
     QJsonObject response;
     QJsonArray jsonArray;
+    QJsonArray errorArray;
+    QJsonArray notificationArray;
     jsonArray = json["createNewPin"].toArray();
     if(jsonArray.size()<1){
-        QJsonArray errorArray,notificationArray;
         QJsonObject error,notification;
         error["error"] = "no information to create object";
         error["errorCode"] = "6";
@@ -155,23 +150,108 @@ QJsonObject DeviceController::createNewPin(QJsonObject json, int userID)
         notification["description"] = error["error"].toString();
         errorArray.append(error);
         notificationArray.append(notification);
-        response["error"] = errorArray;
-        response["notification"] = notificationArray;
     }
     else {
         for (int i = 0;i<jsonArray.size();i++) {
-            QJsonObject jsonObject = jsonArray[i].toObject();
+            QJsonObject jsonObject = jsonArray.at(i).toObject();
             QUuid newUUID = QUuid::createUuid();
             QJsonObject error = newPin.create(newUUID,userID,jsonObject["groupID"].toInt(),jsonObject["deviceID"].toInt(),jsonObject["iconID"].toInt(),jsonObject["pinTypeID"].toInt(),jsonObject["pinName"].toString(),jsonObject["value"].toString("0"),jsonObject["option"].toString(""),jsonObject["description"].toString(""));
-            QJsonArray errorArray;
             errorArray.append(error);
-            response["error"] = errorArray;
         }
     }
+    response["error"] = errorArray;
+    response["notification"] = notificationArray;
     return response;
 }
 
 QJsonObject DeviceController::editDevice(QJsonObject json, int userID)
 {
+    Device device(&db);
+    QJsonObject response;
+    QJsonArray jsonArray;
+    QJsonArray errorArray,notificationArray;
+    jsonArray = json["editDevice"].toArray();
+    if(jsonArray.size()<1){
+        QJsonObject error,notification;
+        error["error"] = "no information to create object";
+        error["errorCode"] = "6";
+        notification["title"]="error";
+        notification["description"] = error["error"].toString();
+        errorArray.append(error);
+        notificationArray.append(notification);
+    }
+    else {
+        for (int i = 0;i<jsonArray.size();i++) {
+            QJsonObject jsonObject = jsonArray.at(i).toObject();
+            QJsonObject error = device.read("deviceID='"+QString::number(jsonObject["deviceID"].toInt())+"'");
+            if(device.mDevices.size()==1){
+                error = device.update(jsonObject["deviceID"].toInt(),QUuid::fromString(jsonObject["deviceUUID"].toString()),userID,jsonObject["deviceName"].toString(),device.mDevices.at(0).deviceToken,device.mDevices.at(0).isDeviceOnline,jsonObject["description"].toString());
+                errorArray.append(error);
+            }
+        }
+    }
+    response["error"] = errorArray;
+    response["notification"] = notificationArray;
+    return response;
+}
 
+QJsonObject DeviceController::editGroup(QJsonObject json, int userID)
+{
+    Group group(&db);
+    QJsonObject response;
+    QJsonArray jsonArray,errorArray,notificationArray;
+    jsonArray = json["editGroup"].toArray();
+    if(jsonArray.size()<1){
+        QJsonObject error,notification;
+        error["error"] = "no information to create object";
+        error["errorCode"] = "6";
+        notification["title"]="error";
+        notification["description"] = error["error"].toString();
+        errorArray.append(error);
+        notificationArray.append(notification);
+    }
+    else {
+        for (int i = 0;i<jsonArray.size();i++) {
+            QJsonObject jsonObject = jsonArray.at(i).toObject();
+            QJsonObject error = group.read("groupID='"+QString::number(jsonObject["groupID"].toInt())+"'");
+            if(group.mGroups.size() == 1){
+                error = group.update(jsonObject["groupID"].toInt(),userID,jsonObject["iconID"].toInt(),jsonObject["groupName"].toString(),jsonObject["description"].toString());
+            }
+            errorArray.append(error);
+        }
+    }
+    response["error"] = errorArray;
+    response["notification"] = notificationArray;
+    return response;
+}
+
+QJsonObject DeviceController::editPin(QJsonObject json, int userID)
+{
+    Pin pin(&db);
+    QJsonObject response;
+    QJsonArray jsonArray,errorArray,notificationArray;
+    jsonArray = json["editPin"].toArray();
+    if(jsonArray.size()<1){
+        QJsonObject error,notification;
+        error["error"] = "no information to create object";
+        error["errorCode"] = "6";
+        notification["title"]="error";
+        notification["description"] = error["error"].toString();
+        errorArray.append(error);
+        notificationArray.append(notification);
+    }
+    else {
+        for (int i = 0;i<jsonArray.size();i++) {
+            QJsonObject jsonObject = jsonArray.at(i).toObject();
+            QUuid UUID = QUuid::fromString(jsonObject["UUID"].toString());
+            QJsonObject error = pin.read("UUID=UuidToBin('"+UUID.toString(QUuid::WithoutBraces)+"'");
+            if(pin.mPins.size() == 1){
+                error = pin.update(pin.mPins.at(0).pinID,pin.mPins.at(0).UUID,userID,jsonObject["groupID"].toInt(),jsonObject["deviceID"].toInt(),jsonObject["iconID"].toInt(),jsonObject["pinTypeID"].toInt(),jsonObject["pinName"].toString(),pin.mPins.at(0).value,jsonObject["option"].toString(),jsonObject["description"].toString());
+            }
+            errorArray.append(error);
+        }
+    }
+    response["error"] = errorArray;
+    response["notification"] = notificationArray;
+    return response;
 }
