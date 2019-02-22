@@ -200,6 +200,12 @@ void WebsocketServer::controlProcessTextMessage(QString message)
     }
 }
 
+void WebsocketServer::broadcastToDevice(QUuid deviceUUID, QJsonObject json)
+{
+    QJsonDocument jsonDoc(json);
+    m_device.value(deviceUUID.toString(QUuid::WithoutBraces))->sendTextMessage(jsonDoc.toJson());
+}
+
 QJsonObject WebsocketServer::getJwtPayload(QNetworkRequest request)
 {
     QString header = "jwt";

@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QSqlDatabase>
 #include <QJsonObject>
+#include <QList>
+#include <QHash>
 
 #include "Entity/device.h"
 #include "Entity/user.h"
@@ -22,6 +24,9 @@ signals:
     void sendMail(QString sendTo, QString title, QString body);
     void deletedPin(QUuid pinUUID,int userID);
     void deletedGroup(int groupID, int userID);
+    void broadcastToDevice(QUuid deviceUUID, QJsonObject json);
+    void broadcastToAllUserControlDevice(int userID, QJsonObject json);
+    void broadcastToShared(QUuid UUID, int userID);
 
 public slots:
     void setDatabase(QSqlDatabase *database);
@@ -51,8 +56,8 @@ public slots:
     QJsonObject getPinList(int userID);
 
     //set device value
-    //QJsonObject setPinValue(QJsonObject json, int userID);
-    //QJsonObject settedPinValue(QJsonObject json, int userID);
+    QJsonObject setPinValue(QJsonObject json, int userID);
+    QJsonObject settedPinValue(QJsonObject json, int userID);
 
 
 private:

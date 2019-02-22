@@ -428,7 +428,7 @@ QJsonObject DeviceController::getGroupList(int userID)
 
     if(group.mGroups.size()<1){
         QJsonObject error,notification;
-        error["error"] = "you do not have any device. please create one";
+        error["error"] = "you do not have any group. please create one";
         error["errorCode"] = "7";
         notification["title"]="Error";
         notification["description"] = error["error"].toString();
@@ -463,7 +463,7 @@ QJsonObject DeviceController::getPinList(int userID)
 
     if(pin.mPins.size()<1){
         QJsonObject error,notification;
-        error["error"] = "you do not have any device. please create one";
+        error["error"] = "you do not have any Pin. please create one";
         error["errorCode"] = "7";
         notification["title"]="Error";
         notification["description"] = error["error"].toString();
@@ -492,6 +492,121 @@ QJsonObject DeviceController::getPinList(int userID)
         }
     }
     response["pinList"] = jsonArray;
+    response["error"] = errorArray;
+    response["notification"] = notificationArray;
+    return response;
+}
+
+QJsonObject DeviceController::setPinValue(QJsonObject json, int userID)
+{
+    QJsonObject response;
+    QJsonArray errorArray,notificationArray;
+    QJsonArray jsonArray = json["setPinValue"].toArray();
+    QHash<QUuid,QJsonArray> sortedPinToDevice;
+    Device device(&db);
+    Pin pin(&db);
+    if(jsonArray.size()<1){
+        QJsonObject error,notification;
+        error["error"] = "there is no pin to set";
+        error["errorCode"] = "8";
+        notification["title"]="Error";
+        notification["description"] = error["error"].toString();
+        errorArray.append(error);
+        notificationArray.append(notification);
+    }
+    else {
+        for (int i = 0;i<jsonArray.size();i++) {
+            QJsonObject pinObject = jsonArray.at(i).toObject();
+            QUuid UUID = QUuid::fromString(pinObject["UUID"].toString());
+            QJsonObject error2;
+            QJsonObject error1 = pin.read("UUID=UuidToBin('"+UUID.toString(QUuid::WithoutBraces)+"'");
+
+            //check kalau pin ada, lalu dapatkan device id
+            if(pin.mPins.size()==1){
+                error2 = device.read("deviceID='"+QString::number(pin.mPins.at(0).deviceID)+"'");
+                //check kalau device ada, lalu dapatkan UUIDnya
+                if((device.mDevices.size()==1) && (device.mDevices.at(0).userID == userID)){
+                    //kalau sudah di hash
+                    if (sortedPinToDevice.contains(device.mDevices.at(0).deviceUUID)){
+                        QJsonArray toHashArray = sortedPinToDevice.value(device.mDevices.at(0).deviceUUID);
+                        toHashArray.append(pinObject);
+                        sortedPinToDevice.remove(device.mDevices.at(0).deviceUUID);
+                        sortedPinToDevice.insert(device.mDevices.at(0).deviceUUID,toHashArray);
+                    }
+                    //kalau belum di hash
+                    else {
+                        QJsonArray toHashArray;// = sortedPinToDevice.value(device.mDevices.at(0).deviceUUID);
+                        toHashArray.append(pinObject);
+                        //sortedPinToDevice.remove(device.mDevices.at(0).deviceUUID);
+                        sortedPinToDevice.insert(device.mDevices.at(0).deviceUUID,toHashArray);
+                    }
+                }
+            }
+            errorArray.append(error1);
+            errorArray.append(error2);
+        }
+        QHash<QUuid,QJsonArray>::iterator j;
+        for (j = sortedPinToDevice.begin(); j != sortedPinToDevice.end(); ++j){
+            QJsonObject toSend;
+            toSend["setPinValue"] = j.value();
+            emit broadcastToDevice(j.key(),toSend);
+        }
+    }
+    response["error"] = errorArray;
+    response["notification"] = notificationArray;
+    return response;
+}
+
+QJsonObject DeviceController::settedPinValue(QJsonObject json, int userID)
+{
+    QJsonObject response;
+    QJsonArray errorArray,notificationArray;
+    QJsonArray jsonArray = json["settedPinValue"].toArray();
+    QHash<int,QJsonArray> sortedPinByUser;
+    //Device device(&db);
+    Pin pin(&db);
+    if(jsonArray.size()<1){
+        QJsonObject error,notification;
+        error["error"] = "there is no pin to set";
+        error["errorCode"] = "8";
+        notification["title"]="Error";
+        notification["description"] = error["error"].toString();
+        errorArray.append(error);
+        notificationArray.append(notification);
+    }
+    else {
+        for (int i = 0;i<jsonArray.size();i++) {
+            QJsonObject pinObject = jsonArray.at(i).toObject();
+            QUuid UUID = QUuid::fromString(pinObject["UUID"].toString());
+            QJsonObject error1 = pin.read("UUID=UuidToBin('"+UUID.toString(QUuid::WithoutBraces)+"'");
+            //check kalau pin ada, lalu dapatkan device id
+            if((pin.mPins.size()==1) && (pin.mPins.at(0).userID == userID)){
+                if (sortedPinByUser.contains(pin.mPins.at(0).userID)){
+                    QJsonArray toHashArray = sortedPinByUser.value(pin.mPins.at(0).userID);
+                    toHashArray.append(pinObject);
+                    sortedPinByUser.remove(pin.mPins.at(0).userID);
+                    sortedPinByUser.insert(pin.mPins.at(0).userID,toHashArray);
+                }
+                //kalau belum di hash
+                else {
+                    QJsonArray toHashArray;// = sortedPinToDevice.value(device.mDevices.at(0).deviceUUID);
+                    toHashArray.append(pinObject);
+                    //sortedPinToDevice.remove(device.mDevices.at(0).deviceUUID);
+                    sortedPinByUser.insert(pin.mPins.at(0).userID,toHashArray);
+                }
+            }
+            QJsonObject error2 = pin.update(pin.mPins.at(0).pinID,pin.mPins.at(0).UUID,pin.mPins.at(0).userID,pin.mPins.at(0).groupID,pin.mPins.at(0).deviceID,pin.mPins.at(0).iconID,pin.mPins.at(0).pinTypeID,pin.mPins.at(0).pinName,pinObject["value"].toString(),pin.mPins.at(0).option,pin.mPins.at(0).description);
+            emit broadcastToShared(UUID,userID);
+            errorArray.append(error1);
+            errorArray.append(error2);
+        }
+        QHash<int,QJsonArray>::iterator j;
+        for (j = sortedPinByUser.begin(); j != sortedPinByUser.end(); ++j){
+            QJsonObject toSend;
+            toSend["settedPinValue"] = j.value();
+            emit broadcastToAllUserControlDevice(j.key(),toSend);
+        }
+    }
     response["error"] = errorArray;
     response["notification"] = notificationArray;
     return response;

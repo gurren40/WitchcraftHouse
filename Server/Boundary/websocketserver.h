@@ -47,11 +47,12 @@ public slots:
     //void controlProcessBinaryMessage(QByteArray message);
     //void controlSocketDisconnected();
 
-    /*//for device
-    void deviceProcessTextMessage(QString message);
-    void deviceProcessBinaryMessage(QByteArray message);
-    void deviceSocketDisconnected();
-    */
+    //for device
+    void broadcastToDevice(QUuid deviceUUID, QJsonObject json);
+    //void deviceProcessTextMessage(QString message);
+    //void deviceProcessBinaryMessage(QByteArray message);
+    //void deviceSocketDisconnected();
+
     //misc
     QJsonObject getJwtPayload(QNetworkRequest request);
 
