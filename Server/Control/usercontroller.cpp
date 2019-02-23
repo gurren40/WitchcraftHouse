@@ -254,3 +254,89 @@ QJsonObject UserController::requestLoginToken(QJsonObject json)
 
     return  response;
 }
+
+QJsonObject UserController::editUser(QJsonObject json, int userID)
+{
+    User user(&db);
+    QJsonObject response;
+    QJsonArray errorArray,notificationArray;
+    QJsonObject jsonObject = json["editUser"].toObject();
+    QJsonObject error = user.read("email='"+jsonObject["email"].toString()+"'");
+    if((user.mUsers.size()!=1) || (user.mUsers.at(0).name == jsonObject["name"].toString())){
+        QJsonObject error,notification;
+        error["error"] = "you do not any info or name difference";
+        error["errorCode"] = "7";
+        notification["title"]="Error";
+        notification["description"] = error["error"].toString();
+        errorArray.append(error);
+        notificationArray.append(notification);
+    }
+    else {
+        QJsonObject error = user.update(userID,user.mUsers.at(0).email,user.mUsers.at(0).password,jsonObject["name"].toString());
+        errorArray.append(error);
+    }
+    response["error"] = errorArray;
+    response["notification"] = notificationArray;
+    return response;
+}
+
+QJsonObject UserController::getUserInfo(int userID)
+{
+    User user(&db);
+    QJsonObject response, jsonObject;
+    QJsonArray errorArray,notificationArray;
+    QJsonObject error = user.read("userID='"+QString::number(userID)+"'");
+    errorArray.append(error);
+    if(user.mUsers.size()!=1){
+        QJsonObject error,notification;
+        error["error"] = "no data to give";
+        error["errorCode"] = "7";
+        notification["title"]="Error";
+        notification["description"] = error["error"].toString();
+        errorArray.append(error);
+        notificationArray.append(notification);
+    }
+    else {
+        jsonObject["name"] = user.mUsers.at(0).name;
+        jsonObject["email"] = user.mUsers.at(0).email;
+    }
+    response["userInfo"] = jsonObject;
+    response["error"] = errorArray;
+    response["notification"] = notificationArray;
+    return response;
+}
+
+QJsonObject UserController::getControlDeviceList(int userID)
+{
+    ControllDevice control(&db);
+    QJsonObject response;
+    QJsonArray jsonArray,errorArray,notificationArray;
+    QJsonObject error = control.read("userID='"+QString::number(userID)+"'");
+    errorArray.append(error);
+    if(control.mControlDevices.size()<1){
+        QJsonObject error,notification;
+        error["error"] = "no data to give";
+        error["errorCode"] = "7";
+        notification["title"]="Error";
+        notification["description"] = error["error"].toString();
+        errorArray.append(error);
+        notificationArray.append(notification);
+    }
+    else {
+        for (int i = 0;i<control.mControlDevices.size();i++) {
+            QJsonObject jsonObject;
+            //userID
+            jsonObject["userName"] = control.mControlDevices.at(i).userName;
+            jsonObject["expireDate"] = control.mControlDevices.at(i).expireDate.toString();
+            jsonObject["controlDeviceID"] = control.mControlDevices.at(i).controlDeviceID.toString(QUuid::WithoutBraces);
+            jsonObject["controlDeviceName"] = control.mControlDevices.at(i).controlDeviceName;
+            //controlDeviceToken
+            jsonObject["isControlDeviceOnline"] = control.mControlDevices.at(i).isControlDeviceOnline;
+            jsonArray.append(jsonObject);
+        }
+    }
+    response["controlDeviceList"] = jsonArray;
+    response["error"] = errorArray;
+    response["notification"] = notificationArray;
+    return response;
+}

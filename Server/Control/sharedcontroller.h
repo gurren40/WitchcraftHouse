@@ -23,7 +23,8 @@ public slots:
     //QJsonObject createNewShared(QJsonObject json, int userID);
     //QJsonObject editShared(QJsonObject json, int userID);
     //QJsonObject deleteShared(QJsonObject json, int userID);
-    //QJsonObject getSharedList(int userID, int userID);
+    //getSharedList is towarded for sharer, while getSharedPinList is for whom shared to
+    //QJsonObject getSharedList(int userID);
     //QJsonObject getSharedPinList(int userID, int userID);
 
 private:

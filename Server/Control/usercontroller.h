@@ -40,9 +40,9 @@ public slots:
     //primary function
     QJsonObject createUser(QJsonObject json);
     QJsonObject requestLoginToken(QJsonObject json); //masa expirednya pakai currentSecsSinceEpoch()
-    //QJsonObject editUser(QJsonObject json, int userID);
-    //QJsonObject getUserInfo(int userID);
-    //QJsonObject getControlDeviceList(int userID);
+    QJsonObject editUser(QJsonObject json, int userID);
+    QJsonObject getUserInfo(int userID);
+    QJsonObject getControlDeviceList(int userID);
     //QJsonObject getAllDatalist(int userID);
     //QJsonObject resetPassword(QJsonObject json);
 
