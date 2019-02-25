@@ -56,7 +56,8 @@ QJsonObject Pin::read(QString wherequery)
                            LEFT JOIN Device ON Pin.deviceID = Device.deviceID) \
                            LEFT JOIN Icon ON Pin.iconID = Icon.iconID) \
                            LEFT JOIN PinType ON Pin.pinTypeID = PinType.pinTypeID \
-                         ) WHERE "+wherequery+";";
+                         ) WHERE "+wherequery+" \
+                         ORDER BY Groups.groupID ASC;";
     if(db.open()){
         QTextStream(stdout) << textQuery << "\n\n";
         ok = query.exec(textQuery);

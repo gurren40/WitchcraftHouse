@@ -45,6 +45,7 @@ public slots:
     QJsonObject getControlDeviceList(int userID);
     //QJsonObject getAllDatalist(int userID);
     //QJsonObject resetPassword(QJsonObject json);
+    //QJsonObject deleteControlDevice(QJsonObject json, int userID);
 
 private:
     QSqlDatabase db;
