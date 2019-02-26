@@ -262,7 +262,7 @@ QJsonObject DeviceController::deleteDevice(QJsonObject json, int userID)
     Pin pin(&db);
     QJsonObject response;
     QJsonArray jsonArray,errorArray,notificationArray;
-    jsonArray = json["deleteGroup"].toArray();
+    jsonArray = json["deleteDevice"].toArray();
     if(jsonArray.size()<1){
         QJsonObject error,notification;
         error["error"] = "no information to delete object";

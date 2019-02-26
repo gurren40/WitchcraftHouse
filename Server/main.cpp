@@ -19,6 +19,7 @@
 #include "Entity/shared.h"
 #include "Entity/log.h"
 #include "Boundary/simplesmtp.h"
+#include "Boundary/cronscheduler.h"
 
 
 //Boundary
@@ -145,12 +146,13 @@ int main(int argc, char *argv[])
 
     QSqlDatabase db = setDatabase();
     WebsocketServer *server = new WebsocketServer(7000);
+    CronScheduler *scheduler = new CronScheduler;
     server->setDatabase(&db);
 
     //smtp
-    SimpleSMTP smtp("witchcraftsystem@gmail.com","W1tchCr4ftH0us3","smtp.gmail.com");
-    QObject::connect(server,SIGNAL(sendMail(QString,QString,QString)),&smtp,SLOT(sendMail(QString,QString,QString)));
-
+    SimpleSMTP *smtp = new SimpleSMTP("witchcraftsystem@gmail.com","W1tchCr4ftH0us3","smtp.gmail.com");
+    QObject::connect(server,SIGNAL(sendMail(QString,QString,QString)),smtp,SLOT(sendMail(QString,QString,QString)));
+    //QObject::connect();
     QObject::connect(server, &WebsocketServer::closed, &a, &QCoreApplication::quit);
 
     return a.exec();

@@ -12,6 +12,7 @@
 
 struct schedule{
     int scheduleID;
+    QUuid scheduleUUID;
     int userID;
     QString userName;
     int pinID;
@@ -43,7 +44,7 @@ public slots:
 
     void setDatabase(QSqlDatabase *database);
 
-    QJsonObject create(int userID, int pinID, QString scheduleName, QString minute, QString hour, QString dayOfMonth, QString month, QString dayOfWeek, QString timeZone, QString value, QString description);
+    QJsonObject create(QUuid scheduleUUID, int userID, int pinID, QString scheduleName, QString minute, QString hour, QString dayOfMonth, QString month, QString dayOfWeek, QString timeZone, QString value, QString description);
     QJsonObject read(QString wherequery = "1");
     QJsonObject update(int scheduleID, int userID, int pinID, QString scheduleName, QString minute, QString hour, QString dayOfMonth, QString month, QString dayOfWeek, QString timeZone, QString value, QString description);
     QJsonObject deletes(QString wherequery);

@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 include(Library/QJsonWebToken/qjsonwebtoken.pri)
 include(Library/SimpleSmtp/simplesmtp.pri)
+include(Library/qcron-master/src/qcron.pri)
 
 SOURCES += \
         main.cpp \
@@ -34,7 +35,8 @@ SOURCES += \
     Control/sharedcontroller.cpp \
     Boundary/websocketserver.cpp \
     Entity/log.cpp \
-    Boundary/simplesmtp.cpp
+    Boundary/simplesmtp.cpp \
+    Boundary/cronscheduler.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -57,4 +59,5 @@ HEADERS += \
     Control/sharedcontroller.h \
     Boundary/websocketserver.h \
     Entity/log.h \
-    Boundary/simplesmtp.h
+    Boundary/simplesmtp.h \
+    Boundary/cronscheduler.h

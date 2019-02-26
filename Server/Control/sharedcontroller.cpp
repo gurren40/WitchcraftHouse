@@ -76,7 +76,7 @@ QJsonObject SharedController::editShared(QJsonObject json, int userID)
     Shared shared(&db);
     QJsonObject response;
     QJsonArray jsonArray,errorArray,notificationArray;
-    jsonArray = json["createNewShared"].toArray();
+    jsonArray = json["editShared"].toArray();
     if(jsonArray.size()<1){
         QJsonObject error,notification;
         error["error"] = "no information to edit object";
@@ -140,7 +140,7 @@ QJsonObject SharedController::deleteShared(QJsonObject json, int userID)
     Shared shared(&db);
     QJsonObject response;
     QJsonArray jsonArray,errorArray,notificationArray;
-    jsonArray = json["createNewShared"].toArray();
+    jsonArray = json["deleteShared"].toArray();
     if(jsonArray.size()<1){
         QJsonObject error,notification;
         error["error"] = "no information to edit object";

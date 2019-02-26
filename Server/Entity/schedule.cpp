@@ -15,9 +15,10 @@ void Schedule::setDatabase(QSqlDatabase *database)
     this->db = *database;
 }
 
-QJsonObject Schedule::create(int userID, int pinID, QString scheduleName, QString minute, QString hour, QString dayOfMonth, QString month, QString dayOfWeek, QString timeZone, QString value, QString description)
+QJsonObject Schedule::create(QUuid scheduleUUID, int userID, int pinID, QString scheduleName, QString minute, QString hour, QString dayOfMonth, QString month, QString dayOfWeek, QString timeZone, QString value, QString description)
 {
-    QString textQuery = "INSERT INTO `Schedule` (`userID`,`pinID`,`scheduleName`,`minute`,`hour`,`dayOfMonth`,`month`,`dayOfWeek`,`timeZone`,`value`,`description`) VALUES (\
+    QString textQuery = "INSERT INTO `Schedule` (`scheduleUUID`,`userID`,`pinID`,`scheduleName`,`minute`,`hour`,`dayOfMonth`,`month`,`dayOfWeek`,`timeZone`,`value`,`description`) VALUES (\
+                        UuidToBin('"+scheduleUUID.toString(QUuid::WithoutBraces)+"'),\
                         '"+QString::number(userID)+"',\
                         '"+QString::number(pinID)+"',\
                         '"+scheduleName+"',\
@@ -51,7 +52,7 @@ QJsonObject Schedule::read(QString wherequery)
     QJsonObject response;
     QSqlQuery query;
     bool ok;
-    QString textQuery = "SELECT *,UuidFromBin(Pin.UUID) FROM  \
+    QString textQuery = "SELECT *,UuidFromBin(Pin.UUID),UuidFromBin(Schedule.scheduleUUID) FROM  \
                          ((Schedule INNER JOIN User ON Schedule.userID = User.userID) \
                            INNER JOIN Pin ON Schedule.pinID = Pin.pinID \
                          ) WHERE "+wherequery+" ;";
@@ -63,6 +64,7 @@ QJsonObject Schedule::read(QString wherequery)
             while (query.next()){
                 schedule scheduleObject;
                 scheduleObject.scheduleID = query.value("Schedule.scheduleID").toInt();
+                scheduleObject.scheduleUUID = QUuid(query.value("UuidFromBin(Schedule.scheduleUUID)").toString());
                 scheduleObject.userID = query.value("Schedule.userID").toInt();
                 scheduleObject.userName = query.value("User.name").toString();
                 scheduleObject.pinID = query.value("Schedule.pinID").toInt();
