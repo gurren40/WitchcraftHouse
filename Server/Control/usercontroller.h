@@ -25,6 +25,7 @@ public:
 
 signals:
     void sendMail(QString sendTo, QString title, QString body);
+    void deletedControlDevice(QUuid controlDeviceID);
 
 public slots:
     void setDatabase(QSqlDatabase *database);
@@ -45,7 +46,7 @@ public slots:
     QJsonObject getControlDeviceList(int userID);
     QJsonObject getAllDatalist(int userID);
     //QJsonObject resetPassword(QJsonObject json);
-    //QJsonObject deleteControlDevice(QJsonObject json, int userID);
+    QJsonObject deleteControlDevice(QJsonObject json, int userID);
 
 private:
     QSqlDatabase db;

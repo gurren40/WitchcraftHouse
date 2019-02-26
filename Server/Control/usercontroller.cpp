@@ -373,3 +373,46 @@ QJsonObject UserController::getAllDatalist(int userID)
     response["controlDeviceList"] = controlDeviceList["controlDeviceList"].toArray();
     return response;
 }
+
+QJsonObject UserController::deleteControlDevice(QJsonObject json, int userID)
+{
+    ControllDevice theDevice(&db);
+    QJsonArray jsonArray, errorArray, notificationArray;
+    QJsonObject response;
+
+    jsonArray = json["deleteControlDevice"].toArray();
+    if(jsonArray.size()<1){
+        QJsonObject error,notification;
+        error["error"] = "no object information to delete";
+        error["errorCode"] = "6";
+        notification["title"]="error";
+        notification["description"] = error["error"].toString();
+        errorArray.append(error);
+        notificationArray.append(notification);
+    }
+    else {
+        for (int i = 0;i<jsonArray.size();i++) {
+            QJsonObject jsonObject = jsonArray.at(i).toObject();
+            QJsonObject error = theDevice.read("controlDeviceID=UuidToBin('"+jsonObject["controlDeviceID"].toString()+"')");
+            errorArray.append(error);
+            if((theDevice.mControlDevices.size()!=1) || (theDevice.mControlDevices.at(i).userID != userID)){
+                QJsonObject error,notification;
+                error["error"] = "no object information to delete";
+                error["errorCode"] = "6";
+                notification["title"]="error";
+                notification["description"] = error["error"].toString();
+                errorArray.append(error);
+                notificationArray.append(notification);
+            }
+            else {
+                QJsonObject error = theDevice.deletes("controlDeviceID=UuidToBin('"+jsonObject["controlDeviceID"].toString()+"')");
+                errorArray.append(error);
+                emit deletedControlDevice(QUuid::fromString(jsonObject["controlDeviceID"].toString()));
+            }
+        }
+    }
+
+    response["error"] = errorArray;
+    response["notification"] = notificationArray;
+    return response;
+}

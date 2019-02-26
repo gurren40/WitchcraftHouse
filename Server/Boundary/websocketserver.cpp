@@ -215,6 +215,11 @@ QJsonObject WebsocketServer::getJwtPayload(QNetworkRequest request)
     return  jsonObj;
 }
 
+void WebsocketServer::deletedControlDevice(QUuid controlDeviceID)
+{
+    m_controlDevice.value(controlDeviceID.toString(QUuid::WithoutBraces))->close();
+}
+
 QString WebsocketServer::getPathWithoutQuery(QUrl url)
 {
     return QUrl(url.toString(QUrl::RemoveQuery)).path();

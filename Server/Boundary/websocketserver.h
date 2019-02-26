@@ -55,6 +55,7 @@ public slots:
 
     //misc
     QJsonObject getJwtPayload(QNetworkRequest request);
+    void deletedControlDevice(QUuid controlDeviceID);
 
 private:
     QWebSocketServer *m_pWebSocketServer;
