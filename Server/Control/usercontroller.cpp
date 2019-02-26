@@ -1,4 +1,7 @@
 #include "usercontroller.h"
+#include "Control/devicecontroller.h"
+#include "Control/schedulecontroller.h"
+#include "Control/sharedcontroller.h"
 
 UserController::UserController(QObject *parent) : QObject(parent)
 {
@@ -338,5 +341,35 @@ QJsonObject UserController::getControlDeviceList(int userID)
     response["controlDeviceList"] = jsonArray;
     response["error"] = errorArray;
     response["notification"] = notificationArray;
+    return response;
+}
+
+QJsonObject UserController::getAllDatalist(int userID)
+{
+    QJsonObject response;
+    //inisialisasi controller
+    DeviceController DC(&db);
+    ScheduleController SC(&db);
+    SharedController ShC(&db);
+
+    //ambil tiap listnya
+    QJsonObject pinList = DC.getPinList(userID);
+    QJsonObject groupList = DC.getGroupList(userID);
+    QJsonObject deviceList = DC.getDeviceList(userID);
+    QJsonObject scheduleList = SC.getScheduleList(userID);
+    QJsonObject sharedList = ShC.getSharedList(userID);
+    QJsonObject sharedPin = ShC.getSharedPinList(userID);
+    QJsonObject userInfo = getUserInfo(userID);
+    QJsonObject controlDeviceList = getControlDeviceList(userID);
+
+    //inisialisasi ke response
+    response["pinList"] = pinList["pinList"].toArray();
+    response["groupList"] = pinList["groupList"].toArray();
+    response["deviceList"] = deviceList["deviceList"].toArray();
+    response["scheduleList"] = scheduleList["scheduleList"].toArray();
+    response["sharedList"] = sharedList["sharedList"].toArray();
+    response["sharedPin"] = sharedPin["sharedPin"].toArray();
+    response["userInfo"] = userInfo["userInfo"].toObject();
+    response["controlDeviceList"] = controlDeviceList["controlDeviceList"].toArray();
     return response;
 }

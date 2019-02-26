@@ -43,7 +43,7 @@ public slots:
     QJsonObject editUser(QJsonObject json, int userID);
     QJsonObject getUserInfo(int userID);
     QJsonObject getControlDeviceList(int userID);
-    //QJsonObject getAllDatalist(int userID);
+    QJsonObject getAllDatalist(int userID);
     //QJsonObject resetPassword(QJsonObject json);
     //QJsonObject deleteControlDevice(QJsonObject json, int userID);
 
