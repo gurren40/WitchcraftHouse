@@ -294,7 +294,7 @@ QJsonObject DeviceController::deleteDevice(QJsonObject json, int userID)
                 }
 
                 //delete device
-                //emit deletedGroup(jsonObject["groupID"].toInt(),userID);
+                emit deletedDevice(device.mDevices.at(i).deviceUUID);
                 error1 = device.deletes("deviceID='"+QString::number(device.mDevices.at(0).deviceID)+"'");
             }
             errorArray.append(error1);

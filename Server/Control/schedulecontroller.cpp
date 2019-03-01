@@ -193,6 +193,17 @@ QJsonObject ScheduleController::getScheduleList(int userID)
     return response;
 }
 
+void ScheduleController::initAllCron()
+{
+    Schedule theSchedule(&db);
+    if(theSchedule.mSchedules.size()>0){
+        for (int i = 0;i<theSchedule.mSchedules.size();i++) {
+            QString cronSyntax = theSchedule.mSchedules.at(i).minute+" "+theSchedule.mSchedules.at(i).hour+" "+theSchedule.mSchedules.at(i).dayOfMonth+" "+theSchedule.mSchedules.at(i).month+" "+theSchedule.mSchedules.at(i).dayOfWeek;
+            emit createNewCron(theSchedule.mSchedules.at(i).scheduleUUID,cronSyntax,theSchedule.mSchedules.at(i).pinUUID,theSchedule.mSchedules.at(i).value,theSchedule.mSchedules.at(i).userID);
+        }
+    }
+}
+
 int ScheduleController::getPinIDbyUUID(QUuid UUID)
 {
     Pin pin(&db);

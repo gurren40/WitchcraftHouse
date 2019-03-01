@@ -7,7 +7,7 @@ WebsocketServer::WebsocketServer(quint16 port, QObject *parent) :
 {
     if (m_pWebSocketServer->listen(QHostAddress::Any, port)) {
         if (m_debug)
-            QTextStream(stdout) << "Echoserver listening on port" << port;
+            QTextStream(stdout) << "Echoserver listening on port : " << port;
         connect(m_pWebSocketServer, &QWebSocketServer::newConnection,
                 this, &WebsocketServer::onNewConnection);
         connect(m_pWebSocketServer, &QWebSocketServer::closed, this, &WebsocketServer::closed);
@@ -61,8 +61,8 @@ void WebsocketServer::onNewConnection()
                 m_controlDevice.insert(jwt["jti"].toString(),pSocket);
                 QTextStream(stdout) << "a control device is connected : " << pSocket << "\n";
                 connect(pSocket, &QWebSocket::textMessageReceived, this, &WebsocketServer::controlProcessTextMessage);
-                //connect(pSocket, &QWebSocket::binaryMessageReceived, this, &WebsocketServer::controlProcessBinaryMessage);
-                //connect(pSocket, &QWebSocket::disconnected, this, &WebsocketServer::controlSocketDisconnected);
+                connect(pSocket, &QWebSocket::binaryMessageReceived, this, &WebsocketServer::controlProcessBinaryMessage);
+                connect(pSocket, &QWebSocket::disconnected, this, &WebsocketServer::controlSocketDisconnected);
             }
         }
     }
@@ -176,27 +176,226 @@ void WebsocketServer::broadcastToAllUserControlDevice(int userID, QJsonObject js
 
 void WebsocketServer::controlProcessTextMessage(QString message)
 {
+    //inisialisasi sender
     QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
+    //inisialisasi pesan
     QJsonDocument jsonDoc = QJsonDocument::fromJson(message.toUtf8());
+    //ubah pesan menjadi json object
     QJsonObject jsonObj = jsonDoc.object();
-    //QJsonObject jwt = getJwtPayload(pClient->request());
+    //inisialisasi jwt payload
+    QJsonObject jwt = getJwtPayload(pClient->request());
+    //ambil userID berdasarkan jwt
+    QUuid controlDeviceID = QUuid::fromString(jwt["jti"].toString());
+
+    //inisialisasi kontroler
     UserController UC(&db);
+    DeviceController DC(&db);
+    ScheduleController SC(&db);
+    SharedController ShC(&db);
     UC.setSecret(secret);
+    DC.setSecret(secret);
+
+    int userID = UC.getUserIDByControlDeviceID(controlDeviceID);
 
     //connect signal lol
     connect(&UC,SIGNAL(sendMail(QString,QString,QString)),this,SIGNAL(sendMail(QString,QString,QString)));
+    connect(&DC,SIGNAL(sendMail(QString,QString,QString)),this,SIGNAL(sendMail(QString,QString,QString)));
+    //connect(&SC,SIGNAL(sendMail(QString,QString,QString)),this,SIGNAL(sendMail(QString,QString,QString)));
+    //connect(&ShC,SIGNAL(sendMail(QString,QString,QString)),this,SIGNAL(sendMail(QString,QString,QString)));
+    connect(&DC,SIGNAL(broadcastToDevice(QUuid,QJsonObject)),this,SLOT(broadcastToDevice(QUuid,QJsonObject)));
+    connect(&DC,SIGNAL(deletedDevice),this,SLOT(deletedDevice()));
+    connect(&SC,SIGNAL(createNewCron(QUuid, QString, QUuid, QString, int)),cronScheduler,SLOT(createNewCron(QUuid, QString, QUuid, QString, int)));
+    connect(&SC,SIGNAL(editCron(QUuid, QString, QUuid, QString)),cronScheduler,SLOT(editCron(QUuid, QString, QUuid, QString)));
+    connect(&SC,SIGNAL(deleteCron(QUuid)),cronScheduler,SLOT(deleteCron(QUuid)));
 
     QTextStream(stdout) << jsonDoc.toJson();
 
-    if(jsonObj.contains("createNewUser")){
-        QJsonObject response = UC.createUser(jsonObj);
+    //create
+    if(jsonObj.contains("createNewDevice")){
+        QJsonObject response = DC.createNewDevice(jsonObj,userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+        QJsonObject response2 = DC.getDeviceList(userID);
+        broadcastToAllUserControlDevice(userID,response2);
+    }
+    if(jsonObj.contains("createNewGroup")){
+        QJsonObject response = DC.createNewGroup(jsonObj,userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+        QJsonObject response2 = DC.getGroupList(userID);
+        broadcastToAllUserControlDevice(userID,response2);
+    }
+    if(jsonObj.contains("createNewPin")){
+        QJsonObject response = DC.createNewPin(jsonObj,userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+        QJsonObject response2 = DC.getPinList(userID);
+        broadcastToAllUserControlDevice(userID,response2);
+    }
+    if(jsonObj.contains("createNewSchedule")){
+        QJsonObject response = SC.createNewSchedule(jsonObj,userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+        QJsonObject response2 = SC.getScheduleList(userID);
+        broadcastToAllUserControlDevice(userID,response2);
+    }
+    if(jsonObj.contains("createNewShared")){
+        QJsonObject response = ShC.createNewShared(jsonObj,userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+        QJsonObject response2 = ShC.getSharedList(userID);
+        broadcastToAllUserControlDevice(userID,response2);
+    }
+
+    //edit
+    if(jsonObj.contains("editUser")){
+        QJsonObject response = UC.editUser(jsonObj,userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+        QJsonObject response2 = UC.getUserInfo(userID);
+        broadcastToAllUserControlDevice(userID,response2);
+    }
+    if(jsonObj.contains("editDevice")){
+        QJsonObject response = DC.editDevice(jsonObj,userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+        QJsonObject response2 = DC.getDeviceList(userID);
+        broadcastToAllUserControlDevice(userID,response2);
+    }
+    if(jsonObj.contains("editGroup")){
+        QJsonObject response = DC.editGroup(jsonObj,userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+        QJsonObject response2 = DC.getGroupList(userID);
+        broadcastToAllUserControlDevice(userID,response2);
+    }
+    if(jsonObj.contains("editPin")){
+        QJsonObject response = DC.editPin(jsonObj,userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+        QJsonObject response2 = DC.getPinList(userID);
+        broadcastToAllUserControlDevice(userID,response2);
+    }
+    if(jsonObj.contains("editSchedule")){
+        QJsonObject response = SC.editSchedule(jsonObj,userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+        QJsonObject response2 = SC.getScheduleList(userID);
+        broadcastToAllUserControlDevice(userID,response2);
+    }
+    if(jsonObj.contains("editShared")){
+        QJsonObject response = ShC.editShared(jsonObj,userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+        QJsonObject response2 = ShC.getSharedList(userID);
+        broadcastToAllUserControlDevice(userID,response2);
+    }
+
+    //delete
+    if(jsonObj.contains("deleteDevice")){
+        QJsonObject response = DC.deleteDevice(jsonObj,userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+        QJsonObject response2 = DC.getDeviceList(userID);
+        broadcastToAllUserControlDevice(userID,response2);
+    }
+    if(jsonObj.contains("deleteGroup")){
+        QJsonObject response = DC.deleteGroup(jsonObj,userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+        QJsonObject response2 = DC.getGroupList(userID);
+        broadcastToAllUserControlDevice(userID,response2);
+    }
+    if(jsonObj.contains("deletePin")){
+        QJsonObject response = DC.deletePin(jsonObj,userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+        QJsonObject response2 = DC.getPinList(userID);
+        broadcastToAllUserControlDevice(userID,response2);
+    }
+    if(jsonObj.contains("deleteSchedule")){
+        QJsonObject response = SC.deleteSchedule(jsonObj,userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+        QJsonObject response2 = SC.getScheduleList(userID);
+        broadcastToAllUserControlDevice(userID,response2);
+    }
+    if(jsonObj.contains("deleteShared")){
+        QJsonObject response = ShC.deleteShared(jsonObj,userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+        QJsonObject response2 = ShC.getSharedList(userID);
+        broadcastToAllUserControlDevice(userID,response2);
+    }
+
+    //get list
+    if(jsonObj.contains("getUserInfo")){
+        QJsonObject response = UC.getUserInfo(userID);
         QJsonDocument toSend(response);
         pClient->sendTextMessage(toSend.toJson());
     }
-    if(jsonObj.contains("requestLoginToken")){
-        QJsonObject response = UC.requestLoginToken(jsonObj);
+    if(jsonObj.contains("getDeviceList")){
+        QJsonObject response = DC.getDeviceList(userID);
         QJsonDocument toSend(response);
         pClient->sendTextMessage(toSend.toJson());
+    }
+    if(jsonObj.contains("getGroupList")){
+        QJsonObject response = DC.getGroupList(userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+    }
+    if(jsonObj.contains("getPinList")){
+        QJsonObject response = DC.getPinList(userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+    }
+    if(jsonObj.contains("getScheduleList")){
+        QJsonObject response = SC.getScheduleList(userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+    }
+    if(jsonObj.contains("getSharedList")){
+        QJsonObject response = ShC.getSharedList(userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+    }
+    if(jsonObj.contains("getSharedPinList")){
+        QJsonObject response = ShC.getSharedPinList(userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+    }
+    if(jsonObj.contains("getAllData")){
+        QJsonObject response = UC.getAllDatalist(userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+    }
+    if(jsonObj.contains("getControlDeviceList")){
+        QJsonObject response = UC.getControlDeviceList(userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+    }
+
+    //set pin value
+    if(jsonObj.contains("setPinValue")){
+        QJsonObject response = DC.setPinValue(jsonObj,userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+    }
+}
+
+void WebsocketServer::controlProcessBinaryMessage(QByteArray message)
+{
+    QTextStream(stdout) << message;
+}
+
+void WebsocketServer::controlSocketDisconnected()
+{
+    QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
+    QTextStream(stdout) << "socketDisconnected:" << pClient;
+    QJsonObject jwtPayload = getJwtPayload(pClient->request());
+    if (pClient) {
+        m_controlDevice.remove(jwtPayload["jti"].toString());
+        pClient->deleteLater();
     }
 }
 
@@ -204,6 +403,19 @@ void WebsocketServer::broadcastToDevice(QUuid deviceUUID, QJsonObject json)
 {
     QJsonDocument jsonDoc(json);
     m_device.value(deviceUUID.toString(QUuid::WithoutBraces))->sendTextMessage(jsonDoc.toJson());
+}
+
+void WebsocketServer::deletedDevice(QUuid deviceUUID)
+{
+    m_device.value(deviceUUID.toString(QUuid::WithoutBraces))->close();
+}
+
+void WebsocketServer::setPinValueFromCron(QJsonObject json, int userID)
+{
+    DeviceController DC(&db);
+    connect(&DC,SIGNAL(broadcastToDevice(QUuid,QJsonObject)),this,SLOT(broadcastToDevice(QUuid,QJsonObject)));
+
+    DC.setPinValue(json,userID);
 }
 
 QJsonObject WebsocketServer::getJwtPayload(QNetworkRequest request)
@@ -218,6 +430,12 @@ QJsonObject WebsocketServer::getJwtPayload(QNetworkRequest request)
 void WebsocketServer::deletedControlDevice(QUuid controlDeviceID)
 {
     m_controlDevice.value(controlDeviceID.toString(QUuid::WithoutBraces))->close();
+}
+
+void WebsocketServer::setCronScheduler(CronScheduler *value)
+{
+    cronScheduler = value;
+    connect(cronScheduler,SIGNAL(setPinValue(QJsonObject,int)),this,SLOT(setPinValueFromCron(QJsonObject,int)));
 }
 
 QString WebsocketServer::getPathWithoutQuery(QUrl url)

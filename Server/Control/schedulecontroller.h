@@ -31,6 +31,7 @@ public slots:
     QJsonObject getScheduleList(int userID);
 
     //misc
+    void initAllCron();
     int getPinIDbyUUID(QUuid UUID);
 
 private:

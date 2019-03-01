@@ -19,12 +19,17 @@
 #include "Control/schedulecontroller.h"
 #include "Control/sharedcontroller.h"
 
+//cron scheduler
+#include "Boundary/cronscheduler.h"
+
 class WebsocketServer : public QObject
 {
     Q_OBJECT
 public:
     explicit WebsocketServer(quint16 port, QObject *parent = nullptr);
     ~WebsocketServer();
+
+    void setCronScheduler(CronScheduler *value);
 
 signals:
     void closed();
@@ -44,14 +49,16 @@ public slots:
     //for control device
     void broadcastToAllUserControlDevice(int userID, QJsonObject json);
     void controlProcessTextMessage(QString message);
-    //void controlProcessBinaryMessage(QByteArray message);
-    //void controlSocketDisconnected();
+    void controlProcessBinaryMessage(QByteArray message);
+    void controlSocketDisconnected();
 
     //for device
     void broadcastToDevice(QUuid deviceUUID, QJsonObject json);
     //void deviceProcessTextMessage(QString message);
     //void deviceProcessBinaryMessage(QByteArray message);
     //void deviceSocketDisconnected();
+    void deletedDevice(QUuid deviceUUID);
+    void setPinValueFromCron(QJsonObject json, int userID);
 
     //misc
     QJsonObject getJwtPayload(QNetworkRequest request);
@@ -65,6 +72,9 @@ private:
     bool m_debug;
     QString secret;
     QSqlDatabase db;
+
+    //Cron Scheduler
+    CronScheduler *cronScheduler;
 
     //private function
     QString getPathWithoutQuery(QUrl url);

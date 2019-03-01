@@ -24,6 +24,7 @@ signals:
     void sendMail(QString sendTo, QString title, QString body);
     void deletedPin(QUuid pinUUID,int userID);
     void deletedGroup(int groupID, int userID);
+    void deletedDevice(QUuid deviceUUID);
     void broadcastToDevice(QUuid deviceUUID, QJsonObject json);
     void broadcastToAllUserControlDevice(int userID, QJsonObject json);
     void broadcastToShared(QUuid UUID, int userID);
