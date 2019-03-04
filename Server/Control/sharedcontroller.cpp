@@ -340,3 +340,47 @@ int SharedController::getPinIDbyUUID(QUuid UUID)
     }
     else return  pin.mPins.at(0).pinID;
 }
+
+void SharedController::deletedPin(QUuid pinUUID, int userID)
+{
+    Shared shared(&db);
+    shared.read("Pin.userID='"+QString::number(userID)+"'");
+    if(shared.mShareds.size()<1){
+        QTextStream(stdout) << "\nShared with pinUUID : " << pinUUID.toString(QUuid::WithoutBraces) << " is not avaiable.";
+    }
+    else {
+        for (int i = 0;i<shared.mShareds.size();i++) {
+            if(shared.mShareds.at(i).pinUUID == pinUUID){
+                QJsonObject json;
+                QJsonArray array;
+                QJsonObject jsonObject;
+                jsonObject["sharedID"] = shared.mShareds.at(i).sharedID;
+                array.append(jsonObject);
+                json["deleteShared"] = array;
+                deleteShared(json,userID);
+            }
+        }
+    }
+}
+
+void SharedController::deletedGroup(int groupID, int userID)
+{
+    Shared shared(&db);
+    shared.read("Pin.userID='"+QString::number(userID)+"'");
+    if(shared.mShareds.size()<1){
+        QTextStream(stdout) << "\nShared with groupID : " << groupID << " is not avaiable.";
+    }
+    else {
+        for (int i = 0;i<shared.mShareds.size();i++) {
+            if(shared.mShareds.at(i).groupID == groupID){
+                QJsonObject json;
+                QJsonArray array;
+                QJsonObject jsonObject;
+                jsonObject["sharedID"] = shared.mShareds.at(i).sharedID;
+                array.append(jsonObject);
+                json["deleteShared"] = array;
+                deleteShared(json,userID);
+            }
+        }
+    }
+}

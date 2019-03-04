@@ -20,6 +20,8 @@ public:
     explicit DeviceController(QObject *parent = nullptr);
     explicit DeviceController(QSqlDatabase *database, QObject *parent = nullptr);
 
+    int getUserIDByDeviceID(QUuid deviceUUID);
+
 signals:
     void sendMail(QString sendTo, QString title, QString body);
     void deletedPin(QUuid pinUUID,int userID);

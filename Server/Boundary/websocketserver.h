@@ -54,7 +54,7 @@ public slots:
 
     //for device
     void broadcastToDevice(QUuid deviceUUID, QJsonObject json);
-    //void deviceProcessTextMessage(QString message);
+    void deviceProcessTextMessage(QString message);
     //void deviceProcessBinaryMessage(QByteArray message);
     //void deviceSocketDisconnected();
     void deletedDevice(QUuid deviceUUID);

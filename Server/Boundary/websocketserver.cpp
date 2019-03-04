@@ -88,7 +88,7 @@ void WebsocketServer::onNewConnection()
             else {
                 m_device.insert(jwt["jti"].toString(),pSocket);
                 QTextStream(stdout) << "a device is connected : " << pSocket << "\n";
-                //connect(pSocket, &QWebSocket::textMessageReceived, this, &WebsocketServer::deviceProcessTextMessage);
+                connect(pSocket, &QWebSocket::textMessageReceived, this, &WebsocketServer::deviceProcessTextMessage);
                 //connect(pSocket, &QWebSocket::binaryMessageReceived, this, &WebsocketServer::deviceProcessBinaryMessage);
                 //connect(pSocket, &QWebSocket::disconnected, this, &WebsocketServer::deviceSocketDisconnected);
             }
@@ -207,6 +207,9 @@ void WebsocketServer::controlProcessTextMessage(QString message)
     connect(&SC,SIGNAL(createNewCron(QUuid, QString, QUuid, QString, int)),cronScheduler,SLOT(createNewCron(QUuid, QString, QUuid, QString, int)));
     connect(&SC,SIGNAL(editCron(QUuid, QString, QUuid, QString)),cronScheduler,SLOT(editCron(QUuid, QString, QUuid, QString)));
     connect(&SC,SIGNAL(deleteCron(QUuid)),cronScheduler,SLOT(deleteCron(QUuid)));
+    connect(&DC,SIGNAL(deletedPin(QUuid,int)),&SC,SLOT(deletedPin(QUuid,int)));
+    connect(&DC,SIGNAL(deletedPin(QUuid,int)),&ShC,SLOT(deletedPin(QUuid,int)));
+    connect(&DC,SIGNAL(deletedGroup(int,int)),&ShC,SLOT(deletedGroup(int,int)));
 
     QTextStream(stdout) << jsonDoc.toJson();
 
@@ -403,6 +406,32 @@ void WebsocketServer::broadcastToDevice(QUuid deviceUUID, QJsonObject json)
 {
     QJsonDocument jsonDoc(json);
     m_device.value(deviceUUID.toString(QUuid::WithoutBraces))->sendTextMessage(jsonDoc.toJson());
+}
+
+void WebsocketServer::deviceProcessTextMessage(QString message)
+{
+    //inisialisasi sender
+    QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
+    //inisialisasi pesan
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(message.toUtf8());
+    //ubah pesan menjadi json object
+    QJsonObject jsonObj = jsonDoc.object();
+    //inisialisasi jwt payload
+    QJsonObject jwt = getJwtPayload(pClient->request());
+    //ambil userID berdasarkan jwt
+    QUuid DeviceUUID = QUuid::fromString(jwt["jti"].toString());
+
+    //inisialisasi kontroler
+    DeviceController DC(&db);
+    int userID = DC.getUserIDByDeviceID(DeviceUUID);
+
+    connect(&DC,SIGNAL(broadcastToAllUserControlDevice(int,QJsonObject)),this,SLOT(broadcastToAllUserControlDevice(int,QJsonObject)));
+
+    if(jsonObj.contains("settedPinValue")){
+        QJsonObject response = DC.settedPinValue(jsonObj,userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+    }
 }
 
 void WebsocketServer::deletedDevice(QUuid deviceUUID)

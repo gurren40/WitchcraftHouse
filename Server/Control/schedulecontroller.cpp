@@ -213,3 +213,25 @@ int ScheduleController::getPinIDbyUUID(QUuid UUID)
     }
     else return  pin.mPins.at(0).pinID;
 }
+
+void ScheduleController::deletedPin(QUuid pinUUID, int userID)
+{
+    Schedule schedule(&db);
+    schedule.read("Pin.userID='"+QString::number(userID)+"'");
+    if(schedule.mSchedules.size()<1){
+        QTextStream(stdout) << "\nSchedule with pinUUID : " << pinUUID.toString(QUuid::WithoutBraces) << " is not avaiable.";
+    }
+    else {
+        for (int i = 0;i<schedule.mSchedules.size();i++) {
+            if(schedule.mSchedules.at(i).pinUUID == pinUUID){
+                QJsonObject json;
+                QJsonArray array;
+                QJsonObject jsonObject;
+                jsonObject["scheduleID"] = schedule.mSchedules.at(i).scheduleID;
+                array.append(jsonObject);
+                json["deleteSchedule"] = array;
+                deleteSchedule(json,userID);
+            }
+        }
+    }
+}

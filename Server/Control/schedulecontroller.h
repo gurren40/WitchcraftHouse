@@ -34,6 +34,9 @@ public slots:
     void initAllCron();
     int getPinIDbyUUID(QUuid UUID);
 
+    //delete! delete!
+    void deletedPin(QUuid pinUUID,int userID);
+
 private:
     QSqlDatabase db;
 };

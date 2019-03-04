@@ -38,6 +38,10 @@ public slots:
     QString getSharedToEmail(int sharedToID);
     int getPinIDbyUUID(QUuid UUID);
 
+    //delete! delete!
+    void deletedPin(QUuid pinUUID,int userID);
+    void deletedGroup(int groupID, int userID);
+
 private:
     QSqlDatabase db;
 };
