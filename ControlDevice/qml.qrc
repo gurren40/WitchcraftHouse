@@ -1,9 +1,25 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
-        <file>HomeForm.ui.qml</file>
-        <file>Page1Form.ui.qml</file>
-        <file>Page2Form.ui.qml</file>
+        <file>qml/main.qml</file>
+        <file>qml/list/DeviceList.qml</file>
+        <file>qml/list/GroupList.qml</file>
+        <file>qml/list/PinList.qml</file>
+        <file>qml/list/ScheduleList.qml</file>
+        <file>qml/list/SharedList.qml</file>
+        <file>qml/list/ControlDeviceList.qml</file>
+        <file>qml/create/createDevice.qml</file>
+        <file>qml/create/createPin.qml</file>
+        <file>qml/create/createSchedule.qml</file>
+        <file>qml/create/createShared.qml</file>
+        <file>qml/create/createGroup.qml</file>
+        <file>qml/edit/editDevice.qml</file>
+        <file>qml/edit/editGroup.qml</file>
+        <file>qml/edit/editPin.qml</file>
+        <file>qml/edit/editSchedule.qml</file>
+        <file>qml/edit/editShared.qml</file>
+        <file>qml/create/createUser.qml</file>
+        <file>qml/init/init.qml</file>
+        <file>qml/init/login.qml</file>
         <file>qtquickcontrols2.conf</file>
     </qresource>
 </RCC>

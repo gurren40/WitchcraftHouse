@@ -2,13 +2,12 @@ import QtQuick 2.9
 import QtQuick.Controls 2.2
 
 Page {
-    width: 600
-    height: 400
+    anchors.fill: parent
 
-    title: qsTr("Page 1")
+    title: qsTr("Group")
 
     Label {
-        text: qsTr("You are on Page 1.")
+        text: qsTr("Group List")
         anchors.centerIn: parent
     }
 }

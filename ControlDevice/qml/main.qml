@@ -9,7 +9,7 @@ ApplicationWindow {
     visible: true
     width: 640
     height: 480
-    title: qsTr("Stack")
+    title: qsTr("Witchcraft House")
 
     Shortcut {
         sequences: ["Esc", "Back"]
@@ -51,18 +51,42 @@ ApplicationWindow {
             anchors.fill: parent
 
             ItemDelegate {
-                text: qsTr("Page 1")
+                text: qsTr("Device")
                 width: parent.width
                 onClicked: {
-                    stackView.push("Page1Form.ui.qml")
+                    stackView.push("./list/DeviceList.qml")
                     drawer.close()
                 }
             }
             ItemDelegate {
-                text: qsTr("Page 2")
+                text: qsTr("Group")
                 width: parent.width
                 onClicked: {
-                    stackView.push("Page2Form.ui.qml")
+                    stackView.push("./list/GroupList.qml")
+                    drawer.close()
+                }
+            }
+            ItemDelegate {
+                text: qsTr("Schedule")
+                width: parent.width
+                onClicked: {
+                    stackView.push("./list/ScheduleList.qml")
+                    drawer.close()
+                }
+            }
+            ItemDelegate {
+                text: qsTr("Shared List")
+                width: parent.width
+                onClicked: {
+                    stackView.push("./list/SharedList.qml")
+                    drawer.close()
+                }
+            }
+            ItemDelegate {
+                text: qsTr("Control Device")
+                width: parent.width
+                onClicked: {
+                    stackView.push("./list/ControlDeviceList.qml")
                     drawer.close()
                 }
             }
@@ -71,7 +95,7 @@ ApplicationWindow {
 
     StackView {
         id: stackView
-        initialItem: "HomeForm.ui.qml"
+        initialItem: "./list/PinList.qml"
         anchors.fill: parent
     }
 }

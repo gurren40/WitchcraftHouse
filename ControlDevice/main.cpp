@@ -16,16 +16,9 @@ int main(int argc, char *argv[])
 
     QIcon::setThemeName("WitchcraftHouse");
 
-    QSettings settings;
-    QString style = QQuickStyle::name();
-    if (!style.isEmpty())
-        settings.setValue("Material", style);
-    else
-        QQuickStyle::setStyle(settings.value("style").toString());
-
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("availableStyles", QQuickStyle::availableStyles());
-    engine.load(QUrl("qrc:/main.qml"));
+    engine.load(QUrl("qrc:/qml/init/init.qml"));
     if (engine.rootObjects().isEmpty())
         return -1;
 
