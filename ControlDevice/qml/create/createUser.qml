@@ -3,12 +3,26 @@ import QtQuick.Controls 2.2
 
 Page {
 
+    property string server: "What Server?"
     Column{
         anchors.centerIn: parent
         spacing: 20
 
         Label {
-            text: Qt.binding(function(){return royHogson})
+            text: server
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
+
+        Rectangle{
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width
+            height: 2
+            border.width: 2
+            border.color: "black"
+        }
+
+        Label {
+            text: "Create New User"
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
@@ -36,6 +50,9 @@ Page {
             placeholderText: qsTr("Repeat Password")
             echoMode: TextInput.Password
             anchors.horizontalCenter: parent.horizontalCenter
+            ToolTip.text: qsTr("Password did not match")
+            ToolTip.visible: false
+            ToolTip.timeout: 5000
         }
 
         Row{
@@ -50,7 +67,12 @@ Page {
                         //ga usah panggil fungsi
                     }
                     else {
-                        //panggil fungsi
+                        if(password.text != passwordRepeat.text){
+                            passwordRepeat.ToolTip.visible = true
+                        }
+                        else {
+                            //panggil fungsi
+                        }
                     }
                 }
             }
@@ -81,7 +103,7 @@ Page {
             id : errorLabel
             visible: ((username.length < 1) || (email.length < 1) || (password.length < 1) || (passwordRepeat.length < 1)) ? true : false
             anchors.centerIn: parent
-            text: qsTr("Please fill the blank field")
+            text: password.text != passwordRepeat.text ? qsTr("Password did not match") : qsTr("Please fill the blank field")
         }
     }
 }

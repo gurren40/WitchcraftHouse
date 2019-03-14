@@ -44,13 +44,21 @@ Page{
                 spacing: 20
 
                 Label {
-                    text: qsTr("Please login to continue")
+                    text: qsTr("WITCHCRAFT HOUSE")
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
 
                 TextField{
                     placeholderText: qsTr("Server")
                     id: serverUrl
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    ToolTip.timeout: 5000
+                    ToolTip.visible: false
+                    ToolTip.text: "Please fill this server field"
+                }
+
+                Label {
+                    text: qsTr("Please Login or create new Account to continue")
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
 
@@ -87,7 +95,12 @@ Page{
                     Button{
                         text: qsTr("Create New Account")
                         onClicked: function(){
-                            stackView.push("./../create/createUser.qml",{royHogson : "roy Hogson"})
+                            if(serverUrl.length < 1){
+                                serverUrl.ToolTip.visible = true
+                            }
+                            else {
+                                stackView.push("./../create/createUser.qml",{server:serverUrl.text})
+                            }
                         }
                     }
                 }
