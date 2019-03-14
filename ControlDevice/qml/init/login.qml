@@ -3,32 +3,7 @@ import QtQuick.Controls 2.2
 
 
 Page{
-
-    property bool toolBarVisibility: false
-    header: ToolBar {
-        id: toolBar
-        contentHeight: toolButton.implicitHeight
-        visible: toolBarVisibility
-
-        ToolButton {
-            id: toolButton
-            text: stackView.depth > 1 ? "\u25C0" : ""
-            font.pixelSize: Qt.application.font.pixelSize * 1.6
-            onClicked: {
-                if (stackView.depth > 1) {
-                    stackView.pop()
-                    toolBarVisibility = false
-                }
-                else {
-                }
-            }
-        }
-
-        Label {
-            text: stackView.currentItem.title
-            anchors.centerIn: parent
-        }
-    }
+    id:loginPage
 
     StackView {
         id: stackView
@@ -44,10 +19,23 @@ Page{
 
             Dialog {
                 anchors.centerIn: parent
+                width: ((serverUrl.length < 1) || (email.length < 1) || (password.length < 1)) ? errorLabel.width * 1.2 : busyIndicator.width * 1.5
+                height: ((serverUrl.length < 1) || (email.length < 1) || (password.length < 1)) ? errorLabel.height * 1.5 : busyIndicator.height * 1.5
+                parent: Overlay.overlay
                 id: messageDialog
 
                 BusyIndicator {
-                    anchors.horizontalCenter: parent.horizontalCenter
+                    id : busyIndicator
+                    //anchors.horizontalCenter: parent.horizontalCenter
+                    visible: ((serverUrl.length < 1) || (email.length < 1) || (password.length < 1)) ? false : true
+                    anchors.centerIn: parent
+                }
+
+                Label {
+                    id : errorLabel
+                    visible: ((serverUrl.length < 1) || (email.length < 1) || (password.length < 1)) ? true : false
+                    anchors.centerIn: parent
+                    text: qsTr("Please fill the blank field")
                 }
             }
 
@@ -68,7 +56,7 @@ Page{
 
                 TextField{
                     placeholderText: qsTr("Email")
-                    id: username
+                    id: email
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
 
@@ -83,15 +71,23 @@ Page{
                     anchors.horizontalCenter: parent.horizontalCenter
                     spacing: 20
                     Button{
+                        id: loginButton
                         text: qsTr("Login")
-                        onClicked: messageDialog.open()
+                        onClicked: function(){
+                            messageDialog.open()
+                            if((serverUrl.length < 1) || (email.length < 1) || (password.length < 1)){
+                                //lol
+                            }
+                            else{
+                                //lol
+                            }
+                        }
                     }
 
                     Button{
                         text: qsTr("Create New Account")
                         onClicked: function(){
-                            stackView.push("./../create/createUser.qml")
-                            toolBarVisibility = true
+                            stackView.push("./../create/createUser.qml",{royHogson : "roy Hogson"})
                         }
                     }
                 }
@@ -104,7 +100,13 @@ Page{
         enabled: stackView.depth > 1
         onActivated: {
             stackView.pop()
-            toolBarVisibility = false
+        }
+    }
+    Shortcut {
+        sequence: "Return"
+        //enabled: stackView.depth > 1
+        onActivated: {
+            messageDialog.open()
         }
     }
 }
