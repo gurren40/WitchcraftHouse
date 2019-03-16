@@ -1,21 +1,26 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 
-Page {
+Flickable {
+    width: parent.width
+    contentHeight: (theColumn.height > parent.height) ? theColumn.height : parent.height
+    property string serverUrl: "What Server?"
+    ScrollBar.vertical: ScrollBar { }
 
-    property string server: "What Server?"
     Column{
+        id: theColumn
+        width: parent.width
         anchors.centerIn: parent
         spacing: 20
 
         Label {
-            text: server
+            text: serverUrl
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
         Rectangle{
             anchors.horizontalCenter: parent.horizontalCenter
-            width: parent.width
+            width: parent.width * 0.8
             height: 2
             border.width: 2
             border.color: "black"
@@ -27,18 +32,21 @@ Page {
         }
 
         TextField{
+            width: parent.width * 0.8
             placeholderText: qsTr("Username")
             id: username
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
         TextField{
+            width: parent.width * 0.8
             placeholderText: qsTr("Email")
             id: email
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
         TextField{
+            width: parent.width * 0.8
             id: password
             placeholderText: qsTr("Password")
             echoMode: TextInput.Password
@@ -46,6 +54,7 @@ Page {
         }
 
         TextField{
+            width: parent.width * 0.8
             id: passwordRepeat
             placeholderText: qsTr("Repeat Password")
             echoMode: TextInput.Password
