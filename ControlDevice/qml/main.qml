@@ -10,11 +10,16 @@ ApplicationWindow {
     width: 360
     height: 520
     title: qsTr("Witchcraft House")
+
+    //! [orientation]
+    readonly property bool inPortrait: window.width < window.height
+    //! [orientation]
+
     onWidthChanged: function(){
-        if(width > 520){
+        if(!inPortrait){
             drawer.open()
         }
-        else if(width <= 520){
+        else if(inPortrait){
             drawer.close()
         }
     }
@@ -24,6 +29,7 @@ ApplicationWindow {
         enabled: stackView.depth > 1
         onActivated: {
             stackView.pop()
+            listView.currentIndex = -1
         }
     }
 
@@ -33,7 +39,18 @@ ApplicationWindow {
 
         ToolButton {
             id: toolButton
-            text: "\u2630"
+            text: {
+                if(inPortrait && !drawer.visible){
+                   return "\u2630"
+                }
+                else if(drawer.visible){
+                    return "\u25C0"
+                }
+                else{
+                    return "\u25B6"
+                }
+            }
+
             font.pixelSize: Qt.application.font.pixelSize * 1.6
             onClicked: {
                 if(drawer.visible){
@@ -54,120 +71,29 @@ ApplicationWindow {
     Page {
         anchors.fill: parent
 
-        Rectangle{
+        Drawer{
             id : drawer
-            width: (parent.width <= 520) ? parent.width * 0.66 : 240
-            height: parent.height
-            anchors.left: parent.left
-            //visible: false
-            state: "close"
-            color: window.palette.alternateBase
-            function open(){
-                drawer.state = "open"
-            }
-
-            function close(){
-                drawer.state = "close"
-            }
-
-            states: [
-                State {
-                    name: "open"
-                    PropertyChanges {
-                        target: drawer;
-                        visible : true;
-                    }
-                },
-                State {
-                    name: "close"
-                    PropertyChanges {
-                        target: drawer;
-                        visible: false;
-                    }
-                }
-            ]
-
-            transitions: [
-                Transition {
-                    from: "open"
-                    to: "close"
-                    SequentialAnimation{
-                        PropertyAction {
-                            target: drawer;
-                            property: "visible"
-                            value: true
-                        }
-
-                        PropertyAction {
-                            target: drawer;
-                            property: "width"
-                            value: (drawer.parent.width <= 520) ? drawer.parent.width * 0.66 : 240
-                        }
-
-                        PropertyAnimation {
-                            target: drawer
-                            property: "width"
-                            duration: 200
-                            to : 1
-                            easing.type: Easing.OutInQuad
-                        }
-
-                        PropertyAction {
-                            target: drawer;
-                            property: "visible"
-                            value: false
-                        }
-                    }
-                },
-                Transition {
-                    from: "close"
-                    to: "open"
-                    SequentialAnimation{
-                        PropertyAction {
-                            target: drawer;
-                            property: "visible"
-                            value: true
-                        }
-
-                        PropertyAction {
-                            target: drawer;
-                            property: "width"
-                            value: 1
-                        }
-
-                        PropertyAnimation {
-                            target: drawer
-                            property: "width"
-                            duration: 200
-                            to : (drawer.parent.width <= 520) ? drawer.parent.width * 0.66 : 240
-                            easing.type: Easing.InOutQuad
-                        }
-
-                        PropertyAction {
-                            target: drawer;
-                            property: "visible"
-                            value: false
-                        }
-                    }
-                }
-            ]
+            width: (inPortrait) ? parent.width * 0.66 : parent.width * 0.33
+            y: toolBar.height
+            height: window.height - toolBar.height
+            modal: inPortrait
+            interactive: inPortrait
+            position: inPortrait ? 0 : 1
+            visible: !inPortrait
 
             ListView{
                 id : listView
                 anchors.fill: parent
-                focus: true
                 currentIndex: 0
                 delegate: ItemDelegate {
                     text: model.title
                     width: parent.width
                     highlighted: ListView.isCurrentItem
                     onClicked: {
+                        inPortrait ? drawer.close() : undefined
                         if(listView.currentIndex != index){
                             listView.currentIndex = index
                             stackView.push(model.source)
-                            if(window.width <= 520){
-                                drawer.close()
-                            }
                         }
                     }
                 }
@@ -186,59 +112,12 @@ ApplicationWindow {
 
         StackView {
             id: stackView
+            focus: true
             initialItem: "./list/PinList.qml"
             height: parent.height
-            anchors.left: (drawer.visible) ? drawer.right : parent.left
-            //width: parent.width
-            width: ((parent.width > 520) && (drawer.visible)) ? parent.width - drawer.width : parent.width
-            pushEnter : Transition {
-                PropertyAnimation{
-                    property: "opacity"
-                    from: 0
-                    to: 1
-                    duration: 400
-                }
-            }
-            pushExit : Transition {
-                PropertyAnimation{
-                    property: "opacity"
-                    from: 1
-                    to: 0
-                    duration: 400
-                }
-            }
-            popEnter : Transition {
-                PropertyAnimation{
-                    property: "opacity"
-                    from: 0
-                    to: 1
-                    duration: 400
-                }
-            }
-            popExit : Transition {
-                PropertyAnimation{
-                    property: "opacity"
-                    from: 1
-                    to: 0
-                    duration: 400
-                }
-            }
-            replaceEnter : Transition {
-                PropertyAnimation{
-                    property: "opacity"
-                    from: 0
-                    to: 1
-                    duration: 400
-                }
-            }
-            replaceExit : Transition {
-                PropertyAnimation{
-                    property: "opacity"
-                    from: 1
-                    to: 0
-                    duration: 400
-                }
-            }
+            width: (!inPortrait && drawer.visible) ? parent.width - drawer.width : parent.width
+            anchors.right: parent.right
+            anchors.top : toolBar.bottom
         }
     }
 }
