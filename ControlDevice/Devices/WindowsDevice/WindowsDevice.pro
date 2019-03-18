@@ -1,4 +1,4 @@
-QT += quick quickcontrols2 websockets remoteobjects
+QT += quick quickcontrols2 websockets
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -13,11 +13,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        main.cpp \
-    service/service.cpp
+        main.cpp
 
-RESOURCES += qml.qrc \
-    images.qrc
+RESOURCES += ../../qml.qrc \
+    ../../images.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -29,15 +28,3 @@ QML_DESIGNER_IMPORT_PATH =
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
-
-HEADERS += \
-    service/service.h
-
-REPC_SOURCE += service/service.rep
-
-INCLUDEPATH += $$PWD/../ControlDeviceService
-DEPENDPATH += $$PWD/../ControlDeviceService
-
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../build-server-Desktop-Debug/release/ -lserver
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../build-server-Desktop-Debug/debug/ -lserver
-else:unix: LIBS += -L$$PWD/../../../build-server-Desktop-Debug/ -lserver

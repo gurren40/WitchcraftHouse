@@ -4,10 +4,7 @@
 #include <QSettings>
 #include <QQuickStyle>
 #include <QIcon>
-#include <QTextStream>
-#include <QRemoteObjectHost>
 
-#include "service.h"
 
 int main(int argc, char *argv[])
 {
@@ -16,12 +13,6 @@ int main(int argc, char *argv[])
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
-
-    //QRemoteObjectHost srcNode(QUrl(QStringLiteral("local:replica")));
-    Service service;
-    //srcNode.enableRemoting(&service);
-
-    service.ping("lol");
 
     QIcon::setThemeName("WitchcraftHouse");
 
