@@ -4,6 +4,20 @@
 #include <QSettings>
 #include <QQuickStyle>
 #include <QIcon>
+#include <QRemoteObjectNode>
+#include <QAndroidJniObject>
+#include <QtAndroid>
+
+//#include <QtAndroid>
+#include <QDebug>
+#include <QAndroidJniObject>
+#include <QAndroidJniEnvironment>
+#include <QAndroidIntent>
+#include <QAndroidServiceConnection>
+#include <QAndroidBinder>
+#include <QAndroidParcel>
+
+#include "backend.h"
 
 
 int main(int argc, char *argv[])
@@ -15,6 +29,12 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QIcon::setThemeName("WitchcraftHouse");
+
+    //now start the fuckin service
+    QAndroidJniObject::callStaticMethod<void>("id/web/witchcraft/house",
+                                                  "startMyService",
+                                                  "(Landroid/content/Context;)V",
+                                                  QtAndroid::androidActivity().object());
 
     QSettings settings;
     QString style = QQuickStyle::name();
@@ -40,6 +60,9 @@ int main(int argc, char *argv[])
     }
     if (engine.rootObjects().isEmpty())
         return -1;
+
+    Backend *backend = new Backend;
+    backend->createServer();
 
     return app.exec();
 }

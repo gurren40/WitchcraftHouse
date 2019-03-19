@@ -16,18 +16,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 TARGET = Witchcraft_House
 
-#HEADERS += \
-    #service/notificationclient.h
-
 SOURCES += \
-        main.cpp \
-    backend.cpp
-    #service/notificationclient.cpp
+        android.cpp \
+    service/backend.cpp
 
 RESOURCES += qml.qrc \
     images.qrc
 
-REPC_REPLICA += ../../service/service.rep
+REPC_REPLICA += service/service.rep
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -53,20 +49,9 @@ DISTFILES += \
     android-sources/build.gradle \
     android-sources/gradle/wrapper/gradle-wrapper.properties \
     android-sources/gradlew.bat \
-    android-sources/src/id/web/witchcraft/house/NotificationClient.java \
-    android-sources/src/id/web/witchcraft/house/MyService.java \
-    android-sources/src/id/web/witchcraft/house/MyBroadcastReceiver.java
-
-#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/build-AndroidDeviceServer-Android_for_arm64_v8a_Clang_Qt_5_12_0_android_arm64_v8a-Debug/release/ -lserver
-#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/build-AndroidDeviceServer-Android_for_arm64_v8a_Clang_Qt_5_12_0_android_arm64_v8a-Debug/debug/ -lserver
-#else:unix: LIBS += -L$$PWD/build-AndroidDeviceServer-Android_for_arm64_v8a_Clang_Qt_5_12_0_android_arm64_v8a-Debug/ -lserver
-
-#INCLUDEPATH += $$PWD/build-AndroidDeviceServer-Android_for_arm64_v8a_Clang_Qt_5_12_0_android_arm64_v8a-Debug
-#DEPENDPATH += $$PWD/build-AndroidDeviceServer-Android_for_arm64_v8a_Clang_Qt_5_12_0_android_arm64_v8a-Debug
-#server.files += $$PWD/build-AndroidDeviceServer-Android_for_arm64_v8a_Clang_Qt_5_12_0_android_arm64_v8a-Debug/android-build/libs/arm64-v8a/*
-#server.path += /libs/arm64-v8a/
-
-#INSTALLS += server
+    android-sources/src/id/web/witchcraft/house/MyService.java
 
 HEADERS += \
-    backend.h
+    backend.h \
+    service/backend.h
+
