@@ -432,6 +432,12 @@ void WebsocketServer::deviceProcessTextMessage(QString message)
         QJsonDocument toSend(response);
         pClient->sendTextMessage(toSend.toJson());
     }
+    //set pin value
+    if(jsonObj.contains("setPinValue")){
+        QJsonObject response = DC.setPinValue(jsonObj,userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+    }
 }
 
 void WebsocketServer::deletedDevice(QUuid deviceUUID)
