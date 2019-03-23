@@ -37,6 +37,7 @@ public:
     //property token
 
 signals:
+    void sendToServer(QJsonObject json);
     //property isOnline
     void isOnlineChanged();
     //property isLoggedIn
@@ -47,10 +48,13 @@ public slots:
     void logOut();
     void onTokenExpired();
 
-    //another bussiness from server
-    void fromServer(QJsonObject json);
+    //misc
+    QString getDeviceModel(); //not implemented yet
 
-    //call the lists
+    //another bussiness from server
+    void fromServer(QJsonObject json); //not implemented yet
+
+    //call the lists //all not implemented yet
     void deviceList();
     void groupList();
     void pinList();
@@ -59,7 +63,7 @@ public slots:
     void controlDeviceList();
 
     //TO SET FOR MODEL, CALLED BY THIS CLASS, TRIGERRED BY REMOTE
-    //setter list
+    //setter list //all not implemented yet
     void setAllData(QJsonObject json);
     void setUserInfo(QJsonObject json);
     void setDeviceList(QJsonObject json);
@@ -70,13 +74,13 @@ public slots:
     void setSharedPinList(QJsonObject json);
     void setControlDeviceList(QJsonObject json);
 
-    //setted value
+    //setted value //all not implemented yet
     void settedPinValue(QJsonObject json);
 
 
     //FUNCTIONS TO CALL FROM QML
     //getter list
-    void getAllData();
+    //void getAllData(); //not implemented yet
     void getUserInfo();
     void getControlDeviceList();
 

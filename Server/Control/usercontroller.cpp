@@ -275,7 +275,10 @@ QJsonObject UserController::editUser(QJsonObject json, int userID)
         notificationArray.append(notification);
     }
     else {
-        QJsonObject error = user.update(userID,user.mUsers.at(0).email,user.mUsers.at(0).password,jsonObject["name"].toString());
+        QCryptographicHash passHash(QCryptographicHash::Sha256);
+        passHash.addData(jsonObject["password"].toString().toUtf8());
+
+        QJsonObject error = user.update(userID,user.mUsers.at(0).email,QString::fromUtf8(passHash.result().toHex()),jsonObject["name"].toString());
         errorArray.append(error);
     }
     response["error"] = errorArray;

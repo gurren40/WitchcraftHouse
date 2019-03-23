@@ -18,6 +18,8 @@ RemoteReplica *Client::getRemote() const
 void Client::setRemote(RemoteReplica *remote)
 {
     m_remote = remote;
+    connect(m_remote,&RemoteReplica::fromServerSig,this,&Client::fromServer);
+    connect(this,&Client::sendToServer,m_remote,&RemoteReplica::sendToServer); // well, you can do it directly from m_remote :3
 }
 
 bool Client::getIsOnline() const
@@ -87,5 +89,111 @@ void Client::logOut()
 void Client::onTokenExpired()
 {
     logOut();
+}
+
+void Client::fromServer(QJsonObject json)
+{
+//    loginToken will implemented from service(?)
+//    if(json.contains("LoginToken")){
+//        setLoginToken();
+//    }
+    if(json.contains("UserInfo")){
+        setUserInfo(json);
+    }
+    if(json.contains("deviceList")){
+        setDeviceList(json);
+    }
+    if(json.contains("groupList")){
+        setGroupList(json);
+    }
+    if(json.contains("pinList")){
+        setPinList(json);
+    }
+    if(json.contains("scheduleList")){
+        setScheduleList(json);
+    }
+    if(json.contains("sharedList")){
+        setSharedList(json);
+    }
+    if(json.contains("sharedPinList")){
+        setSharedPinList(json);
+    }
+    if(json.contains("settedPinValue")){
+        settedPinValue(json);
+    }
+}
+
+void Client::getUserInfo()
+{
+    QSettings setting;
+    QJsonObject jsonObj;
+    jsonObj["email"] = setting.value("email").toString();
+    QJsonArray jsonArray;
+    jsonArray.append(jsonObj);
+    QJsonObject toSend;
+    toSend["getUserInfo"] = jsonArray;
+    m_remote->sendToServer(toSend);
+}
+
+void Client::getControlDeviceList()
+{
+    QSettings setting;
+    QJsonObject jsonObj;
+    jsonObj["email"] = setting.value("email").toString();
+    QJsonArray jsonArray;
+    jsonArray.append(jsonObj);
+    QJsonObject toSend;
+    toSend["getControlDeviceList"] = jsonArray;
+    m_remote->sendToServer(toSend);
+}
+
+void Client::requestLoginToken(QVariant email, QVariant password)
+{
+    QJsonObject jsonObj;
+    jsonObj["email"] = email.toString();
+    jsonObj["password"] = password.toString();
+    jsonObj["name"] = getDeviceModel();
+    QJsonArray jsonArray;
+    jsonArray.append(jsonObj);
+    QJsonObject toSend;
+    toSend["requestLoginToken"] = jsonArray;
+    m_remote->sendToServer(toSend);
+}
+
+void Client::createNewUser(QVariant email, QVariant name, QVariant password)
+{
+    QJsonObject jsonObj;
+    jsonObj["email"] = email.toString();
+    jsonObj["password"] = password.toString();
+    jsonObj["name"] = name.toString();
+    QJsonArray jsonArray;
+    jsonArray.append(jsonObj);
+    QJsonObject toSend;
+    toSend["createNewUser"] = jsonArray;
+    m_remote->sendToServer(toSend);
+}
+
+void Client::editUser(QVariant email, QVariant name, QVariant password)
+{
+    QJsonObject jsonObj;
+    jsonObj["email"] = email.toString();
+    jsonObj["password"] = password.toString();
+    jsonObj["name"] = name.toString();
+    QJsonArray jsonArray;
+    jsonArray.append(jsonObj);
+    QJsonObject toSend;
+    toSend["editUser"] = jsonArray;
+    m_remote->sendToServer(toSend);
+}
+
+void Client::deleteControlDevice(QVariant controlDeviceID)
+{
+    QJsonObject jsonObj;
+    jsonObj["controlDeviceID"] = controlDeviceID.toString();
+    QJsonArray jsonArray;
+    jsonArray.append(jsonObj);
+    QJsonObject toSend;
+    toSend["deleteControlDevice"] = jsonArray;
+    m_remote->sendToServer(toSend);
 }
 
