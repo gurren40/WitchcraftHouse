@@ -1,43 +1,40 @@
-//#ifndef CONNECTION_H
-//#define CONNECTION_H
+#ifndef CONNECTION_H
+#define CONNECTION_H
 
-//#include <QObject>
-//#include <QWebSocket>
-//#include <QJsonDocument>
-//#include <QJsonArray>
-//#include <QJsonDocument>
-//#include <QNetworkAccessManager>
-//#include <QTimer>
-//#include <QSettings>
+#include <QObject>
+#include <QWebSocket>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QNetworkAccessManager>
+#include <QTimer>
+#include <QSettings>
 
-//class Connection : public QObject
-//{
-//    Q_OBJECT
-//public:
-//    explicit Connection(QObject *parent = nullptr);
-//    explicit Connection(QString server, QObject *parent = nullptr);
+class Connection : public QObject
+{
+    Q_OBJECT
+public:
+    explicit Connection(QObject *parent = nullptr);
 
-//signals:
-//    void closed();
-//    void messageReceived(QJsonObject json);
+    bool isOnline() const;
+    bool sendMessage(QJsonObject json);
 
-//public slots:
-//    //koneksi ke /
-//    void connectInit();
-//    void connectMain();
-//    void onConnected();
-//    void onTextMessageReceived(QString message);
-//    void sendMessage(QJsonObject json);
-//    void startConnection();
-//    void stopConnection();
-//    void connectionLoop();
+signals:
+    void messageReceived(QJsonObject json);
 
-//private:
-//    QWebSocket* m_websocket;
-//    QString m_server;
-//    QString jwt;
-//    QTimer *m_timer;
-//    QSettings *m_setting;
-//};
+public slots:
+    void connectionLoop();
+    void onConnected();
+    void onDisconnected();
+    void onTextMessageReceived(QString message);
+    void connectAuth();
+    void connectControl();
 
-//#endif // CONNECTION_H
+private:
+    QWebSocket* m_websocket;
+    bool m_isOnline;
+    QTimer *m_timer;
+    QSettings *m_setting;
+};
+
+#endif // CONNECTION_H

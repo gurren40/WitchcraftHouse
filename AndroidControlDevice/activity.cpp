@@ -12,6 +12,9 @@
 
 int main(int argc, char *argv[])
 {
+    QGuiApplication::setApplicationName("Witchcraft House");
+    QAndroidService::setOrganizationDomain("house.witchcraft.web.id");
+    QGuiApplication::setOrganizationName("Witchcraft");
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
 

@@ -2,13 +2,29 @@
 #include <QtAndroidExtras>
 #include <QRemoteObjectHost>
 #include <QSignalMapper>
+#include <QSettings>
 #include "remote.h"
 #include "rep_remote_replica.h"
-#include "services/notification.h"
+
+
+void checkSettingsValue(QSettings *settings){
+    if((!settings->contains("isLoggedIn"))){
+        settings->setValue("isLoggedIn",false);
+    }
+    if((!settings->contains("isOnline"))){
+        settings->setValue("isOnline",false);
+    }
+}
 
 int main(int argc, char *argv[])
 {
+    QAndroidService::setApplicationName("Witchcraft House");
+    QAndroidService::setOrganizationDomain("house.witchcraft.web.id");
+    QAndroidService::setOrganizationName("Witchcraft");
     QAndroidService a(argc,argv);
+
+    QSettings settings;
+    checkSettingsValue(&settings);
 
     QRemoteObjectHost srcNode(QUrl(QStringLiteral("local:replica")));
     Remote remoteServer;
@@ -25,10 +41,6 @@ int main(int argc, char *argv[])
     QSharedPointer<RemoteReplica> rep(repNode.acquire<RemoteReplica>());
     bool res = rep->waitForSource();
     Q_ASSERT(res);
-
-    Notification *notify = new Notification;
-    notify->setJavaClass("id/web/witchcraft/house/MyService");
-    QObject::connect(rep.data(),SIGNAL(pong(QString)),notify,SLOT(notify(QString)));
 
     QTimer *timer = new QTimer;
     timer->setInterval(5000);
