@@ -21,6 +21,8 @@ public:
 
 signals:
     void messageReceived(QJsonObject json);
+    void websocketConnected();
+    void websocketDisconnected();
 
 public slots:
     void connectionLoop();
@@ -29,12 +31,12 @@ public slots:
     void onTextMessageReceived(QString message);
     void connectAuth();
     void connectControl();
+    void disconnect();
 
 private:
     QWebSocket* m_websocket;
     bool m_isOnline;
     QTimer *m_timer;
-    QSettings *m_setting;
 };
 
 #endif // CONNECTION_H

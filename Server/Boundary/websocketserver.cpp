@@ -49,7 +49,7 @@ void WebsocketServer::onNewConnection()
                 QJsonObject response;
                 QJsonArray errorArray;
                 QJsonObject error;
-                error["error"] = "Tokeh has expired or deleted, please re-login with your account";
+                error["error"] = "Token has expired or deleted, please re-login with your account";
                 error["errorCode"] = "4";
                 errorArray.append(error);
                 response["error"] = errorArray;
@@ -77,7 +77,7 @@ void WebsocketServer::onNewConnection()
                 QJsonObject response;
                 QJsonArray errorArray;
                 QJsonObject error;
-                error["error"] = "Tokeh has expired or deleted, please re-login with your account";
+                error["error"] = "Token has expired or deleted, please re-login with your account";
                 error["errorCode"] = "4";
                 errorArray.append(error);
                 response["error"] = errorArray;

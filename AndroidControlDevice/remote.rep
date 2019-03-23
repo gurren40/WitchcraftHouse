@@ -1,4 +1,23 @@
+#include <QJsonObject>
 class Remote {
     SLOT(void ping(const QString &msg));
     SIGNAL(pong(const QString &msg));
+    //json to and from Activity
+    SLOT(void sendToServer(QJsonObject json));
+    SIGNAL(fromServerSig(QJsonObject json));
+    //json to and from Service
+    SIGNAL(sendToServerSig(QJsonObject json));
+    SLOT(void fromServer(QJsonObject json));
+
+    //logOut -> to Service
+    SIGNAL(logOutSig());
+    SLOT(void logOut());
+
+    //setIsOnline -> to Activity
+    SIGNAL(setIsOnlineSig(bool isOnline));
+    SLOT(void setIsOnline(bool isOnline));
+
+    //setTokenExpired -> to Activity
+    SIGNAL(tokenExpiredSig(bool isTokenExpired));
+    SLOT(void tokenExpired(bool isTokenExpired));
 }

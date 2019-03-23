@@ -12,12 +12,13 @@ Connection::Connection(QObject *parent) : QObject(parent)
     connect(m_websocket, &QWebSocket::textMessageReceived, this, &Connection::onTextMessageReceived);
     m_timer->setInterval(2000);
     m_timer->setSingleShot(true);
-    m_timer->start();
+    connectionLoop();
 }
 
 void Connection::connectionLoop()
 {
-    if(!m_setting->contains("jwt")){
+    QSettings setting;
+    if(!setting.contains("jwt")){
         connectAuth();
     }
     else{
@@ -27,11 +28,13 @@ void Connection::connectionLoop()
 
 void Connection::onConnected()
 {
+    emit websocketConnected();
     m_isOnline = true;
 }
 
 void Connection::onDisconnected()
 {
+    emit websocketDisconnected();
     m_isOnline = false;
     m_timer->start();
 }
@@ -47,11 +50,12 @@ void Connection::onTextMessageReceived(QString message)
 
 void Connection::connectAuth()
 {
-    if(!m_setting->contains("serverDomain")){
+    QSettings setting;
+    if(!setting.contains("serverDomain")){
         onDisconnected();
     }
     else {
-        QUrl url(m_setting->value("serverDomain").toString() + "/authentication");
+        QUrl url(setting.value("serverDomain").toString() + "/authentication");
         QNetworkRequest request(url);
         qDebug() << "WebSocket server authentication:" << url;
         m_websocket->open(request);
@@ -60,16 +64,23 @@ void Connection::connectAuth()
 
 void Connection::connectControl()
 {
-    if(!m_setting->contains("serverDomain")){
+    QSettings setting;
+    if(setting.contains("serverDomain")){
         onDisconnected();
     }
     else {
-        QUrl url(m_setting->value("serverDomain").toString() + "/authentication");
+        QUrl url(setting.value("serverDomain").toString() + "/authentication");
         QNetworkRequest request(url);
-        request.setRawHeader("jwt",m_setting->value("jwt").toString().toUtf8());
+        request.setRawHeader("jwt",setting.value("jwt").toString().toUtf8());
         qDebug() << "WebSocket server authentication:" << url;
         m_websocket->open(request);
     }
+}
+
+void Connection::disconnect()
+{
+    m_websocket->close();
+    m_timer->start();
 }
 
 bool Connection::isOnline() const

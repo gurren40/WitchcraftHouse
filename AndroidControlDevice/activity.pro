@@ -7,8 +7,21 @@ QT += websockets
 
 CONFIG += c++11
 
-HEADERS +=
-SOURCES += activity.cpp
+HEADERS += \
+    runtime/client.h \
+    objects/device.h \
+    objects/group.h \
+    objects/pin.h \
+    objects/schedule.h \
+    objects/shared.h
+
+SOURCES += activity.cpp \
+    runtime/client.cpp \
+    objects/device.cpp \
+    objects/group.cpp \
+    objects/pin.cpp \
+    objects/schedule.cpp \
+    objects/shared.cpp
 
 RESOURCES += qml.qrc
 
