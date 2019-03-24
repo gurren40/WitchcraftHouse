@@ -4,6 +4,7 @@
 #include <QSignalMapper>
 #include <QSettings>
 #include "remote.h"
+#include "runtime/server.h"
 #include "rep_remote_replica.h"
 
 
@@ -42,14 +43,16 @@ int main(int argc, char *argv[])
     bool res = rep->waitForSource();
     Q_ASSERT(res);
 
-    QTimer *timer = new QTimer;
-    timer->setInterval(5000);
-    timer->setSingleShot(false);
-    QSignalMapper *signalMapper = new QSignalMapper;
-    QObject::connect(timer,SIGNAL(timeout()),signalMapper,SLOT(map()));
-    signalMapper->setMapping(timer,"Azure");
-    QObject::connect(signalMapper,SIGNAL(mapped(QString)),rep.data(),SLOT(ping(QString)));
-    timer->start();
+//    QTimer *timer = new QTimer;
+//    timer->setInterval(5000);
+//    timer->setSingleShot(false);
+//    QSignalMapper *signalMapper = new QSignalMapper;
+//    QObject::connect(timer,SIGNAL(timeout()),signalMapper,SLOT(map()));
+//    signalMapper->setMapping(timer,"Azure");
+//    QObject::connect(signalMapper,SIGNAL(mapped(QString)),rep.data(),SLOT(ping(QString)));
+//    timer->start();
+    Server *server = new Server;
+    server->setRemote(rep.data());
 
     return a.exec();
 }

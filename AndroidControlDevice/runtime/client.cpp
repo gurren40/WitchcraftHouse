@@ -20,6 +20,8 @@ void Client::setRemote(RemoteReplica *remote)
     m_remote = remote;
     connect(m_remote,&RemoteReplica::fromServerSig,this,&Client::fromServer);
     connect(this,&Client::sendToServer,m_remote,&RemoteReplica::sendToServer); // well, you can do it directly from m_remote :3
+    connect(m_remote,&RemoteReplica::setIsOnlineSig,this,&Client::setIsOnline);
+    connect(m_remote,&RemoteReplica::tokenExpiredSig,this,&Client::onTokenExpired);
 }
 
 bool Client::getIsOnline() const
@@ -31,6 +33,9 @@ void Client::setIsOnline(bool isOnline)
 {
     m_isOnline = isOnline;
     emit isOnlineChanged();
+    if(getIsLoggedIn() && isOnline){
+        getAllData();
+    }
 }
 
 bool Client::getIsLoggedIn()
@@ -83,12 +88,16 @@ void Client::logOut()
     QSettings setting;
     setting.remove("email");
     setting.remove("serverDomain");
+    setting.remove("jwt");
     emit isLoggedInChanged();
+    m_remote->logOut();
 }
 
-void Client::onTokenExpired()
+void Client::onTokenExpired(bool value)
 {
-    logOut();
+    if(value){
+        logOut();
+    }
 }
 
 void Client::fromServer(QJsonObject json)

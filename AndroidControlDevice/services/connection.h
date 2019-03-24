@@ -31,7 +31,7 @@ public slots:
     void onTextMessageReceived(QString message);
     void connectAuth();
     void connectControl();
-    void disconnect();
+    void disconnectWebsocket();
 
 private:
     QWebSocket* m_websocket;

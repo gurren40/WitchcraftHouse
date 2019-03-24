@@ -46,7 +46,7 @@ signals:
 public slots:
     //client specific slot
     void logOut();
-    void onTokenExpired();
+    void onTokenExpired(bool value);
 
     //misc
     QString getDeviceModel(); //not implemented yet
@@ -80,7 +80,7 @@ public slots:
 
     //FUNCTIONS TO CALL FROM QML
     //getter list
-    //void getAllData(); //not implemented yet
+    void getAllData(); //not implemented yet
     void getUserInfo();
     void getControlDeviceList();
 

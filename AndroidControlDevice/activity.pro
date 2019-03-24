@@ -8,7 +8,7 @@ QT += websockets
 CONFIG += c++11
 
 HEADERS += \
-    runtime/client.h \
+#    runtime/client.h \
     objects/device.h \
     objects/group.h \
     objects/pin.h \
@@ -16,7 +16,7 @@ HEADERS += \
     objects/shared.h
 
 SOURCES += activity.cpp \
-    runtime/client.cpp \
+#    runtime/client.cpp \
     objects/device.cpp \
     objects/group.cpp \
     objects/pin.cpp \

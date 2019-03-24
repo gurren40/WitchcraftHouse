@@ -10,6 +10,18 @@ DeviceController::DeviceController(QSqlDatabase *database, QObject *parent) : QO
     this->db = *database;
 }
 
+int DeviceController::getUserIDByDeviceID(QUuid deviceUUID)
+{
+    Device device(&db);
+    device.read("deviceUUID=UuidToBin('"+deviceUUID.toString(QUuid::WithoutBraces)+"')");
+    if(device.mDevices.size()!=1){
+        return 0;
+    }
+    else {
+        return device.mDevices.at(0).userID;
+    }
+}
+
 void DeviceController::setDatabase(QSqlDatabase *database)
 {
     this->db = *database;
@@ -485,6 +497,7 @@ QJsonObject DeviceController::getPinList(int userID)
             pinObject["iconName"] = pin.mPins.at(i).iconName;
             pinObject["pinTypeID"] = pin.mPins.at(i).pinTypeID;
             pinObject["pinTypeName"] = pin.mPins.at(i).pinTypeName;
+            pinObject["pinName"] = pin.mPins.at(i).pinName;
             pinObject["value"] = pin.mPins.at(i).value;
             pinObject["option"] = pin.mPins.at(i).option;
             pinObject["description"] = pin.mPins.at(i).description;

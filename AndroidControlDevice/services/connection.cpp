@@ -77,10 +77,9 @@ void Connection::connectControl()
     }
 }
 
-void Connection::disconnect()
+void Connection::disconnectWebsocket()
 {
     m_websocket->close();
-    m_timer->start();
 }
 
 bool Connection::isOnline() const
