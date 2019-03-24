@@ -1,5 +1,5 @@
-#ifndef TODOLIST_H
-#define TODOLIST_H
+#ifndef PINLIST_H
+#define PINLIST_H
 
 #include <QObject>
 #include <QVector>
@@ -52,4 +52,4 @@ private:
     QVector<PinItem> mItems;
 };
 
-#endif // TODOLIST_H
+#endif // PINLIST_H

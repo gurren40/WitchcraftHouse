@@ -10,7 +10,9 @@
 
 #include "rep_remote_replica.h"
 #include "models/pinmodel.h"
+#include "models/devicemodel.h"
 #include "lists/pinlist.h"
+#include "lists/devicelist.h"
 
 int main(int argc, char *argv[])
 {
@@ -29,16 +31,22 @@ int main(int argc, char *argv[])
 
     //Register model & list
     qmlRegisterType<PinModel>("Pin", 1, 0, "PinModel");
+    qmlRegisterType<DeviceModel>("Device", 1, 0, "DeviceModel");
+
     qmlRegisterUncreatableType<PinList>("Pin", 1, 0, "PinList",
         QStringLiteral("PinList should not be created in QML"));
+    qmlRegisterUncreatableType<DeviceList>("Device", 1, 0, "DeviceList",
+        QStringLiteral("DeviceList should not be created in QML"));
 
     //inisialisasi list
     PinList pinList;
+    DeviceList deviceList;
 
     QQmlApplicationEngine engine;
 
     //inisialisasi list di qml engine
     engine.rootContext()->setContextProperty(QStringLiteral("pinList"), &pinList);
+    engine.rootContext()->setContextProperty(QStringLiteral("deviceList"), &deviceList);
 
     engine.load(QUrl("qrc:/qml/main.qml"));
 

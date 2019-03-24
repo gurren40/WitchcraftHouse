@@ -15,7 +15,9 @@ HEADERS += \
     objects/schedule.h \
     objects/shared.h \
     models/pinmodel.h \
-    lists/pinlist.h
+    lists/pinlist.h \
+    models/devicemodel.h \
+    lists/devicelist.h
 
 SOURCES += activity.cpp \
 #    runtime/client.cpp \
@@ -25,7 +27,9 @@ SOURCES += activity.cpp \
     objects/schedule.cpp \
     objects/shared.cpp \
     models/pinmodel.cpp \
-    lists/pinlist.cpp
+    lists/pinlist.cpp \
+    models/devicemodel.cpp \
+    lists/devicelist.cpp
 
 RESOURCES += qml.qrc
 

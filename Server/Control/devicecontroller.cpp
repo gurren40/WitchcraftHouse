@@ -419,8 +419,10 @@ QJsonObject DeviceController::getDeviceList(int userID)
             QJsonObject deviceObject;
             deviceObject["deviceID"] = device.mDevices.at(i).deviceID;
             deviceObject["userName"] = device.mDevices.at(i).userName;
+            deviceObject["deviceUUID"] = device.mDevices.at(i).deviceUUID.toString(QUuid::WithoutBraces);
             deviceObject["deviceName"] = device.mDevices.at(i).deviceName;
             deviceObject["isDeviceOnline"] = device.mDevices.at(i).isDeviceOnline;
+            deviceObject["deviceToken"] = device.mDevices.at(i).deviceToken;
             deviceObject["description"] = device.mDevices.at(i).description;
             jsonArray.append(deviceObject);
         }

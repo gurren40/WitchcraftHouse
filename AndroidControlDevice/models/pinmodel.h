@@ -1,5 +1,5 @@
-#ifndef TODOMODEL_H
-#define TODOMODEL_H
+#ifndef PINMODEL_H
+#define PINMODEL_H
 
 #include <QAbstractListModel>
 
