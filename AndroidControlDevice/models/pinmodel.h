@@ -8,7 +8,7 @@ class PinList;
 class PinModel : public QAbstractListModel
 {
     Q_OBJECT
-    Q_PROPERTY(ToDoList *list READ list WRITE setList)
+    Q_PROPERTY(PinList *list READ list WRITE setList)
 
 public:
     explicit PinModel(QObject *parent = nullptr);
