@@ -21,5 +21,6 @@
         <file>qml/init/init.qml</file>
         <file>qml/init/login.qml</file>
         <file>qtquickcontrols2.conf</file>
+        <file>qml/list/SharedPinList.qml</file>
     </qresource>
 </RCC>

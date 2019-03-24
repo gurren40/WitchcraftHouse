@@ -32,7 +32,8 @@ ApplicationWindow {
         interval: 200
         repeat: false
         running: true
-        triggeredOnStart: window.drawerControl()
+        triggeredOnStart: true
+        onTriggered: window.drawerControl()
     }
 
     Shortcut {
@@ -227,11 +228,13 @@ ApplicationWindow {
 
                 model: ListModel{
                     ListElement { title: "Home"; source: "./list/PinList.qml" }
+                    ListElement { title: "Shared Pin"; source: "./list/SharedPinList.qml" }
                     ListElement { title: "Device"; source: "./list/DeviceList.qml" }
                     ListElement { title: "Group"; source: "./list/GroupList.qml" }
                     ListElement { title: "Schedule"; source: "./list/ScheduleList.qml" }
                     ListElement { title: "Shared List"; source: "./list/SharedList.qml" }
                     ListElement { title: "Control Device"; source: "./list/ControlDeviceList.qml" }
+                    //ListElement { title: "Settings"; source: "./Settings.qml" }
                 }
                 ScrollBar.vertical: ScrollBar { }
             }

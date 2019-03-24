@@ -19,7 +19,11 @@ HEADERS += \
     models/devicemodel.h \
     lists/devicelist.h \
     lists/grouplist.h \
-    models/groupmodel.h
+    models/groupmodel.h \
+    models/schedulemodel.h \
+    lists/schedulelist.h \
+    models/sharedmodel.h \
+    lists/sharedlist.h
 
 SOURCES += activity.cpp \
 #    runtime/client.cpp \
@@ -33,7 +37,11 @@ SOURCES += activity.cpp \
     models/devicemodel.cpp \
     lists/devicelist.cpp \
     lists/grouplist.cpp \
-    models/groupmodel.cpp
+    models/groupmodel.cpp \
+    models/schedulemodel.cpp \
+    lists/schedulelist.cpp \
+    models/sharedmodel.cpp \
+    lists/sharedlist.cpp
 
 RESOURCES += qml.qrc
 

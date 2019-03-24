@@ -1,17 +1,17 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
-import Shared 1.0
+import Pin 1.0
 
 Page {
     anchors.fill: parent
-    title: qsTr("Shared List")
+    title: qsTr("Shared Pin List")
 
     ListView{
         id:listViewElement
         anchors.fill: parent
         currentIndex: 0
-        model: SharedModel{
-            list: sharedList
+        model: PinModel{
+            list: sharedPinList
         }
 
         delegate: ItemDelegate {
@@ -19,16 +19,16 @@ Page {
             Row {
                 spacing: 20
                 Text {
-                    text: qsTr("Shared %1 : ").arg(index + 1)
+                    text: qsTr("Shared Pin %1 : ").arg(index + 1)
                 }
                 Text {
-                    text: model.sharedID
+                    text: model.pinID
                 }
                 Text {
-                    text: model.sharedName
+                    text: model.pinName
                 }
                 Text {
-                    text: model.sharedTo
+                    text: model.value
                 }
             }
         }

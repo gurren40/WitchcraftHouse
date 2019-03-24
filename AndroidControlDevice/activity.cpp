@@ -12,9 +12,13 @@
 #include "models/pinmodel.h"
 #include "models/devicemodel.h"
 #include "models/groupmodel.h"
+#include "models/schedulemodel.h"
+#include "models/sharedmodel.h"
 #include "lists/pinlist.h"
 #include "lists/devicelist.h"
 #include "lists/grouplist.h"
+#include "lists/schedulelist.h"
+#include "lists/sharedlist.h"
 
 int main(int argc, char *argv[])
 {
@@ -35,6 +39,8 @@ int main(int argc, char *argv[])
     qmlRegisterType<PinModel>("Pin", 1, 0, "PinModel");
     qmlRegisterType<DeviceModel>("Device", 1, 0, "DeviceModel");
     qmlRegisterType<GroupModel>("Group", 1, 0, "GroupModel");
+    qmlRegisterType<ScheduleModel>("Schedule", 1, 0, "ScheduleModel");
+    qmlRegisterType<SharedModel>("Shared", 1, 0, "SharedModel");
 
     qmlRegisterUncreatableType<PinList>("Pin", 1, 0, "PinList",
         QStringLiteral("PinList should not be created in QML"));
@@ -42,11 +48,18 @@ int main(int argc, char *argv[])
         QStringLiteral("DeviceList should not be created in QML"));
     qmlRegisterUncreatableType<GroupList>("Group", 1, 0, "GroupList",
         QStringLiteral("GroupList should not be created in QML"));
+    qmlRegisterUncreatableType<ScheduleList>("Schedule", 1, 0, "ScheduleList",
+        QStringLiteral("ScheduleList should not be created in QML"));
+    qmlRegisterUncreatableType<SharedList>("Shared", 1, 0, "SharedList",
+        QStringLiteral("SharedList should not be created in QML"));
 
     //inisialisasi list
     PinList pinList;
     DeviceList deviceList;
     GroupList groupList;
+    ScheduleList scheduleList;
+    SharedList sharedList;
+    PinList sharedPinList;
 
     QQmlApplicationEngine engine;
 
@@ -54,6 +67,9 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty(QStringLiteral("pinList"), &pinList);
     engine.rootContext()->setContextProperty(QStringLiteral("deviceList"), &deviceList);
     engine.rootContext()->setContextProperty(QStringLiteral("groupList"), &groupList);
+    engine.rootContext()->setContextProperty(QStringLiteral("scheduleList"), &scheduleList);
+    engine.rootContext()->setContextProperty(QStringLiteral("sharedList"), &sharedList);
+    engine.rootContext()->setContextProperty(QStringLiteral("sharedPinList"), &sharedPinList);
 
     engine.load(QUrl("qrc:/qml/main.qml"));
 
