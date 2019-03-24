@@ -11,8 +11,10 @@
 #include "rep_remote_replica.h"
 #include "models/pinmodel.h"
 #include "models/devicemodel.h"
+#include "models/groupmodel.h"
 #include "lists/pinlist.h"
 #include "lists/devicelist.h"
+#include "lists/grouplist.h"
 
 int main(int argc, char *argv[])
 {
@@ -32,21 +34,26 @@ int main(int argc, char *argv[])
     //Register model & list
     qmlRegisterType<PinModel>("Pin", 1, 0, "PinModel");
     qmlRegisterType<DeviceModel>("Device", 1, 0, "DeviceModel");
+    qmlRegisterType<GroupModel>("Group", 1, 0, "GroupModel");
 
     qmlRegisterUncreatableType<PinList>("Pin", 1, 0, "PinList",
         QStringLiteral("PinList should not be created in QML"));
     qmlRegisterUncreatableType<DeviceList>("Device", 1, 0, "DeviceList",
         QStringLiteral("DeviceList should not be created in QML"));
+    qmlRegisterUncreatableType<GroupList>("Group", 1, 0, "GroupList",
+        QStringLiteral("GroupList should not be created in QML"));
 
     //inisialisasi list
     PinList pinList;
     DeviceList deviceList;
+    GroupList groupList;
 
     QQmlApplicationEngine engine;
 
     //inisialisasi list di qml engine
     engine.rootContext()->setContextProperty(QStringLiteral("pinList"), &pinList);
     engine.rootContext()->setContextProperty(QStringLiteral("deviceList"), &deviceList);
+    engine.rootContext()->setContextProperty(QStringLiteral("groupList"), &groupList);
 
     engine.load(QUrl("qrc:/qml/main.qml"));
 

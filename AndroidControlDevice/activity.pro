@@ -17,7 +17,9 @@ HEADERS += \
     models/pinmodel.h \
     lists/pinlist.h \
     models/devicemodel.h \
-    lists/devicelist.h
+    lists/devicelist.h \
+    lists/grouplist.h \
+    models/groupmodel.h
 
 SOURCES += activity.cpp \
 #    runtime/client.cpp \
@@ -29,7 +31,9 @@ SOURCES += activity.cpp \
     models/pinmodel.cpp \
     lists/pinlist.cpp \
     models/devicemodel.cpp \
-    lists/devicelist.cpp
+    lists/devicelist.cpp \
+    lists/grouplist.cpp \
+    models/groupmodel.cpp
 
 RESOURCES += qml.qrc
 

@@ -19,7 +19,7 @@ Page {
             Row {
                 spacing: 20
                 Text {
-                    text: qsTr("Pin %1 : ").arg(index + 1)
+                    text: qsTr("Device %1 : ").arg(index + 1)
                 }
                 Text {
                     text: model.deviceID
