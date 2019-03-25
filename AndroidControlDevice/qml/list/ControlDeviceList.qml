@@ -1,13 +1,40 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
+import ControlDevice 1.0
 
 Page {
     anchors.fill: parent
+    title: qsTr("Devices")
 
-    title: qsTr("Control Device")
+    ListView{
+        id:listViewElement
+        anchors.fill: parent
+        currentIndex: 0
+        model: ControlDeviceModel{
+            list: controlDeviceList
+        }
 
-    Label {
-        text: qsTr("List of device that can control your account")
-        anchors.centerIn: parent
+        delegate: ItemDelegate {
+            width: parent.width
+            Row {
+                spacing: 20
+                Text {
+                    text: qsTr("ControlDevice %1 : ").arg(index + 1)
+                }
+                Text {
+                    text: model.controlDeviceID
+                }
+                Text {
+                    text: model.controlDeviceName
+                }
+                Text {
+                    text: model.expireDate
+                }
+            }
+        }
+
+        ScrollBar.vertical: ScrollBar { }
     }
 }
+
+

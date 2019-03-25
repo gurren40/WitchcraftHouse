@@ -14,11 +14,13 @@
 #include "models/groupmodel.h"
 #include "models/schedulemodel.h"
 #include "models/sharedmodel.h"
+#include "models/controldevicemodel.h"
 #include "lists/pinlist.h"
 #include "lists/devicelist.h"
 #include "lists/grouplist.h"
 #include "lists/schedulelist.h"
 #include "lists/sharedlist.h"
+#include "lists/controldevicelist.h"
 
 int main(int argc, char *argv[])
 {
@@ -41,6 +43,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<GroupModel>("Group", 1, 0, "GroupModel");
     qmlRegisterType<ScheduleModel>("Schedule", 1, 0, "ScheduleModel");
     qmlRegisterType<SharedModel>("Shared", 1, 0, "SharedModel");
+    qmlRegisterType<ControlDeviceModel>("ControlDevice", 1, 0, "ControlDeviceModel");
 
     qmlRegisterUncreatableType<PinList>("Pin", 1, 0, "PinList",
         QStringLiteral("PinList should not be created in QML"));
@@ -52,6 +55,8 @@ int main(int argc, char *argv[])
         QStringLiteral("ScheduleList should not be created in QML"));
     qmlRegisterUncreatableType<SharedList>("Shared", 1, 0, "SharedList",
         QStringLiteral("SharedList should not be created in QML"));
+    qmlRegisterUncreatableType<ControlDeviceList>("ControlDevice", 1, 0, "ControlDeviceList",
+        QStringLiteral("ControlDeviceList should not be created in QML"));
 
     //inisialisasi list
     PinList pinList;
@@ -60,6 +65,7 @@ int main(int argc, char *argv[])
     ScheduleList scheduleList;
     SharedList sharedList;
     PinList sharedPinList;
+    ControlDeviceList controlDeviceList;
 
     QQmlApplicationEngine engine;
 
@@ -70,6 +76,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty(QStringLiteral("scheduleList"), &scheduleList);
     engine.rootContext()->setContextProperty(QStringLiteral("sharedList"), &sharedList);
     engine.rootContext()->setContextProperty(QStringLiteral("sharedPinList"), &sharedPinList);
+    engine.rootContext()->setContextProperty(QStringLiteral("controlDeviceList"), &controlDeviceList);
 
     engine.load(QUrl("qrc:/qml/main.qml"));
 

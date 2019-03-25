@@ -23,7 +23,9 @@ HEADERS += \
     models/schedulemodel.h \
     lists/schedulelist.h \
     models/sharedmodel.h \
-    lists/sharedlist.h
+    lists/sharedlist.h \
+    models/controldevicemodel.h \
+    lists/controldevicelist.h
 
 SOURCES += activity.cpp \
 #    runtime/client.cpp \
@@ -41,7 +43,9 @@ SOURCES += activity.cpp \
     models/schedulemodel.cpp \
     lists/schedulelist.cpp \
     models/sharedmodel.cpp \
-    lists/sharedlist.cpp
+    lists/sharedlist.cpp \
+    models/controldevicemodel.cpp \
+    lists/controldevicelist.cpp
 
 RESOURCES += qml.qrc
 
