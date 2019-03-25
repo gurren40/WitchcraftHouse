@@ -43,9 +43,15 @@ bool PinList::setItemAt(int index, const PinItem &item)
     return true;
 }
 
-void PinList::setPinList(QJsonObject json)
+void PinList::setPinList(QJsonObject json, bool isShared)
 {
-    QJsonArray jsonArray = json.value("pinList").toArray();
+    QJsonArray jsonArray;
+    if(isShared){
+        jsonArray = json.value("sharedPinList").toArray();
+    }
+    else {
+        jsonArray = json.value("pinList").toArray();
+    }
     emit preItemsResetRemove(mItems.size());
     mItems.clear();
     emit postItemResetRemove();

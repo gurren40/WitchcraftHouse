@@ -8,7 +8,7 @@ QT += websockets
 CONFIG += c++11
 
 HEADERS += \
-#    runtime/client.h \
+    runtime/client.h \
 #    objects/device.h \
 #    objects/group.h \
 #    objects/pin.h \
@@ -25,10 +25,11 @@ HEADERS += \
     models/sharedmodel.h \
     lists/sharedlist.h \
     models/controldevicemodel.h \
-    lists/controldevicelist.h
+    lists/controldevicelist.h \
+    objects/user.h
 
 SOURCES += activity.cpp \
-#    runtime/client.cpp \
+    runtime/client.cpp \
 #    objects/device.cpp \
 #    objects/group.cpp \
 #    objects/pin.cpp \
@@ -45,7 +46,8 @@ SOURCES += activity.cpp \
     models/sharedmodel.cpp \
     lists/sharedlist.cpp \
     models/controldevicemodel.cpp \
-    lists/controldevicelist.cpp
+    lists/controldevicelist.cpp \
+    objects/user.cpp
 
 RESOURCES += qml.qrc
 

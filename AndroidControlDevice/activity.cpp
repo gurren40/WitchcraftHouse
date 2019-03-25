@@ -22,6 +22,9 @@
 #include "lists/sharedlist.h"
 #include "lists/controldevicelist.h"
 
+#include "objects/user.h"
+#include "runtime/client.h"
+
 int main(int argc, char *argv[])
 {
     //inisialisasi GUI & Environment
@@ -58,18 +61,45 @@ int main(int argc, char *argv[])
     qmlRegisterUncreatableType<ControlDeviceList>("ControlDevice", 1, 0, "ControlDeviceList",
         QStringLiteral("ControlDeviceList should not be created in QML"));
 
+    //panggil remote object
+    QRemoteObjectNode repNode;
+    repNode.connectToNode(QUrl(QStringLiteral("local:replica")));
+    QSharedPointer<RemoteReplica> rep(repNode.acquire<RemoteReplica>());
+    bool res = rep->waitForSource();
+    Q_ASSERT(res);
+
     //inisialisasi list
     PinList pinList;
+    pinList.setRemote(rep.data());
     DeviceList deviceList;
+    deviceList.setRemote(rep.data());
     GroupList groupList;
+    groupList.setRemote(rep.data());
     ScheduleList scheduleList;
+    scheduleList.setRemote(rep.data());
     SharedList sharedList;
+    sharedList.setRemote(rep.data());
     PinList sharedPinList;
+    sharedPinList.setRemote(rep.data());
     ControlDeviceList controlDeviceList;
+    controlDeviceList.setRemote(rep.data());
+    User user; //inisialisasi objek user
+    user.setRemote(rep.data());
 
-    QQmlApplicationEngine engine;
+    //inisialisasi client
+    Client clientApp;
+    clientApp.setRemote(rep.data());
+    clientApp.setPinList(&pinList);
+    clientApp.setDeviceList(&deviceList);
+    clientApp.setGroupList(&groupList);
+    clientApp.setScheduleList(&scheduleList);
+    clientApp.setSharedList(&sharedList);
+    clientApp.setSharedPinList(&sharedPinList);
+    clientApp.setControlDeviceList(&controlDeviceList);
+    clientApp.setUser(&user);
 
     //inisialisasi list di qml engine
+    QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty(QStringLiteral("pinList"), &pinList);
     engine.rootContext()->setContextProperty(QStringLiteral("deviceList"), &deviceList);
     engine.rootContext()->setContextProperty(QStringLiteral("groupList"), &groupList);
@@ -79,14 +109,6 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty(QStringLiteral("controlDeviceList"), &controlDeviceList);
 
     engine.load(QUrl("qrc:/qml/main.qml"));
-
-    //panggil remote object
-    QRemoteObjectNode repNode;
-    repNode.connectToNode(QUrl(QStringLiteral("local:replica")));
-    QSharedPointer<RemoteReplica> rep(repNode.acquire<RemoteReplica>());
-    engine.rootContext()->setContextProperty("pingPong", rep.data());
-    bool res = rep->waitForSource();
-    Q_ASSERT(res);
 
 //    QTimer *timer = new QTimer;
 //    timer->setInterval(5000);

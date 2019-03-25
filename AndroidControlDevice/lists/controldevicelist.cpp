@@ -55,3 +55,25 @@ void ControlDeviceList::setControlDeviceList(QJsonObject json)
     }
     postItemResetAppend();
 }
+
+void ControlDeviceList::getControlDeviceList()
+{
+    QSettings setting;
+    QJsonObject jsonObj;
+    jsonObj["email"] = setting.value("email").toString();
+    QJsonArray jsonArray;
+    jsonArray.append(jsonObj);
+    QJsonObject toSend;
+    toSend["getControlDeviceList"] = jsonArray;
+    m_remote->sendToServer(toSend);
+}
+
+RemoteReplica *ControlDeviceList::getRemote() const
+{
+    return m_remote;
+}
+
+void ControlDeviceList::setRemote(RemoteReplica *remote)
+{
+    m_remote = remote;
+}

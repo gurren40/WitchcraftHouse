@@ -6,6 +6,8 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QDate>
+#include <QSettings>
+#include "rep_remote_replica.h"
 
 struct ControlDeviceItem
 {
@@ -30,6 +32,9 @@ public:
 
     bool setItemAt(int index, const ControlDeviceItem &item);
 
+    RemoteReplica *getRemote() const;
+    void setRemote(RemoteReplica *remote);
+
 signals:
 
     void preItemsResetRemove(int index);
@@ -39,9 +44,11 @@ signals:
 
 public slots:
     void setControlDeviceList(QJsonObject json);
+    void getControlDeviceList();
 
 private:
     QVector<ControlDeviceItem> mItems;
+    RemoteReplica *m_remote;
 };
 
 #endif // TODOLIST_H

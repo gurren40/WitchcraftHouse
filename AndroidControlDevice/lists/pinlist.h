@@ -50,7 +50,7 @@ signals:
     void postItemResetAppend();
 
 public slots:
-    void setPinList(QJsonObject json);
+    void setPinList(QJsonObject json, bool isShared);
     void getPinList();
     void getSharedPinList();
     void createNewPin(QVariant pinName, QVariant groupID, QVariant deviceID, QVariant iconID, QVariant pinTypeID, QVariant value, QVariant option, QVariant description);
