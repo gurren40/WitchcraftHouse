@@ -9,11 +9,11 @@ CONFIG += c++11
 
 HEADERS += \
 #    runtime/client.h \
-    objects/device.h \
-    objects/group.h \
-    objects/pin.h \
-    objects/schedule.h \
-    objects/shared.h \
+#    objects/device.h \
+#    objects/group.h \
+#    objects/pin.h \
+#    objects/schedule.h \
+#    objects/shared.h \
     models/pinmodel.h \
     lists/pinlist.h \
     models/devicemodel.h \
@@ -29,11 +29,11 @@ HEADERS += \
 
 SOURCES += activity.cpp \
 #    runtime/client.cpp \
-    objects/device.cpp \
-    objects/group.cpp \
-    objects/pin.cpp \
-    objects/schedule.cpp \
-    objects/shared.cpp \
+#    objects/device.cpp \
+#    objects/group.cpp \
+#    objects/pin.cpp \
+#    objects/schedule.cpp \
+#    objects/shared.cpp \
     models/pinmodel.cpp \
     lists/pinlist.cpp \
     models/devicemodel.cpp \

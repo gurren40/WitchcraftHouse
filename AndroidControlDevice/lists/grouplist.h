@@ -5,6 +5,8 @@
 #include <QVector>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QSettings>
+#include "rep_remote_replica.h"
 
 struct GroupItem
 {
@@ -28,6 +30,8 @@ public:
     QVector<GroupItem> items() const;
 
     bool setItemAt(int index, const GroupItem &item);
+    RemoteReplica *getRemote() const;
+    void setRemote(RemoteReplica *remote);
 
 signals:
 
@@ -38,9 +42,14 @@ signals:
 
 public slots:
     void setGroupList(QJsonObject json);
+    void getGroupList();
+    void createNewGroup(QVariant groupName, QVariant iconID, QVariant description);
+    void editGroup(QVariant groupID, QVariant groupName, QVariant iconID, QVariant description);
+    void deleteGroup(QVariant groupID);
 
 private:
     QVector<GroupItem> mItems;
+    RemoteReplica *m_remote;
 };
 
 #endif // TODOLIST_H

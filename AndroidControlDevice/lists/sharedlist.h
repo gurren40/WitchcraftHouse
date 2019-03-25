@@ -5,6 +5,8 @@
 #include <QVector>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QSettings>
+#include "rep_remote_replica.h"
 
 struct SharedItem
 {
@@ -31,6 +33,8 @@ public:
     QVector<SharedItem> items() const;
 
     bool setItemAt(int index, const SharedItem &item);
+    RemoteReplica *remote() const;
+    void setRemote(RemoteReplica *remote);
 
 signals:
 
@@ -41,9 +45,14 @@ signals:
 
 public slots:
     void setSharedList(QJsonObject json);
+    void getSharedList();
+    void createNewShared(QVariant sharedName, QVariant sharedTo, QVariant sharedType, QVariant groupID, QVariant pinUUID, QVariant description);
+    void editShared(QVariant sharedID, QVariant sharedName, QVariant sharedTo, QVariant sharedType, QVariant groupID, QVariant pinUUID, QVariant description);
+    void deleteShared(QVariant sharedID);
 
 private:
     QVector<SharedItem> mItems;
+    RemoteReplica *m_remote;
 };
 
 #endif // PINLIST_H

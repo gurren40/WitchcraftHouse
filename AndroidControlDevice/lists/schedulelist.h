@@ -5,6 +5,8 @@
 #include <QVector>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QSettings>
+#include "rep_remote_replica.h"
 
 struct ScheduleItem
 {
@@ -37,6 +39,8 @@ public:
     QVector<ScheduleItem> items() const;
 
     bool setItemAt(int index, const ScheduleItem &item);
+    RemoteReplica *remote() const;
+    void setRemote(RemoteReplica *remote);
 
 signals:
 
@@ -47,9 +51,14 @@ signals:
 
 public slots:
     void setScheduleList(QJsonObject json);
+    void getScheduleList();
+    void createNewSchedule(QVariant scheduleName, QVariant pinUUID, QVariant minute, QVariant hour, QVariant dayOfMonth, QVariant month, QVariant dayOfWeek, QVariant timeZone, QVariant value, QVariant description);
+    void editSchedule(QVariant scheduleID, QVariant scheduleName, QVariant pinUUID, QVariant minute, QVariant hour, QVariant dayOfMonth, QVariant month, QVariant dayOfWeek, QVariant timeZone, QVariant value, QVariant description);
+    void deleteSchedule(QVariant scheduleID);
 
 private:
     QVector<ScheduleItem> mItems;
+    RemoteReplica *m_remote;
 };
 
 #endif // PINLIST_H
