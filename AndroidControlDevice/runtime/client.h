@@ -46,27 +46,9 @@ public:
 signals:
 
 public slots:
-    //client specific slot
-    void logOut();
     void onTokenExpired(bool value);
-
-    //another bussiness from server
-    void fromServer(QJsonObject json); //not implemented yet
-
-    //TO SET FOR MODEL, CALLED BY THIS CLASS, TRIGERRED BY REMOTE
-    //setter list
-    void setAllData(QJsonObject json);
-
-    //setted value
-    void settedPinValue(QJsonObject json);
-
-
-    //FUNCTIONS TO CALL FROM QML
-    //getter list
-    void getAllData(); //not implemented yet
-
-    //delete
-    void deleteControlDevice(QVariant controlDeviceID);
+    void fromServer(QJsonObject json);
+    void setIsOnline(bool value);
 
 private:
     RemoteReplica *m_remote;

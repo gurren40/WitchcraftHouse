@@ -107,6 +107,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty(QStringLiteral("sharedList"), &sharedList);
     engine.rootContext()->setContextProperty(QStringLiteral("sharedPinList"), &sharedPinList);
     engine.rootContext()->setContextProperty(QStringLiteral("controlDeviceList"), &controlDeviceList);
+    engine.rootContext()->setContextProperty(QStringLiteral("user"), &user);
 
     engine.load(QUrl("qrc:/qml/main.qml"));
 

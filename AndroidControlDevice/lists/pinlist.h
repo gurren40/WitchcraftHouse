@@ -48,6 +48,8 @@ signals:
     void postItemResetRemove();
     void preItemsResetAppend(int index);
     void postItemResetAppend();
+    void preItemDataChanged();
+    void postItemDataChanged();
 
 public slots:
     void setPinList(QJsonObject json, bool isShared);
@@ -56,6 +58,9 @@ public slots:
     void createNewPin(QVariant pinName, QVariant groupID, QVariant deviceID, QVariant iconID, QVariant pinTypeID, QVariant value, QVariant option, QVariant description);
     void editPin(QVariant pinID, QVariant UUID, QVariant pinName, QVariant groupID, QVariant deviceID, QVariant iconID, QVariant pinTypeID, QVariant value, QVariant option, QVariant description);
     void deletePin(QVariant UUID);
+    //pin value
+    void setPinValue(QVariant UUID, QVariant value);
+    void settedPinValue(QJsonObject json);
 
 private:
     QVector<PinItem> mItems;

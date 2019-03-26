@@ -49,7 +49,6 @@ public slots:
     void createNewDevice(QVariant deviceName, QVariant description);
     void editDevice(QVariant deviceID, QVariant deviceUUID, QVariant deviceName, QVariant description);
     void deleteDevice(QVariant deviceID);
-    void setPinValue(QVariant UUID, QVariant value);
 
 private:
     QVector<DeviceItem> mItems;

@@ -45,6 +45,7 @@ signals:
 public slots:
     void setControlDeviceList(QJsonObject json);
     void getControlDeviceList();
+    void deleteControlDevice(QVariant controlDeviceID);
 
 private:
     QVector<ControlDeviceItem> mItems;

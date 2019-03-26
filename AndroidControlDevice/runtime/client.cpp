@@ -20,25 +20,16 @@ void Client::setRemote(RemoteReplica *remote)
     m_remote = remote;
     connect(m_remote,&RemoteReplica::fromServerSig,this,&Client::fromServer);
     //connect(this,&Client::sendToServer,m_remote,&RemoteReplica::sendToServer); // well, you can do it directly from m_remote :3
-    connect(m_remote,&RemoteReplica::setIsOnlineSig,m_user,&User::setIsOnline);
+    connect(m_remote,&RemoteReplica::setIsOnlineSig,this,&Client::setIsOnline);
     connect(m_remote,&RemoteReplica::tokenExpiredSig,this,&Client::onTokenExpired);
-}
-
-void Client::logOut()
-{
-    QSettings setting;
-    setting.remove("email");
-    setting.remove("serverDomain");
-    setting.remove("jwt");
-    emit m_user->isLoggedInSig();
-    m_remote->logOut();
 }
 
 void Client::onTokenExpired(bool value)
 {
     if(value){
-        logOut();
+        m_user->logOut();
     }
+    m_user->setIsTokenExpired(value);
 }
 
 void Client::fromServer(QJsonObject json)
@@ -47,8 +38,8 @@ void Client::fromServer(QJsonObject json)
 //    if(json.contains("LoginToken")){
 //        setLoginToken();
 //    }
-    if(json.contains("UserInfo")){
-        //m_user->setUserInfo(json);
+    if(json.contains("userInfo")){
+        m_user->setUserInfo(json);
     }
     if(json.contains("deviceList")){
         m_deviceList->setDeviceList(json);
@@ -69,19 +60,14 @@ void Client::fromServer(QJsonObject json)
         m_sharedPinList->setPinList(json,true);
     }
     if(json.contains("settedPinValue")){
-        settedPinValue(json);
+        m_pinList->settedPinValue(json);
+        m_sharedPinList->settedPinValue(json);
     }
 }
 
-void Client::deleteControlDevice(QVariant controlDeviceID)
+void Client::setIsOnline(bool value)
 {
-    QJsonObject jsonObj;
-    jsonObj["controlDeviceID"] = controlDeviceID.toString();
-    QJsonArray jsonArray;
-    jsonArray.append(jsonObj);
-    QJsonObject toSend;
-    toSend["deleteControlDevice"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_user->setIsOnline(value);
 }
 
 void Client::setSharedPinList(PinList *sharedPinList)

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QSettings>
 #include <QAndroidJniObject>
+#include <QtAndroidExtras>
 #include <QSettings>
 #include <QJsonObject>
 #include <QJsonArray>
@@ -18,6 +19,7 @@ class User : public QObject
     Q_PROPERTY(QString serverDomain READ serverDomain WRITE setServerDomain NOTIFY serverDomainSig)
     Q_PROPERTY(QString email READ email WRITE setEmail NOTIFY emailSig)
     Q_PROPERTY(QString thisDeviceModel READ thisDeviceModel)
+    Q_PROPERTY(QString name READ getName WRITE setName NOTIFY nameSig)
 
 public:
     explicit User(QObject *parent = nullptr);
@@ -32,12 +34,16 @@ public:
     RemoteReplica *remote() const;
     void setRemote(RemoteReplica *remote);
 
+    QString getName() const;
+    void setName(const QString &name);
+
 signals:
-    void isOnlineSig(bool isOnline);
-    void isTokenExpiredSig(bool isTokenExpired);
+    void isOnlineSig();
+    void isTokenExpiredSig();
     void isLoggedInSig();
-    void serverDomainSig(QString serverDomain);
-    void emailSig(QString email);
+    void serverDomainSig();
+    void emailSig();
+    void nameSig();
 
 public slots:
     void setIsOnline(bool isOnline);
@@ -49,6 +55,11 @@ public slots:
     void requestLoginToken(QVariant email, QVariant password);
     void createNewUser(QVariant email, QVariant name, QVariant password);
     void editUser(QVariant email, QVariant name, QVariant password);
+    void setUserInfo(QJsonObject json);
+
+    //misc
+    void logOut();
+    void getAllData();
 
 private:
     bool m_isOnline;
@@ -57,6 +68,7 @@ private:
 //    QString m_serverDomain;
 //    QString m_email;
     RemoteReplica *m_remote;
+    QString m_name;
 };
 
 #endif // USER_H

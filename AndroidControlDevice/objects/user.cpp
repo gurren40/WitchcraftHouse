@@ -13,7 +13,7 @@ bool User::isOnline() const
 void User::setIsOnline(bool isOnline)
 {
     m_isOnline = isOnline;
-    emit isOnlineSig(isOnline);
+    emit isOnlineSig();
 }
 
 bool User::isTokenExpired() const
@@ -24,7 +24,7 @@ bool User::isTokenExpired() const
 void User::setIsTokenExpired(bool isTokenExpired)
 {
     m_isTokenExpired = isTokenExpired;
-    emit isTokenExpiredSig(isTokenExpired);
+    emit isTokenExpiredSig();
 }
 
 bool User::isLoggedIn()
@@ -54,7 +54,7 @@ void User::setEmail(const QString &email)
 {
     QSettings setting;
     setting.setValue("email",email);
-    emit emailSig(email);
+    emit emailSig();
 }
 
 RemoteReplica *User::remote() const
@@ -82,12 +82,12 @@ void User::setServerDomain(const QString &serverDomain)
 {
     QSettings setting;
     setting.setValue("serverDomain",serverDomain);
-    emit serverDomainSig(serverDomain);
+    emit serverDomainSig();
 }
 
 QString User::thisDeviceModel()
 {
-    QAndroidJniObject jstringValue = QAndroidJniObject::callStaticMethod<jstring>("id/web/witchcraft/house/MyActivity","getDeviceModel");
+    QAndroidJniObject jstringValue = QAndroidJniObject::callStaticObjectMethod<jstring>("id/web/witchcraft/house/MyActivity","getDeviceModel");
     return jstringValue.toString();
 }
 
@@ -142,4 +142,47 @@ void User::editUser(QVariant email, QVariant name, QVariant password)
         toSend["editUser"] = jsonArray;
         m_remote->sendToServer(toSend);
     }
+}
+
+void User::setUserInfo(QJsonObject json)
+{
+    QJsonObject jsonObj = json.value("setUserInfo").toObject();
+    if(jsonObj.value("email").toString() == email()){
+        m_name = jsonObj.value("name").toString();
+        emit nameSig();
+    }
+}
+
+QString User::getName() const
+{
+    return m_name;
+}
+
+void User::setName(const QString &name)
+{
+    m_name = name;
+    emit nameSig();
+}
+
+void User::logOut()
+{
+    QSettings setting;
+    setting.remove("email");
+    setting.remove("serverDomain");
+    setting.remove("jwt");
+    emit emailSig();
+    emit serverDomainSig();
+    emit isLoggedInSig();
+    m_remote->logOut();
+}
+
+void User::getAllData()
+{
+    QJsonObject jsonObj;
+    jsonObj["email"] = email();
+    QJsonArray jsonArray;
+    jsonArray.append(jsonObj);
+    QJsonObject toSend;
+    toSend["getAllData"] = jsonArray;
+    m_remote->sendToServer(toSend);
 }

@@ -77,3 +77,14 @@ void ControlDeviceList::setRemote(RemoteReplica *remote)
 {
     m_remote = remote;
 }
+
+void ControlDeviceList::deleteControlDevice(QVariant controlDeviceID)
+{
+    QJsonObject jsonObj;
+    jsonObj["controlDeviceID"] = controlDeviceID.toString();
+    QJsonArray jsonArray;
+    jsonArray.append(jsonObj);
+    QJsonObject toSend;
+    toSend["deleteControlDevice"] = jsonArray;
+    m_remote->sendToServer(toSend);
+}

@@ -167,3 +167,31 @@ void PinList::deletePin(QVariant UUID)
     toSend["deletePin"] = jsonArray;
     m_remote->sendToServer(toSend);
 }
+
+void PinList::setPinValue(QVariant UUID, QVariant value)
+{
+    QJsonObject jsonObj;
+    jsonObj["UUID"] = UUID.toString();
+    jsonObj["value"] = value.toString();
+    QJsonArray jsonArray;
+    jsonArray.append(jsonObj);
+    QJsonObject toSend;
+    toSend["setPinValue"] = jsonArray;
+    m_remote->sendToServer(toSend);
+}
+
+void PinList::settedPinValue(QJsonObject json)
+{
+    emit preItemDataChanged();
+    QJsonArray jsonArray = json.value("settedPinValue").toArray();
+    for (int i = 0;i<jsonArray.size();i++) {
+        for(int j = 0;j<mItems.size();j++){
+            if(mItems.at(j).UUID == jsonArray.at(i).toObject().value("UUID").toString()){
+                PinItem item = mItems.at(j);
+                item.value = jsonArray.at(i).toObject().value("value").toString();
+                mItems[j] = item;
+            }
+        }
+    }
+    emit postItemDataChanged();
+}

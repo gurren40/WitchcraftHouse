@@ -200,13 +200,19 @@ void PinModel::setList(PinList *list)
         connect(mList, &PinList::postItemResetRemove, this, [=]() {
             endRemoveRows();
         });
-
         //masukkan semua item dari list baru
         connect(mList, &PinList::preItemsResetAppend,this, [=](int index){
             beginInsertRows(QModelIndex(),0,index);
         });
         connect(mList, &PinList::postItemResetAppend, this, [=]() {
             endInsertRows();
+        });
+        //setted pin value
+        connect(mList, &PinList::preItemDataChanged, this, [=](){
+            beginResetModel();
+        });
+        connect(mList, &PinList::postItemDataChanged, this, [=](){
+            endResetModel();
         });
     }
 

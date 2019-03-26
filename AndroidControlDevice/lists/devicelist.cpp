@@ -119,15 +119,3 @@ void DeviceList::deleteDevice(QVariant deviceID)
     m_remote->sendToServer(toSend);
 }
 
-void DeviceList::setPinValue(QVariant UUID, QVariant value)
-{
-    QJsonObject jsonObj;
-    jsonObj["UUID"] = UUID.toString();
-    jsonObj["value"] = value.toString();
-    QJsonArray jsonArray;
-    jsonArray.append(jsonObj);
-    QJsonObject toSend;
-    toSend["setPinValue"] = jsonArray;
-    m_remote->sendToServer(toSend);
-}
-
