@@ -49,7 +49,8 @@ SOURCES += activity.cpp \
     lists/controldevicelist.cpp \
     objects/user.cpp
 
-RESOURCES += qml.qrc
+RESOURCES += qml.qrc \
+    icons.qrc
 
 QML_IMPORT_PATH =
 

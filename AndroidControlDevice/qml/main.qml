@@ -16,32 +16,27 @@ ApplicationWindow {
     readonly property bool inPortrait: window.width < window.height
     //! [orientation]
 
-    onWidthChanged: drawerControl()
-    onHeightChanged: drawerControl()
+    Dialog{
+        id: exitDialog
+        modal: true
+        anchors.centerIn: parent
+        title: "Are you sure want to Exit?"
+        standardButtons: Dialog.Ok | Dialog.Cancel
 
-    function drawerControl(){
-        if(!inPortrait){
-            drawer.open()
-        }
-        else if(inPortrait){
-            drawer.close()
-        }
-    }
-
-    Timer{
-        interval: 200
-        repeat: false
-        running: true
-        triggeredOnStart: true
-        onTriggered: window.drawerControl()
+        onAccepted: Qt.quit()
+        onRejected: console.log("Cancel clicked")
     }
 
     Shortcut {
         sequences: ["Esc", "Back"]
-        enabled: stackView.depth > 1
         onActivated: {
-            stackView.pop()
-            listView.currentIndex = -1
+            if(stackView.depth > 1){
+                stackView.pop()
+                listView.currentIndex = -1
+            }
+            else{
+                exitDialog.open()
+            }
         }
     }
 
@@ -55,18 +50,7 @@ ApplicationWindow {
             anchors.fill: parent
             ToolButton {
                 id: toolButton
-                text: {
-                    if(inPortrait && !drawer.visible){
-                        return "\u2630"
-                    }
-                    else if(drawer.visible){
-                        return "\u25C0"
-                    }
-                    else{
-                        return "\u25B6"
-                    }
-                }
-
+                icon.name: drawer.visible ? "chevron_left" : "menu"
                 font.pixelSize: Qt.application.font.pixelSize * 1.6
                 onClicked: {
                     if(drawer.visible){
@@ -76,41 +60,23 @@ ApplicationWindow {
                         drawer.open()
                     }
                 }
+                anchors.left: parent.left
             }
 
             Label {
                 text: stackView.currentItem.title
+                font.bold: true
                 anchors.centerIn: parent
             }
 
             ToolButton {
                 id: menuButton
-                text: "\u22EE"
+                icon.name: "refresh"
+                icon.color: user.isOnline ? "green" : "red"
                 font.pixelSize: Qt.application.font.pixelSize * 1.6
-                onClicked: optionsMenu.open()
                 anchors.right: parent.right
-
-                Menu {
-                    id: optionsMenu
-                    x: parent.width - width
-                    transformOrigin: Menu.TopRight
-
-                    MenuItem {
-                        text: "Settings"
-                    }
-                    MenuItem {
-                        text: "Windowed Mode"
-                        onTriggered: window.showNormal()
-                    }
-                    MenuItem {
-                        text: "FullScreen Mode"
-                        onTriggered: window.showFullScreen()
-                    }
-
-                    MenuItem {
-                        text: "Exit"
-                        onTriggered: Qt.quit()
-                    }
+                onClicked: {
+                    //refresh disini nanti
                 }
             }
         }
@@ -119,95 +85,19 @@ ApplicationWindow {
     Page {
         anchors.fill: parent
 
-        Page{
+        Drawer{
             id : drawer
             width: (inPortrait) ? parent.width * 0.66 : parent.width * 0.25
-            height: parent.height
-            anchors.left: parent.left
-            state: "close"
+            height: parent.height - toolBar.contentHeight
+            y : toolBar.contentHeight
+            modal: inPortrait
+            interactive: inPortrait
+            position: inPortrait ? 0 : 1
+            visible: !inPortrait
             background: Rectangle{
                 anchors.fill: parent
                 color: window.palette.alternateBase
             }
-
-            function open(){
-                drawer.state = "open"
-            }
-
-            function close(){
-                drawer.state = "close"
-            }
-
-            states: [
-                State {
-                    name: "open"
-                    PropertyChanges {
-                        target: drawer;
-                        visible: true;
-                    }
-                },
-                State {
-                    name: "close"
-                    PropertyChanges {
-                        target: drawer;
-                        visible: false;
-                    }
-                }
-            ]
-
-            transitions: [
-                Transition {
-                    from: "open"
-                    to: "close"
-                    SequentialAnimation{
-                        PropertyAction {
-                            target: drawer;
-                            property: "visible";
-                            value: true
-                        }
-                        PropertyAction {
-                            target: drawer;
-                            property: "width";
-                            value: (inPortrait) ? drawer.parent.width * 0.66 : drawer.parent.width * 0.2
-                        }
-                        NumberAnimation {
-                            target: drawer
-                            property: "width"
-                            to: 1
-                            duration: 400
-                            easing.type: Easing.InOutQuad
-                        }
-                        PropertyAction {
-                            target: drawer;
-                            property: "visible";
-                            value: false
-                        }
-                    }
-                },
-                Transition {
-                    from: "close"
-                    to: "open"
-                    SequentialAnimation{
-                        PropertyAction {
-                            target: drawer;
-                            property: "visible";
-                            value: true
-                        }
-                        PropertyAction {
-                            target: drawer;
-                            property: "width";
-                            value: 1
-                        }
-                        NumberAnimation {
-                            target: drawer
-                            property: "width"
-                            to: (inPortrait) ? drawer.parent.width * 0.66 : drawer.parent.width * 0.2
-                            duration: 400
-                            easing.type: Easing.InOutQuad
-                        }
-                    }
-                }
-            ]
 
             ListView{
                 id : listView
@@ -221,7 +111,7 @@ ApplicationWindow {
                         inPortrait ? drawer.close() : undefined
                         if(listView.currentIndex != index){
                             listView.currentIndex = index
-                            stackView.push(model.source)
+                            stackView.replace(model.source)
                         }
                     }
                 }
@@ -234,7 +124,7 @@ ApplicationWindow {
                     ListElement { title: "Schedule"; source: "./list/ScheduleList.qml" }
                     ListElement { title: "Shared List"; source: "./list/SharedList.qml" }
                     ListElement { title: "Control Device"; source: "./list/ControlDeviceList.qml" }
-                    //ListElement { title: "Settings"; source: "./Settings.qml" }
+                    ListElement { title: "Settings"; source: "./etc/settings.qml" }
                 }
                 ScrollBar.vertical: ScrollBar { }
             }
@@ -244,10 +134,9 @@ ApplicationWindow {
             id: stackView
             focus: true
             initialItem: "./list/PinList.qml"
-            height: parent.height
-            width: (!inPortrait && drawer.visible) ? parent.width - drawer.width : parent.width
-            anchors.left: drawer.visible ? drawer.right : parent.left
-            anchors.right: !inPortrait ? parent.right : undefined
+            height: parent.height - toolBar.contentHeight
+            width: inPortrait ? parent.width : parent.width - (drawer.width * 2)
+            anchors.centerIn: parent
             anchors.top : toolBar.bottom
 
             pushEnter : Transition {

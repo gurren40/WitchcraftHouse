@@ -7,6 +7,7 @@
 #include <QRemoteObjectNode>
 #include <QTimer>
 #include <QSignalMapper>
+#include <QIcon>
 
 #include "rep_remote_replica.h"
 #include "models/pinmodel.h"
@@ -33,6 +34,8 @@ int main(int argc, char *argv[])
     QGuiApplication::setOrganizationName("Witchcraft");
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
+
+    QIcon::setThemeName("witchcraft");
 
     //panggil service
     QAndroidJniObject::callStaticMethod<void>("id/web/witchcraft/house/MyService",

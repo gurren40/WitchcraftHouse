@@ -35,6 +35,17 @@ Page {
 
         ScrollBar.vertical: ScrollBar { }
     }
+    RoundButton {
+        id: floatingPlusButton
+        text: qsTr("+")
+        highlighted: true
+        anchors.margins: 15
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        height: toolBar.height * 1.5
+        width: toolBar.height * 1.5
+        font.pointSize: 35
+    }
 }
 
 

@@ -18,9 +18,9 @@
         <file>qml/edit/editSchedule.qml</file>
         <file>qml/edit/editShared.qml</file>
         <file>qml/create/createUser.qml</file>
-        <file>qml/init/init.qml</file>
-        <file>qml/init/login.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>qml/list/SharedPinList.qml</file>
+        <file>qml/etc/settings.qml</file>
+        <file>qml/etc/login.qml</file>
     </qresource>
 </RCC>
