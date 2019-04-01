@@ -36,7 +36,7 @@ bool ControlDeviceList::setItemAt(int index, const ControlDeviceItem &item)
 
 void ControlDeviceList::setControlDeviceList(QJsonObject json)
 {
-    QJsonArray jsonArray = json.value("ControlDeviceList").toArray();
+    QJsonArray jsonArray = json.value("controlDeviceList").toArray();
     emit preItemsResetRemove(mItems.size());
     mItems.clear();
     emit postItemResetRemove();
@@ -53,7 +53,7 @@ void ControlDeviceList::setControlDeviceList(QJsonObject json)
         item.expireDate = QDate::fromString(jsonItem["expireDate"].toString().toUtf8());
         mItems.append(item);
     }
-    postItemResetAppend();
+    emit postItemResetAppend();
 }
 
 void ControlDeviceList::getControlDeviceList()

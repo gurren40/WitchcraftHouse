@@ -77,7 +77,7 @@ void PinList::setPinList(QJsonObject json, bool isShared)
         item.pinTypeName = jsonItem["pinTypeName"].toString();
         mItems.append(item);
     }
-    postItemResetAppend();
+    emit postItemResetAppend();
 }
 
 RemoteReplica *PinList::remote() const

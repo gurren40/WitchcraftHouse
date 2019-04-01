@@ -18,7 +18,7 @@ public:
 
 signals:
     void createNewCron(QUuid scheduleUUID, QString cronSyntax, QUuid UUID, QString value, int userID);
-    void editCron(QUuid scheduleUUID, QString cronSyntax, QUuid UUID, QString value);
+    void editCron(QUuid scheduleUUID, QString cronSyntax, QUuid UUID, QString value, int userID);
     void deleteCron(QUuid scheduleUUID);
 
 public slots:

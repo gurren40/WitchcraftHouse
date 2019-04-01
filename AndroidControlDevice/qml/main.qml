@@ -76,7 +76,7 @@ ApplicationWindow {
                 font.pixelSize: Qt.application.font.pixelSize * 1.6
                 anchors.right: parent.right
                 onClicked: {
-                    //refresh disini nanti
+                    user.getAllData()
                 }
             }
         }

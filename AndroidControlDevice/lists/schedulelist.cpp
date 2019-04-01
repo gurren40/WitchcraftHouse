@@ -71,7 +71,7 @@ void ScheduleList::setScheduleList(QJsonObject json)
         item.description = jsonItem["description"].toString();
         mItems.append(item);
     }
-    postItemResetAppend();
+    emit postItemResetAppend();
 }
 
 RemoteReplica *ScheduleList::remote() const

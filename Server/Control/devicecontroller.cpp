@@ -403,7 +403,7 @@ QJsonObject DeviceController::getDeviceList(int userID)
     Device device(&db);
     QJsonObject response;
     QJsonArray jsonArray,errorArray,notificationArray;
-    QJsonObject error = device.read("userID='"+QString::number(userID)+"'");
+    QJsonObject error = device.read("User.userID='"+QString::number(userID)+"'");
 
     if(device.mDevices.size()<1){
         QJsonObject error,notification;

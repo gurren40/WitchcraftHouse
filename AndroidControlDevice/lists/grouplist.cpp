@@ -36,7 +36,7 @@ bool GroupList::setItemAt(int index, const GroupItem &item)
 
 void GroupList::setGroupList(QJsonObject json)
 {
-    QJsonArray jsonArray = json.value("GroupList").toArray();
+    QJsonArray jsonArray = json.value("groupList").toArray();
     emit preItemsResetRemove(mItems.size());
     mItems.clear();
     emit postItemResetRemove();
@@ -53,7 +53,7 @@ void GroupList::setGroupList(QJsonObject json)
         item.description = jsonItem["description"].toString();
         mItems.append(item);
     }
-    postItemResetAppend();
+    emit postItemResetAppend();
 }
 
 RemoteReplica *GroupList::getRemote() const

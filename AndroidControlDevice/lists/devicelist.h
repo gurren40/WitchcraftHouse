@@ -42,6 +42,8 @@ signals:
     void postItemResetRemove();
     void preItemsResetAppend(int index);
     void postItemResetAppend();
+    void preItemDataChanged();
+    void postItemDataChanged();
 
 public slots:
     void setDeviceList(QJsonObject json);

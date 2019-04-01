@@ -101,7 +101,7 @@ QJsonObject ScheduleController::editSchedule(QJsonObject json, int userID)
                 QString description = jsonObject["description"].toString();
                 error = schedule.update(scheduleID,userID,pinID,scheduleName,minute,hour,dayOfMonth,month,dayOfWeek,timeZone,value,description);
                 QString cronSyntax = minute+" "+hour+" "+dayOfMonth+" "+month+" "+dayOfWeek;
-                emit editCron(schedule.mSchedules.at(0).scheduleUUID,cronSyntax,UUID,value);
+                emit editCron(schedule.mSchedules.at(0).scheduleUUID,cronSyntax,UUID,value,userID);
             }
             errorArray.append(error);
             notificationArray.append(notificationArray);

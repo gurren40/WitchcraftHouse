@@ -167,6 +167,8 @@ void WebsocketServer::broadcastToAllUserControlDevice(int userID, QJsonObject js
     QJsonArray array = cdList["controlDevice"].toArray();
     QJsonDocument doc(json);
 
+    QTextStream(stdout) <<"\n"<< doc.toJson();
+
     for (int i = 0;i<cdList.size();i++) {
         QJsonObject cDevice = array[i].toObject();
         if(cDevice["isControlDeviceOnline"].toBool()){
@@ -204,9 +206,9 @@ void WebsocketServer::controlProcessTextMessage(QString message)
     //connect(&SC,SIGNAL(sendMail(QString,QString,QString)),this,SIGNAL(sendMail(QString,QString,QString)));
     //connect(&ShC,SIGNAL(sendMail(QString,QString,QString)),this,SIGNAL(sendMail(QString,QString,QString)));
     connect(&DC,SIGNAL(broadcastToDevice(QUuid,QJsonObject)),this,SLOT(broadcastToDevice(QUuid,QJsonObject)));
-    connect(&DC,SIGNAL(deletedDevice),this,SLOT(deletedDevice()));
+    connect(&DC,SIGNAL(deletedDevice()),this,SLOT(deletedDevice()));
     connect(&SC,SIGNAL(createNewCron(QUuid, QString, QUuid, QString, int)),cronScheduler,SLOT(createNewCron(QUuid, QString, QUuid, QString, int)));
-    connect(&SC,SIGNAL(editCron(QUuid, QString, QUuid, QString)),cronScheduler,SLOT(editCron(QUuid, QString, QUuid, QString)));
+    connect(&SC,SIGNAL(editCron(QUuid, QString, QUuid, QString, int)),cronScheduler,SLOT(editCron(QUuid, QString, QUuid, QString, int)));
     connect(&SC,SIGNAL(deleteCron(QUuid)),cronScheduler,SLOT(deleteCron(QUuid)));
     connect(&DC,SIGNAL(deletedPin(QUuid,int)),&SC,SLOT(deletedPin(QUuid,int)));
     connect(&DC,SIGNAL(deletedPin(QUuid,int)),&ShC,SLOT(deletedPin(QUuid,int)));
@@ -372,6 +374,7 @@ void WebsocketServer::controlProcessTextMessage(QString message)
         QJsonObject response = UC.getAllDatalist(userID);
         QJsonDocument toSend(response);
         pClient->sendTextMessage(toSend.toJson());
+        QTextStream(stdout) << "\n" << toSend.toJson();
     }
     if(jsonObj.contains("getControlDeviceList")){
         QJsonObject response = UC.getControlDeviceList(userID);

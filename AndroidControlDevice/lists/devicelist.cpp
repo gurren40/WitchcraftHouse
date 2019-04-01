@@ -37,11 +37,12 @@ bool DeviceList::setItemAt(int index, const DeviceItem &item)
 
 void DeviceList::setDeviceList(QJsonObject json)
 {
-    QJsonArray jsonArray = json.value("DeviceList").toArray();
-    emit preItemsResetRemove(mItems.size());
+    emit preItemDataChanged();
+    QJsonArray jsonArray = json.value("deviceList").toArray();
+    //emit preItemsResetRemove(mItems.size());
     mItems.clear();
-    emit postItemResetRemove();
-    emit preItemsResetAppend(jsonArray.size());
+    //emit postItemResetRemove();
+    //emit preItemsResetAppend(jsonArray.size());
     for(int i=0;i<jsonArray.size();i++){
         QJsonObject jsonItem = jsonArray.at(i).toObject();
         DeviceItem item;
@@ -55,7 +56,8 @@ void DeviceList::setDeviceList(QJsonObject json)
         item.description = jsonItem["description"].toString();
         mItems.append(item);
     }
-    postItemResetAppend();
+    //emit postItemResetAppend();
+    emit postItemDataChanged();
 }
 
 RemoteReplica *DeviceList::remote() const

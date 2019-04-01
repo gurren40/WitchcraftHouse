@@ -60,7 +60,7 @@ void SharedList::setSharedList(QJsonObject json)
         item.description = jsonItem["description"].toString();
         mItems.append(item);
     }
-    postItemResetAppend();
+    emit postItemResetAppend();
 }
 
 RemoteReplica *SharedList::remote() const
