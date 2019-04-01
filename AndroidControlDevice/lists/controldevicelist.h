@@ -47,6 +47,10 @@ public slots:
     void getControlDeviceList();
     void deleteControlDevice(QVariant controlDeviceID);
 
+    //misc
+    QVariant jsonToVariant(QJsonObject json);
+    QJsonObject variantToJson(QVariant jvar);
+
 private:
     QVector<ControlDeviceItem> mItems;
     RemoteReplica *m_remote;

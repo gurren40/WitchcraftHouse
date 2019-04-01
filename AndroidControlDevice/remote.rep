@@ -1,13 +1,19 @@
-#include <QJsonObject>
+#include "services/remoterepheader.h"
+
 class Remote {
     SLOT(void ping(const QString &msg));
     SIGNAL(pong(const QString &msg));
     //json to and from Activity
-    SLOT(void sendToServer(QJsonObject json));
-    SIGNAL(fromServerSig(QJsonObject json));
+    SLOT(void sendToServer(QVariant jvar));
+    SIGNAL(fromServerSig(QVariant jvar));
     //json to and from Service
-    SIGNAL(sendToServerSig(QJsonObject json));
-    SLOT(void fromServer(QJsonObject json));
+    SIGNAL(sendToServerSig(QVariant jvar));
+    SLOT(void fromServer(QVariant jvar));
+
+    //coba
+    SLOT(void sendToServerVariant(QVariant jvar));
+    SIGNAL(sendToServerVariantSig(QVariant jvar));
+
 
     //logOut -> to Service
     SIGNAL(logOutSig());

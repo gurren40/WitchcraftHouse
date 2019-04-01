@@ -65,7 +65,7 @@ void ControlDeviceList::getControlDeviceList()
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["getControlDeviceList"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
 }
 
 RemoteReplica *ControlDeviceList::getRemote() const
@@ -86,5 +86,19 @@ void ControlDeviceList::deleteControlDevice(QVariant controlDeviceID)
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["deleteControlDevice"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
+}
+
+QVariant ControlDeviceList::jsonToVariant(QJsonObject json)
+{
+    QJsonDocument jdoc(json);
+    QVariant jvar(jdoc.toJson());
+    return jvar;
+}
+
+QJsonObject ControlDeviceList::variantToJson(QVariant jvar)
+{
+    QJsonDocument jdoc = QJsonDocument::fromJson(jvar.toByteArray());
+    QJsonObject json = jdoc.object();
+    return json;
 }

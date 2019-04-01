@@ -91,6 +91,17 @@ QString User::thisDeviceModel()
     return jstringValue.toString();
 }
 
+QString User::getJwt()
+{
+    QSettings setting;
+    if(setting.contains("jwt")){
+        return setting.value("jwt").toString();
+    }
+    else{
+        return "Not Yet Avaiable";
+    }
+}
+
 void User::getUserInfo()
 {
     QSettings setting;
@@ -100,7 +111,7 @@ void User::getUserInfo()
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["getUserInfo"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
 }
 
 void User::requestLoginToken(QVariant email, QVariant password)
@@ -113,7 +124,7 @@ void User::requestLoginToken(QVariant email, QVariant password)
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["requestLoginToken"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
 }
 
 void User::createNewUser(QVariant email, QVariant name, QVariant password)
@@ -126,7 +137,7 @@ void User::createNewUser(QVariant email, QVariant name, QVariant password)
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["createNewUser"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
 }
 
 void User::editUser(QVariant email, QVariant name, QVariant password)
@@ -140,7 +151,7 @@ void User::editUser(QVariant email, QVariant name, QVariant password)
         jsonArray.append(jsonObj);
         QJsonObject toSend;
         toSend["editUser"] = jsonArray;
-        m_remote->sendToServer(toSend);
+        m_remote->sendToServer(jsonToVariant(toSend));
     }
 }
 
@@ -184,5 +195,19 @@ void User::getAllData()
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["getAllData"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
+}
+
+QVariant User::jsonToVariant(QJsonObject json)
+{
+    QJsonDocument jdoc(json);
+    QVariant jvar(jdoc.toJson());
+    return jvar;
+}
+
+QJsonObject User::variantToJson(QVariant jvar)
+{
+    QJsonDocument jdoc = QJsonDocument::fromJson(jvar.toByteArray());
+    QJsonObject json = jdoc.object();
+    return json;
 }

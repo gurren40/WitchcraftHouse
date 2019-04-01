@@ -11,7 +11,8 @@ HEADERS += \
     remote.h \
     services/notification.h \
     services/connection.h \
-    runtime/server.h
+    runtime/server.h \
+    services/remoterepheader.h
 
 SOURCES += service.cpp \
     remote.cpp \

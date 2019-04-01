@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     //percobaanEmail();
 
     QSqlDatabase db = setDatabase();
-    WebsocketServer *server = new WebsocketServer(7000);
+    WebsocketServer *server = new WebsocketServer(9000);
     CronScheduler *scheduler = new CronScheduler;
     server->setDatabase(&db);
     server->setCronScheduler(scheduler);

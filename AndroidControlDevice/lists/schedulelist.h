@@ -56,6 +56,10 @@ public slots:
     void editSchedule(QVariant scheduleID, QVariant scheduleName, QVariant pinUUID, QVariant minute, QVariant hour, QVariant dayOfMonth, QVariant month, QVariant dayOfWeek, QVariant timeZone, QVariant value, QVariant description);
     void deleteSchedule(QVariant scheduleID);
 
+    //misc
+    QVariant jsonToVariant(QJsonObject json);
+    QJsonObject variantToJson(QVariant jvar);
+
 private:
     QVector<ScheduleItem> mItems;
     RemoteReplica *m_remote;

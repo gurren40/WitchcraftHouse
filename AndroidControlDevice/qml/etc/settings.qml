@@ -42,6 +42,10 @@ ScrollView {
                 width: parent.width
                 text: user.isLoggedIn ? qsTr("Login : Logged In") : qsTr("Login : Logged Out")
             }
+            ItemDelegate{
+                width: parent.width
+                text: "Token : " + user.jwt
+            }
         }
         ItemDelegate{
             icon.name: "chevron_right"

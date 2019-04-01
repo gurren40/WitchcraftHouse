@@ -49,6 +49,7 @@ ScrollView {
                 Button{
                     id: loginButton
                     text: "Login"
+                    onClicked: user.requestLoginToken(user.email,buttonRow.passwordInRow)
                 }
                 Button{
                     id: createNewUser
@@ -168,6 +169,8 @@ ScrollView {
         id: passwordMismatch
         title: "Password Mismatch"
         standardButtons: Dialog.Ok
+        modal: true
+        anchors.centerIn: parent
     }
 
     ScrollBar.horizontal: ScrollBar { }

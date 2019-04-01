@@ -50,6 +50,10 @@ public slots:
     void editShared(QVariant sharedID, QVariant sharedName, QVariant sharedTo, QVariant sharedType, QVariant groupID, QVariant pinUUID, QVariant description);
     void deleteShared(QVariant sharedID);
 
+    //misc
+    QVariant jsonToVariant(QJsonObject json);
+    QJsonObject variantToJson(QVariant jvar);
+
 private:
     QVector<SharedItem> mItems;
     RemoteReplica *m_remote;

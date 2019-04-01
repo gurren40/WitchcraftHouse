@@ -17,7 +17,7 @@ void Device::setDatabase(QSqlDatabase *database)
 
 QJsonObject Device::create(QUuid deviceUUID, int userID, QString deviceName, QString deviceToken, bool isDeviceOnline, QString description)
 {
-    QString textQuery = "INSERT INTO `Device` (`deviceUUID`,`userID`,`deviceName`,`deviceToken`,`isDeviceOnline`,`description`) VALUES ((UuidToBin('"+deviceUUID.toString(QUuid::WithoutBraces)+"'),'"+QString::number(userID)+"','"+deviceName+"','"+deviceToken+"','"+QString::number(isDeviceOnline)+"','"+description+"');";
+    QString textQuery = "INSERT INTO `Device` (`deviceUUID`,`userID`,`deviceName`,`deviceToken`,`isDeviceOnline`,`description`) VALUES (UuidToBin('"+deviceUUID.toString(QUuid::WithoutBraces)+"'),'"+QString::number(userID)+"','"+deviceName+"','"+deviceToken+"','"+QString::number(isDeviceOnline)+"','"+description+"');";
     QSqlQuery query;
     QJsonObject response;
     bool ok;

@@ -13,11 +13,11 @@ class Remote : public RemoteSource
 public slots:
     void ping(const QString &msg) override;
     //Activity
-    void sendToServer(QJsonObject json) override;
-    //SIGNAL(fromServerSig(QJsonObject json));
+    void sendToServer(QVariant jvar) override;
+    //SIGNAL(fromServerSig(QVariant jvar));
     //Service
-    //SIGNAL(sendToServerSig(QJsonObject json));
-    void fromServer(QJsonObject json) override;
+    //SIGNAL(sendToServerSig(QVariant jvar));
+    void fromServer(QVariant jvar) override;
 
     //logOut -> to Service
 //    SIGNAL(logOutSig());
@@ -30,6 +30,8 @@ public slots:
 //    //setTokenExpired -> to Activity
 //    SIGNAL(tokenExpiredSig(bool isTokenExpired));
     void tokenExpired(bool isTokenExpired) override;
+
+    void sendToServerVariant(QVariant jvar) override;
 };
 
 #endif // REMOTE_H

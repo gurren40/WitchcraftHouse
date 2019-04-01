@@ -47,8 +47,10 @@ signals:
 
 public slots:
     void onTokenExpired(bool value);
-    void fromServer(QJsonObject json);
+    void fromServer(QVariant jvar);
     void setIsOnline(bool value);
+    QVariant jsonToVariant(QJsonObject json);
+    QJsonObject variantToJson(QVariant jvar);
 
 private:
     RemoteReplica *m_remote;

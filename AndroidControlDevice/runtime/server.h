@@ -24,9 +24,15 @@ signals:
 
 public slots:
     //THIS IS SERVER DAMNNINT
-    void sentToServer(QJsonObject json);
+    void sentToServer(QVariant jvar);
     void onMessageReceived(QJsonObject json);
     void logOut();
+    QVariant jsonToVariant(QJsonObject json);
+    QJsonObject variantToJson(QVariant jvar);
+
+    //check if online or offline
+    void isOnline();
+    void isOffline();
 
 private:
     RemoteReplica *m_remote;

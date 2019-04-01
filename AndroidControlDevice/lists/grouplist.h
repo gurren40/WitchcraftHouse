@@ -47,6 +47,10 @@ public slots:
     void editGroup(QVariant groupID, QVariant groupName, QVariant iconID, QVariant description);
     void deleteGroup(QVariant groupID);
 
+    //misc
+    QVariant jsonToVariant(QJsonObject json);
+    QJsonObject variantToJson(QVariant jvar);
+
 private:
     QVector<GroupItem> mItems;
     RemoteReplica *m_remote;

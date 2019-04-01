@@ -99,7 +99,7 @@ void PinList::getPinList()
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["getPinList"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
     getSharedPinList();
 }
 
@@ -112,7 +112,7 @@ void PinList::getSharedPinList()
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["getSharedPinList"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
 }
 
 void PinList::createNewPin(QVariant pinName, QVariant groupID, QVariant deviceID, QVariant iconID, QVariant pinTypeID, QVariant value, QVariant option, QVariant description)
@@ -132,7 +132,7 @@ void PinList::createNewPin(QVariant pinName, QVariant groupID, QVariant deviceID
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["createNewPin"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
 }
 
 void PinList::editPin(QVariant pinID, QVariant UUID, QVariant pinName, QVariant groupID, QVariant deviceID, QVariant iconID, QVariant pinTypeID, QVariant value, QVariant option, QVariant description)
@@ -154,7 +154,7 @@ void PinList::editPin(QVariant pinID, QVariant UUID, QVariant pinName, QVariant 
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["editPin"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
 }
 
 void PinList::deletePin(QVariant UUID)
@@ -165,7 +165,7 @@ void PinList::deletePin(QVariant UUID)
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["deletePin"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
 }
 
 void PinList::setPinValue(QVariant UUID, QVariant value)
@@ -177,7 +177,7 @@ void PinList::setPinValue(QVariant UUID, QVariant value)
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["setPinValue"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
 }
 
 void PinList::settedPinValue(QJsonObject json)
@@ -194,4 +194,18 @@ void PinList::settedPinValue(QJsonObject json)
         }
     }
     emit postItemDataChanged();
+}
+
+QVariant PinList::jsonToVariant(QJsonObject json)
+{
+    QJsonDocument jdoc(json);
+    QVariant jvar(jdoc.toJson());
+    return jvar;
+}
+
+QJsonObject PinList::variantToJson(QVariant jvar)
+{
+    QJsonDocument jdoc = QJsonDocument::fromJson(jvar.toByteArray());
+    QJsonObject json = jdoc.object();
+    return json;
 }

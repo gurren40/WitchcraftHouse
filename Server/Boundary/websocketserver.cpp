@@ -42,6 +42,7 @@ void WebsocketServer::onNewConnection()
         QString header = "jwt";
         if(!request.hasRawHeader(header.toUtf8())){
             forceDisconnect(pSocket);
+            QTextStream(stdout) << "Force Disconnect";
         }
         else {
             QString token = QString::fromUtf8(request.rawHeader(header.toUtf8()));
@@ -397,6 +398,8 @@ void WebsocketServer::controlSocketDisconnected()
     QTextStream(stdout) << "socketDisconnected:" << pClient;
     QJsonObject jwtPayload = getJwtPayload(pClient->request());
     if (pClient) {
+        UserController UC;
+        UC.toggleControlDeviceOnline(QUuid::fromString(jwtPayload["jti"].toString()),false);
         m_controlDevice.remove(jwtPayload["jti"].toString());
         pClient->deleteLater();
     }

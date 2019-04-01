@@ -82,7 +82,7 @@ void SharedList::getSharedList()
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["getSharedList"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
 }
 
 void SharedList::createNewShared(QVariant sharedName, QVariant sharedTo, QVariant sharedType, QVariant groupID, QVariant pinUUID, QVariant description)
@@ -109,7 +109,7 @@ void SharedList::createNewShared(QVariant sharedName, QVariant sharedTo, QVarian
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["createNewShared"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
 }
 
 void SharedList::editShared(QVariant sharedID, QVariant sharedName, QVariant sharedTo, QVariant sharedType, QVariant groupID, QVariant pinUUID, QVariant description)
@@ -146,7 +146,7 @@ void SharedList::editShared(QVariant sharedID, QVariant sharedName, QVariant sha
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["editShared"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
 }
 
 void SharedList::deleteShared(QVariant sharedID)
@@ -157,6 +157,22 @@ void SharedList::deleteShared(QVariant sharedID)
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["deleteShared"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
 }
+
+
+QVariant SharedList::jsonToVariant(QJsonObject json)
+{
+    QJsonDocument jdoc(json);
+    QVariant jvar(jdoc.toJson());
+    return jvar;
+}
+
+QJsonObject SharedList::variantToJson(QVariant jvar)
+{
+    QJsonDocument jdoc = QJsonDocument::fromJson(jvar.toByteArray());
+    QJsonObject json = jdoc.object();
+    return json;
+}
+
 

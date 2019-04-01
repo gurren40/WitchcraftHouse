@@ -50,6 +50,10 @@ public slots:
     void editDevice(QVariant deviceID, QVariant deviceUUID, QVariant deviceName, QVariant description);
     void deleteDevice(QVariant deviceID);
 
+    //misc
+    QVariant jsonToVariant(QJsonObject json);
+    QJsonObject variantToJson(QVariant jvar);
+
 private:
     QVector<DeviceItem> mItems;
     RemoteReplica *m_remote;

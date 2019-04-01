@@ -32,11 +32,16 @@ bool UserController::isJwtValid(QJsonObject jwt, QString path)
         if(user.mUsers.size() != 1) return false;
         ControllDevice cd(&db);
         cd.read("controlDeviceID=UuidToBin('"+jwt["jti"].toString()+"')");
+        QTextStream(stdout) << "What The hell \n";
         if(cd.mControlDevices.size() != 1) return  false;
-        QDateTime dt(cd.mControlDevices.at(0).expireDate);
-        if(dt.toSecsSinceEpoch() > jwt["exp"].toString().toInt()) return false;
+        QTextStream(stdout) << "up chech if control device != 1\n";
+        //QDateTime dt(cd.mControlDevices.at(0).expireDate);
+        //if(dt.toSecsSinceEpoch() > jwt["exp"].toString().toInt()) return false;
+        QTextStream(stdout) << "check toSecssinceepoch\n";
         if(cd.mControlDevices.at(0).isControlDeviceOnline) return false;
+        QTextStream(stdout) << "check device is online now\n";
         if(!toggleControlDeviceOnline(cd.mControlDevices.at(0).controlDeviceID,true)) return false;
+        QTextStream(stdout) << "check toogle control device\n";
     }
     else {
         return false;
@@ -95,11 +100,12 @@ QJsonObject UserController::selectAllControlDevice(int userID)
 int UserController::getUserIDByControlDeviceID(QUuid controlDeviceID)
 {
     ControllDevice cd(&db);
-    cd.read("controlDeviceID=(UuidToBin('"+controlDeviceID.toString(QUuid::WithoutBraces)+"')");
+    cd.read("controlDeviceID=(UuidToBin('"+controlDeviceID.toString(QUuid::WithoutBraces)+"'))");
     if(cd.mControlDevices.size()!=1){
         return 0;
     }
     else{
+        QTextStream(stdout) <<"user id : "<< cd.mControlDevices.at(0).userID;
         return cd.mControlDevices.at(0).userID;
     }
 }

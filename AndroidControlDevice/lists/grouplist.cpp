@@ -75,7 +75,7 @@ void GroupList::getGroupList()
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["getGroupList"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
 }
 
 void GroupList::createNewGroup(QVariant groupName, QVariant iconID, QVariant description)
@@ -89,7 +89,7 @@ void GroupList::createNewGroup(QVariant groupName, QVariant iconID, QVariant des
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["createNewGroup"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
 }
 
 void GroupList::editGroup(QVariant groupID, QVariant groupName, QVariant iconID, QVariant description)
@@ -104,7 +104,7 @@ void GroupList::editGroup(QVariant groupID, QVariant groupName, QVariant iconID,
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["editGroup"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
 }
 
 void GroupList::deleteGroup(QVariant groupID)
@@ -115,5 +115,19 @@ void GroupList::deleteGroup(QVariant groupID)
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["deleteGroup"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
+}
+
+QVariant GroupList::jsonToVariant(QJsonObject json)
+{
+    QJsonDocument jdoc(json);
+    QVariant jvar(jdoc.toJson());
+    return jvar;
+}
+
+QJsonObject GroupList::variantToJson(QVariant jvar)
+{
+    QJsonDocument jdoc = QJsonDocument::fromJson(jvar.toByteArray());
+    QJsonObject json = jdoc.object();
+    return json;
 }

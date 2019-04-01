@@ -77,7 +77,7 @@ void DeviceList::getDeviceList()
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["getDeviceList"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
 }
 
 void DeviceList::createNewDevice(QVariant deviceName, QVariant description)
@@ -90,7 +90,7 @@ void DeviceList::createNewDevice(QVariant deviceName, QVariant description)
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["createNewDevice"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
 }
 
 void DeviceList::editDevice(QVariant deviceID, QVariant deviceUUID, QVariant deviceName, QVariant description)
@@ -105,7 +105,7 @@ void DeviceList::editDevice(QVariant deviceID, QVariant deviceUUID, QVariant dev
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["editDevice"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
 }
 
 void DeviceList::deleteDevice(QVariant deviceID)
@@ -116,6 +116,20 @@ void DeviceList::deleteDevice(QVariant deviceID)
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["deleteDevice"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
+}
+
+QVariant DeviceList::jsonToVariant(QJsonObject json)
+{
+    QJsonDocument jdoc(json);
+    QVariant jvar(jdoc.toJson());
+    return jvar;
+}
+
+QJsonObject DeviceList::variantToJson(QVariant jvar)
+{
+    QJsonDocument jdoc = QJsonDocument::fromJson(jvar.toByteArray());
+    QJsonObject json = jdoc.object();
+    return json;
 }
 

@@ -10,14 +10,14 @@ void Remote::ping(const QString &msg){
     notify.notify(msg);
 }
 
-void Remote::sendToServer(QJsonObject json)
+void Remote::sendToServer(QVariant jvar)
 {
-    emit sendToServerSig(json);
+    emit sendToServerSig(jvar);
 }
 
-void Remote::fromServer(QJsonObject json)
+void Remote::fromServer(QVariant jvar)
 {
-    emit fromServerSig(json);
+    emit fromServerSig(jvar);
 }
 
 void Remote::logOut()
@@ -33,4 +33,9 @@ void Remote::setIsOnline(bool isOnline)
 void Remote::tokenExpired(bool isTokenExpired)
 {
     emit tokenExpiredSig(isTokenExpired);
+}
+
+void Remote::sendToServerVariant(QVariant jvar)
+{
+    emit sendToServerVariantSig(jvar);
 }

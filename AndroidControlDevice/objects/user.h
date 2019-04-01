@@ -20,6 +20,7 @@ class User : public QObject
     Q_PROPERTY(QString email READ email WRITE setEmail NOTIFY emailSig)
     Q_PROPERTY(QString thisDeviceModel READ thisDeviceModel)
     Q_PROPERTY(QString name READ getName WRITE setName NOTIFY nameSig)
+    Q_PROPERTY(QString jwt READ getJwt)
 
 public:
     explicit User(QObject *parent = nullptr);
@@ -30,6 +31,7 @@ public:
     QString serverDomain();
     QString email();
     QString thisDeviceModel();
+    QString getJwt();
 
     RemoteReplica *remote() const;
     void setRemote(RemoteReplica *remote);
@@ -60,6 +62,8 @@ public slots:
     //misc
     void logOut();
     void getAllData();
+    QVariant jsonToVariant(QJsonObject json);
+    QJsonObject variantToJson(QVariant jvar);
 
 private:
     bool m_isOnline;

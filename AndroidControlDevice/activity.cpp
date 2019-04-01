@@ -8,6 +8,7 @@
 #include <QTimer>
 #include <QSignalMapper>
 #include <QIcon>
+#include <QMetaType>
 
 #include "rep_remote_replica.h"
 #include "models/pinmodel.h"
@@ -36,6 +37,8 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QIcon::setThemeName("witchcraft");
+
+    qRegisterMetaType<QJsonObject>();
 
     //panggil service
     QAndroidJniObject::callStaticMethod<void>("id/web/witchcraft/house/MyService",

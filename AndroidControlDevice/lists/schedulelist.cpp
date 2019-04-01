@@ -93,7 +93,7 @@ void ScheduleList::getScheduleList()
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["getScheduleList"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
 }
 
 void ScheduleList::createNewSchedule(QVariant scheduleName, QVariant pinUUID, QVariant minute, QVariant hour, QVariant dayOfMonth, QVariant month, QVariant dayOfWeek, QVariant timeZone, QVariant value, QVariant description)
@@ -113,7 +113,7 @@ void ScheduleList::createNewSchedule(QVariant scheduleName, QVariant pinUUID, QV
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["createNewSchedule"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
     /*
      * QUuid UUID = QUuid::fromString(jsonObject["pinUUID"].toString());
      * QUuid scheduleUUID = QUuid::createUuid();
@@ -148,7 +148,7 @@ void ScheduleList::editSchedule(QVariant scheduleID, QVariant scheduleName, QVar
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["editSchedule"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
 //    QUuid UUID = QUuid::fromString(jsonObject["pinUUID"].toString());
 //    int pinID = getPinIDbyUUID(UUID);
 //    QString scheduleName = jsonObject["scheduleName"].toString();
@@ -170,5 +170,20 @@ void ScheduleList::deleteSchedule(QVariant scheduleID)
     jsonArray.append(jsonObj);
     QJsonObject toSend;
     toSend["deleteSchedule"] = jsonArray;
-    m_remote->sendToServer(toSend);
+    m_remote->sendToServer(jsonToVariant(toSend));
+}
+
+
+QVariant ScheduleList::jsonToVariant(QJsonObject json)
+{
+    QJsonDocument jdoc(json);
+    QVariant jvar(jdoc.toJson());
+    return jvar;
+}
+
+QJsonObject ScheduleList::variantToJson(QVariant jvar)
+{
+    QJsonDocument jdoc = QJsonDocument::fromJson(jvar.toByteArray());
+    QJsonObject json = jdoc.object();
+    return json;
 }

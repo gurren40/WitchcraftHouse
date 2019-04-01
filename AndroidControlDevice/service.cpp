@@ -27,6 +27,8 @@ int main(int argc, char *argv[])
     QSettings settings;
     checkSettingsValue(&settings);
 
+    qRegisterMetaType<QJsonObject>();
+
     QRemoteObjectHost srcNode(QUrl(QStringLiteral("local:replica")));
     Remote remoteServer;
     //srcNode.enableRemoting(&remoteServer);

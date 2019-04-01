@@ -65,11 +65,11 @@ void Connection::connectAuth()
 void Connection::connectControl()
 {
     QSettings setting;
-    if(setting.contains("serverDomain")){
+    if(!setting.contains("serverDomain")){
         onDisconnected();
     }
     else {
-        QUrl url(setting.value("serverDomain").toString() + "/authentication");
+        QUrl url(setting.value("serverDomain").toString() + "/control");
         QNetworkRequest request(url);
         request.setRawHeader("jwt",setting.value("jwt").toString().toUtf8());
         qDebug() << "WebSocket server authentication:" << url;

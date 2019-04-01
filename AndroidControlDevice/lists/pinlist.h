@@ -62,6 +62,10 @@ public slots:
     void setPinValue(QVariant UUID, QVariant value);
     void settedPinValue(QJsonObject json);
 
+    //misc
+    QVariant jsonToVariant(QJsonObject json);
+    QJsonObject variantToJson(QVariant jvar);
+
 private:
     QVector<PinItem> mItems;
     RemoteReplica *m_remote;

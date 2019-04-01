@@ -6,6 +6,8 @@ Server::Server(QObject *parent) : QObject(parent)
     m_notification = new Notification(this);
     m_notification->setJavaClass("id/web/witchcraft/house/MyService");
     connect(m_connection,&Connection::messageReceived,this,&Server::onMessageReceived);
+    connect(m_connection,&Connection::websocketConnected,this,&Server::isOnline);
+    connect(m_connection,&Connection::websocketDisconnected,this,&Server::isOffline);
 }
 
 RemoteReplica *Server::remote() const
@@ -19,26 +21,19 @@ void Server::setRemote(RemoteReplica *remote)
     //send from activity to service/server
     connect(m_remote,&RemoteReplica::sendToServerSig,this,&Server::sentToServer);
 
-    //signal if device is online / connected to websocket server
-    QSignalMapper *signalMapper1 = new QSignalMapper;
-    connect(m_connection,SIGNAL(websocketConnected),signalMapper1,SLOT(map()));
-    signalMapper1->setMapping(m_connection,true);
-    connect(signalMapper1,SIGNAL(mapped(bool)),m_remote,SLOT(setIsOnline(bool)));
-
-    QSignalMapper *signalMapper2 = new QSignalMapper;
-    connect(m_connection,SIGNAL(websocketDisconnected),signalMapper2,SLOT(map()));
-    signalMapper2->setMapping(m_connection,false);
-    connect(signalMapper2,SIGNAL(mapped(bool)),m_remote,SLOT(setIsOnline(bool)));
-
     //if token expired please notify
     //connect(this,&Server::tokenExpired,m_remote,&RemoteReplica::tokenExpired);
 
     //logout to reconnect
     connect(m_remote,&RemoteReplica::logOutSig,this,&Server::logOut);
+
+    //variant
+    //connect(m_remote,&RemoteReplica::sendToServerVariantSig,this,&Server::sentToServerVariant);
 }
 
-void Server::sentToServer(QJsonObject json)
+void Server::sentToServer(QVariant jvar)
 {
+    QJsonObject json = variantToJson(jvar);
     bool isValid = m_connection->sendMessage(json);
     if(!isValid){
         m_remote->setIsOnline(false);
@@ -107,10 +102,35 @@ void Server::onMessageReceived(QJsonObject json)
             }
         }
     }
-    m_remote->fromServer(json);
+    QVariant jvar = jsonToVariant(json);
+    m_remote->fromServer(jvar);
 }
 
 void Server::logOut()
 {
     m_connection->disconnectWebsocket();
+}
+
+QVariant Server::jsonToVariant(QJsonObject json)
+{
+    QJsonDocument jdoc(json);
+    QVariant jvar(jdoc.toJson());
+    return jvar;
+}
+
+QJsonObject Server::variantToJson(QVariant jvar)
+{
+    QJsonDocument jdoc = QJsonDocument::fromJson(jvar.toByteArray());
+    QJsonObject json = jdoc.object();
+    return json;
+}
+
+void Server::isOnline()
+{
+    m_remote->setIsOnline(true);
+}
+
+void Server::isOffline()
+{
+    m_remote->setIsOnline(false);
 }

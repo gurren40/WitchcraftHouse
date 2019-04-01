@@ -32,12 +32,13 @@ void Client::onTokenExpired(bool value)
     m_user->setIsTokenExpired(value);
 }
 
-void Client::fromServer(QJsonObject json)
+void Client::fromServer(QVariant jvar)
 {
 //    loginToken will implemented from service(?)
 //    if(json.contains("LoginToken")){
 //        setLoginToken();
 //    }
+    QJsonObject json = variantToJson(jvar);
     if(json.contains("userInfo")){
         m_user->setUserInfo(json);
     }
@@ -68,6 +69,20 @@ void Client::fromServer(QJsonObject json)
 void Client::setIsOnline(bool value)
 {
     m_user->setIsOnline(value);
+}
+
+QVariant Client::jsonToVariant(QJsonObject json)
+{
+    QJsonDocument jdoc(json);
+    QVariant jvar(jdoc.toJson());
+    return jvar;
+}
+
+QJsonObject Client::variantToJson(QVariant jvar)
+{
+    QJsonDocument jdoc = QJsonDocument::fromJson(jvar.toByteArray());
+    QJsonObject json = jdoc.object();
+    return json;
 }
 
 void Client::setSharedPinList(PinList *sharedPinList)
