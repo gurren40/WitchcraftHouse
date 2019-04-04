@@ -137,7 +137,7 @@ QJsonObject DeviceController::createNewGroup(QJsonObject json, int userID)
     else {
         for (int i = 0;i<jsonArray.size();i++) {
             QJsonObject jsonObject = jsonArray.at(i).toObject();
-            QJsonObject error = newGroup.create(userID,json["iconID"].toInt(),json["groupName"].toString(),json["description"].toString());
+            QJsonObject error = newGroup.create(userID,jsonObject["iconID"].toInt(),jsonObject["groupName"].toString(),jsonObject["description"].toString());
             errorArray.append(error);
         }
     }
@@ -438,7 +438,7 @@ QJsonObject DeviceController::getGroupList(int userID)
     Group group(&db);
     QJsonObject response;
     QJsonArray jsonArray,errorArray,notificationArray;
-    QJsonObject error = group.read("userID='"+QString::number(userID)+"'");
+    QJsonObject error = group.read("User.userID='"+QString::number(userID)+"'");
 
     if(group.mGroups.size()<1){
         QJsonObject error,notification;

@@ -152,10 +152,8 @@ void WebsocketServer::authSocketDisconnected()
 {
     QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
     QTextStream(stdout) << "socketDisconnected:" << pClient;
-    if (pClient) {
-        m_auth.removeAll(pClient);
-        pClient->deleteLater();
-    }
+    m_auth.removeAll(pClient);
+    pClient->deleteLater();
 }
 
 void WebsocketServer::broadcastToAllUserControlDevice(int userID, QJsonObject json)
@@ -397,15 +395,14 @@ void WebsocketServer::controlProcessBinaryMessage(QByteArray message)
 
 void WebsocketServer::controlSocketDisconnected()
 {
+    UserController UC;
     QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
     QTextStream(stdout) << "socketDisconnected:" << pClient;
     QJsonObject jwtPayload = getJwtPayload(pClient->request());
-    if (pClient) {
-        UserController UC;
-        UC.toggleControlDeviceOnline(QUuid::fromString(jwtPayload["jti"].toString()),false);
-        m_controlDevice.remove(jwtPayload["jti"].toString());
-        pClient->deleteLater();
-    }
+    UC.toggleControlDeviceOnline(QUuid::fromString(jwtPayload["jti"].toString()),false);
+    UC.toggleControlDeviceOnline(QUuid::fromString(jwtPayload["jti"].toString()),false);
+    m_controlDevice.remove(jwtPayload["jti"].toString());
+    pClient->deleteLater();
 }
 
 void WebsocketServer::broadcastToDevice(QUuid deviceUUID, QJsonObject json)

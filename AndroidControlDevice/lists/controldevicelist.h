@@ -56,4 +56,4 @@ private:
     RemoteReplica *m_remote;
 };
 
-#endif // TODOLIST_H
+#endif // CONTROLDEVICELIST_H

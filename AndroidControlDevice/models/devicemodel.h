@@ -54,4 +54,4 @@ private:
     DeviceList *mList;
 };
 
-#endif // TODOMODEL_H
+#endif // DEVICEMODEL_H

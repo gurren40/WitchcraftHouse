@@ -52,4 +52,4 @@ private:
     ControlDeviceList *mList;
 };
 
-#endif // TODOMODEL_H
+#endif // CONTROLDEVICEMODEL_H

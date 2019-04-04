@@ -59,4 +59,4 @@ private:
     RemoteReplica *m_remote;
 };
 
-#endif // PINLIST_H
+#endif // SHAREDLIST_H

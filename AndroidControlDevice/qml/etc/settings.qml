@@ -15,8 +15,8 @@ ScrollView {
         ItemDelegate{
             icon.name : "chevron_right"
             width: parent.width
-            text: qsTr("Login")
-            onClicked: stackView.push("./login.qml")
+            text: qsTr("Authentication")
+            onClicked: stackView.push("./authentication.qml")
         }
         ItemDelegate{
             icon.name: statusColumn.visible ? "expand_less" : "expand_more"

@@ -15,6 +15,8 @@ DeviceList::DeviceList(QObject *parent) : QObject(parent)
     item.description = "description";
     DeviceItem item2;
     item2 = item;
+    item2.deviceName = "deviceName2";
+    item2.description = "the description here is an example\nyes an example.";
     mItems.append(item);
     mItems.append(item2);
     mItems.append(item);

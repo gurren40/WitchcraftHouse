@@ -3,6 +3,7 @@ import QtQuick.Controls 2.2
 import ControlDevice 1.0
 
 Page {
+    property int listID : 5
     anchors.fill: parent
     title: qsTr("Devices")
 

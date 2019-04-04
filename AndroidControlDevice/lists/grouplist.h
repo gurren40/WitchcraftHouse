@@ -46,6 +46,7 @@ public slots:
     void createNewGroup(QVariant groupName, QVariant iconID, QVariant description);
     void editGroup(QVariant groupID, QVariant groupName, QVariant iconID, QVariant description);
     void deleteGroup(QVariant groupID);
+    //QVariant getGroupIconName(QVariant groupName);
 
     //misc
     QVariant jsonToVariant(QJsonObject json);
@@ -56,4 +57,4 @@ private:
     RemoteReplica *m_remote;
 };
 
-#endif // TODOLIST_H
+#endif // GROUPLIST_H

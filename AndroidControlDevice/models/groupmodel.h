@@ -52,4 +52,4 @@ private:
     GroupList *mList;
 };
 
-#endif // TODOMODEL_H
+#endif // GROUPMODEL_H

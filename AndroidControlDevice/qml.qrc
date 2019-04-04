@@ -21,6 +21,6 @@
         <file>qtquickcontrols2.conf</file>
         <file>qml/list/SharedPinList.qml</file>
         <file>qml/etc/settings.qml</file>
-        <file>qml/etc/login.qml</file>
+        <file>qml/etc/authentication.qml</file>
     </qresource>
 </RCC>

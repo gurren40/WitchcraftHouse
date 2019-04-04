@@ -27,6 +27,12 @@
 #include "objects/user.h"
 #include "runtime/client.h"
 
+//non editable
+#include "models/iconmodel.h"
+#include "models/pintypemodel.h"
+#include "lists/iconlist.h"
+#include "lists/pintypelist.h"
+
 int main(int argc, char *argv[])
 {
     //inisialisasi GUI & Environment
@@ -53,6 +59,9 @@ int main(int argc, char *argv[])
     qmlRegisterType<ScheduleModel>("Schedule", 1, 0, "ScheduleModel");
     qmlRegisterType<SharedModel>("Shared", 1, 0, "SharedModel");
     qmlRegisterType<ControlDeviceModel>("ControlDevice", 1, 0, "ControlDeviceModel");
+    //non editable
+    qmlRegisterType<IconModel>("Icon",1,0,"IconModel");
+    qmlRegisterType<PinTypeModel>("PinType",1,0,"PinTypeModel");
 
     qmlRegisterUncreatableType<PinList>("Pin", 1, 0, "PinList",
         QStringLiteral("PinList should not be created in QML"));
@@ -66,6 +75,11 @@ int main(int argc, char *argv[])
         QStringLiteral("SharedList should not be created in QML"));
     qmlRegisterUncreatableType<ControlDeviceList>("ControlDevice", 1, 0, "ControlDeviceList",
         QStringLiteral("ControlDeviceList should not be created in QML"));
+    //nn
+    qmlRegisterUncreatableType<IconList>("Icon", 1, 0, "IconList",
+        QStringLiteral("IconList should not be created in QML"));
+    qmlRegisterUncreatableType<PinTypeList>("PinType", 1, 0, "PinTypeList",
+        QStringLiteral("PinTypeList should not be created in QML"));
 
     //panggil remote object
     QRemoteObjectNode repNode;
@@ -91,6 +105,9 @@ int main(int argc, char *argv[])
     controlDeviceList.setRemote(rep.data());
     User user; //inisialisasi objek user
     user.setRemote(rep.data());
+    //inisialisasi non editable
+    IconList iconList;
+    PinTypeList pinTypeList;
 
     //inisialisasi client
     Client clientApp;
@@ -114,6 +131,8 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty(QStringLiteral("sharedPinList"), &sharedPinList);
     engine.rootContext()->setContextProperty(QStringLiteral("controlDeviceList"), &controlDeviceList);
     engine.rootContext()->setContextProperty(QStringLiteral("user"), &user);
+    engine.rootContext()->setContextProperty(QStringLiteral("iconList"), &iconList);
+    engine.rootContext()->setContextProperty(QStringLiteral("pinType"), &pinTypeList);
 
     engine.load(QUrl("qrc:/qml/main.qml"));
 

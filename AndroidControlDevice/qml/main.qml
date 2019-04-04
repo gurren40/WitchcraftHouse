@@ -87,13 +87,15 @@ ApplicationWindow {
 
         Drawer{
             id : drawer
-            width: (inPortrait) ? parent.width * 0.66 : parent.width * 0.25
+            //width: (inPortrait) ? parent.width * 0.66 : parent.width * 0.25
+            width: parent.width * 0.8
             height: parent.height - toolBar.contentHeight
             y : toolBar.contentHeight
-            modal: inPortrait
-            interactive: inPortrait
-            position: inPortrait ? 0 : 1
-            visible: !inPortrait
+            //modal: inPortrait
+            //interactive: inPortrait
+            //position: inPortrait ? 0 : 1
+            //visible: !inPortrait
+            visible: false
             background: Rectangle{
                 anchors.fill: parent
                 color: window.palette.alternateBase
@@ -134,10 +136,11 @@ ApplicationWindow {
             id: stackView
             focus: true
             initialItem: "./list/PinList.qml"
-            height: parent.height - toolBar.contentHeight
-            width: inPortrait ? parent.width : parent.width - (drawer.width * 2)
-            anchors.centerIn: parent
-            anchors.top : toolBar.bottom
+            //height: parent.height - toolBar.contentHeight
+            //width: inPortrait ? parent.width : parent.width - (drawer.width * 2)
+            //anchors.centerIn: parent
+            //anchors.top : toolBar.bottom
+            anchors.fill : parent
 
             pushEnter : Transition {
                 PropertyAnimation{
@@ -188,5 +191,17 @@ ApplicationWindow {
                 }
             }
         }
+    }
+    RoundButton {
+        id: createButton
+        text: qsTr("+")
+        highlighted: true
+        anchors.margins: 15
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        height: toolBar.height * 1.5
+        width: toolBar.height * 1.5
+        font.pointSize: 35
+        onClicked: stackView.currentItem.create()
     }
 }

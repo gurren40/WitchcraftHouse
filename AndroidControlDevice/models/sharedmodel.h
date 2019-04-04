@@ -58,4 +58,4 @@ private:
     SharedList *mList;
 };
 
-#endif // TODOMODEL_H
+#endif // SHAREDMODEL_H

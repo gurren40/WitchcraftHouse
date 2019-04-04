@@ -70,4 +70,4 @@ private:
     PinList *mList;
 };
 
-#endif // TODOMODEL_H
+#endif // PINMODEL_H

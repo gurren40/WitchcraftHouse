@@ -3,6 +3,7 @@ import QtQuick.Controls 2.2
 import Shared 1.0
 
 Page {
+    property int listID : 4
     anchors.fill: parent
     title: qsTr("Shared List")
 
@@ -34,17 +35,6 @@ Page {
         }
 
         ScrollBar.vertical: ScrollBar { }
-    }
-    RoundButton {
-        id: floatingPlusButton
-        text: qsTr("+")
-        highlighted: true
-        anchors.margins: 15
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        height: toolBar.height * 1.5
-        width: toolBar.height * 1.5
-        font.pointSize: 35
     }
 }
 

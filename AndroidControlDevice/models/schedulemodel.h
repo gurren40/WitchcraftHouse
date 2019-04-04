@@ -70,4 +70,4 @@ private:
     ScheduleList *mList;
 };
 
-#endif // TODOMODEL_H
+#endif // SCHEDULEMODEL_H

@@ -61,4 +61,4 @@ private:
     RemoteReplica *m_remote;
 };
 
-#endif // TODOLIST_H
+#endif // DEVICELIST_H

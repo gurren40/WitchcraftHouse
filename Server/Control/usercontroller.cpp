@@ -38,7 +38,8 @@ bool UserController::isJwtValid(QJsonObject jwt, QString path)
         //QDateTime dt(cd.mControlDevices.at(0).expireDate);
         //if(dt.toSecsSinceEpoch() > jwt["exp"].toString().toInt()) return false;
         QTextStream(stdout) << "check toSecssinceepoch\n";
-        if(cd.mControlDevices.at(0).isControlDeviceOnline) return false;
+        //f-this
+        //if(cd.mControlDevices.at(0).isControlDeviceOnline) return false;
         QTextStream(stdout) << "check device is online now\n";
         if(!toggleControlDeviceOnline(cd.mControlDevices.at(0).controlDeviceID,true)) return false;
         QTextStream(stdout) << "check toogle control device\n";
@@ -56,9 +57,9 @@ bool UserController::toggleControlDeviceOnline(QUuid controlDeviceID, bool toggl
     if(device.mControlDevices.size() != 1){
         return false;
     }
-    if(device.mControlDevices.at(0).isControlDeviceOnline == toggle){
-        return false;
-    }
+//    if(device.mControlDevices.at(0).isControlDeviceOnline == toggle){
+//        return false;
+//    }
     controlDevice dvc = device.mControlDevices.at(0);
     device.update(dvc.controlDeviceID,dvc.userID,dvc.controlDeviceName,dvc.controlDeviceToken,toggle,dvc.expireDate);
     return true;
@@ -367,17 +368,17 @@ QJsonObject UserController::getAllDatalist(int userID)
     QJsonObject deviceList = DC.getDeviceList(userID);
     QJsonObject scheduleList = SC.getScheduleList(userID);
     QJsonObject sharedList = ShC.getSharedList(userID);
-    QJsonObject sharedPin = ShC.getSharedPinList(userID);
+    QJsonObject sharedPinList = ShC.getSharedPinList(userID);
     QJsonObject userInfo = getUserInfo(userID);
     QJsonObject controlDeviceList = getControlDeviceList(userID);
 
     //inisialisasi ke response
     response["pinList"] = pinList["pinList"].toArray();
-    response["groupList"] = pinList["groupList"].toArray();
+    response["groupList"] = groupList["groupList"].toArray();
     response["deviceList"] = deviceList["deviceList"].toArray();
     response["scheduleList"] = scheduleList["scheduleList"].toArray();
     response["sharedList"] = sharedList["sharedList"].toArray();
-    response["sharedPin"] = sharedPin["sharedPin"].toArray();
+    response["sharedPinList"] = sharedPinList["sharedPinList"].toArray();
     response["userInfo"] = userInfo["userInfo"].toObject();
     response["controlDeviceList"] = controlDeviceList["controlDeviceList"].toArray();
     return response;

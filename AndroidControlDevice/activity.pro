@@ -26,7 +26,11 @@ HEADERS += \
     lists/sharedlist.h \
     models/controldevicemodel.h \
     lists/controldevicelist.h \
-    objects/user.h
+    objects/user.h \
+    models/iconmodel.h \
+    lists/iconlist.h \
+    models/pintypemodel.h \
+    lists/pintypelist.h
 
 SOURCES += activity.cpp \
     runtime/client.cpp \
@@ -47,7 +51,11 @@ SOURCES += activity.cpp \
     lists/sharedlist.cpp \
     models/controldevicemodel.cpp \
     lists/controldevicelist.cpp \
-    objects/user.cpp
+    objects/user.cpp \
+    models/iconmodel.cpp \
+    lists/iconlist.cpp \
+    models/pintypemodel.cpp \
+    lists/pintypelist.cpp
 
 RESOURCES += qml.qrc \
     icons.qrc

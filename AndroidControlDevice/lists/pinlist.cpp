@@ -16,17 +16,19 @@ PinList::PinList(QObject *parent) : QObject(parent)
     item.deviceID = 5;
     item.iconName = "iconName";
     item.userName = "userName";
-    item.groupName = "groupName";
+    item.groupName = "Lol";
     item.pinTypeID = 6;
     item.deviceName = "deviceName";
     item.description = "description";
-    item.pinTypeName = "pinTypeName";
+    item.pinTypeName = "switch";
     PinItem item2;
     item2 = item;
+    item2.pinTypeName = "default";
+    item2.groupName = "lil";
     mItems.append(item);
     mItems.append(item2);
-    mItems.append(item);
     mItems.append(item2);
+    mItems.append(item);
 }
 
 QVector<PinItem> PinList::items() const
