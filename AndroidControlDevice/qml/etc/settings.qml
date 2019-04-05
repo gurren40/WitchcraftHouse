@@ -47,25 +47,6 @@ ScrollView {
                 text: "Token : " + user.jwt
             }
         }
-        ItemDelegate{
-            icon.name: "chevron_right"
-            width: parent.width
-            text: qsTr("Log Out")
-            onClicked: logOutDialog.open()
-        }
     }
-    Dialog{
-        id: logOutDialog
-        modal: true
-        anchors.centerIn: parent
-        title: "Are you sure want to Log Out?"
-        standardButtons: Dialog.Ok | Dialog.Cancel
-
-        onAccepted: {
-            user.logOut()
-        }
-        onRejected: console.log("Cancel clicked")
-    }
-
     ScrollBar.horizontal: ScrollBar { }
 }

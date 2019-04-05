@@ -22,6 +22,7 @@ ScrollView {
             onClicked : serverDialog.open()
         }
         ItemDelegate{
+            enabled: !user.isLoggedIn
             id: loginDelegate
             text: "Login"
             icon.name: "chevron_right"
@@ -35,6 +36,13 @@ ScrollView {
             icon.name: "chevron_right"
             width: parent.width
             onClicked: createNewUserDialog.open()
+        }
+        ItemDelegate{
+            enabled: user.isLoggedIn
+            icon.name: "chevron_right"
+            width: parent.width
+            text: qsTr("Log Out")
+            onClicked: logOutDialog.open()
         }
     }
 
@@ -162,6 +170,18 @@ ScrollView {
         standardButtons: Dialog.Ok
         modal: true
         anchors.centerIn: parent
+    }
+    Dialog{
+        id: logOutDialog
+        modal: true
+        anchors.centerIn: parent
+        title: "Are you sure want to Log Out?"
+        standardButtons: Dialog.Ok | Dialog.Cancel
+
+        onAccepted: {
+            user.logOut()
+        }
+        onRejected: console.log("Cancel clicked")
     }
 
     ScrollBar.horizontal: ScrollBar { }

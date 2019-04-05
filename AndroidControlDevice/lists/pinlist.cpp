@@ -25,10 +25,22 @@ PinList::PinList(QObject *parent) : QObject(parent)
     item2 = item;
     item2.pinTypeName = "default";
     item2.groupName = "lil";
+    PinItem item3 = item;
+    item3.pinName = "Ruang Tengah";
+    item3.groupName = "CCTV";
+    item3.pinTypeName = "webview";
+    item3.value = "http://192.168.0.4:8081/";
+    PinItem item4 = item3;
+    item4.pinName = "ArchLinux.org";
+    item4.groupName = "Website";
+    item4.pinTypeName = "webview";
+    item4.value = "https://www.archlinux.org/";
     mItems.append(item);
     mItems.append(item2);
     mItems.append(item2);
     mItems.append(item);
+    mItems.append(item3);
+    mItems.append(item4);
 }
 
 QVector<PinItem> PinList::items() const

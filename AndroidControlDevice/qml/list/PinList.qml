@@ -1,6 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
+import QtWebView 1.1
 import Pin 1.0
 
 Pane {
@@ -9,7 +10,8 @@ Pane {
 
     property var delegateComponentMap: {
         "default": defaultDelegateComponent,
-        "switch": switchDelegateComponent
+        "switch": switchDelegateComponent,
+        "webview" : webviewDelegateComponent
 //        "textout": textoutDelegateComponent,
 //        "tempc": tempcDelegateComponent,
 //        "tempf": tempfDelegateComponent,
@@ -38,7 +40,6 @@ Pane {
 
     Component{
         id: switchDelegateComponent
-
         ItemDelegate{
             contentItem : Row{
                 width: parent.width
@@ -55,6 +56,51 @@ Pane {
                     anchors.right : parent.right
                 }
             }
+        }
+    }
+
+    Component{
+        id: webviewDelegateComponent
+        ItemDelegate{
+            text: pinName
+            icon.name: iconName
+            onClicked: {
+                webviewDialog.title = pinName
+                webviewDialog.url = value
+                webviewDialog.open()
+            }
+
+//            contentItem: Column{
+//                width: parent.width
+//                spacing: 5
+//                Label{
+//                    text: pinType
+//                    anchors.verticalCenter: parent.verticalCenter
+//                }
+
+//                WebView{
+//                    width: parent.width
+//                    height: parent.width * 3 / 4
+//                    url : value
+//                }
+//            }
+        }
+    }
+
+    Dialog{
+        property string url: ""
+        title: ""
+        id : webviewDialog
+        width: parent.width * 0.9
+        height: parent.height * 0.9
+        standardButtons: Dialog.Close
+        anchors.centerIn: parent
+        modal: true
+        contentItem: WebView{
+            anchors.centerIn: parent
+            width: parent.width
+            height: parent.height
+            url : webviewDialog.url
         }
     }
 
@@ -92,11 +138,12 @@ Pane {
 //                }
                 icon.name : "expand_more"
                 text: "Group : " + section
+                width: parent.width
             }
 
             delegate: Loader {
                 id: delegateLoader
-                width: listView.width
+                width: listViewElement.width
                 sourceComponent: delegateComponentMap[model.pinTypeName]
 
                 property ListView view: listView
