@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty(QStringLiteral("controlDeviceList"), &controlDeviceList);
     engine.rootContext()->setContextProperty(QStringLiteral("user"), &user);
     engine.rootContext()->setContextProperty(QStringLiteral("iconList"), &iconList);
-    engine.rootContext()->setContextProperty(QStringLiteral("pinType"), &pinTypeList);
+    engine.rootContext()->setContextProperty(QStringLiteral("pinTypeList"), &pinTypeList);
 
     engine.load(QUrl("qrc:/qml/main.qml"));
 

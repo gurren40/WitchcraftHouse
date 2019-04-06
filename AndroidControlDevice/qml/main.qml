@@ -199,8 +199,8 @@ ApplicationWindow {
         anchors.margins: 15
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        height: toolBar.height * 1.5
-        width: toolBar.height * 1.5
+        height: 75
+        width: height
         font.pointSize: 35
         onClicked: stackView.currentItem.create()
     }

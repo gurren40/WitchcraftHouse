@@ -14,7 +14,7 @@ PinList::PinList(QObject *parent) : QObject(parent)
     item.groupID = 4;
     item.pinName = "pinName";
     item.deviceID = 5;
-    item.iconName = "iconName";
+    item.iconName = "back";
     item.userName = "userName";
     item.groupName = "Lol";
     item.pinTypeID = 6;
@@ -66,10 +66,11 @@ void PinList::setPinList(QJsonObject json, bool isShared)
     else {
         jsonArray = json.value("pinList").toArray();
     }
-    emit preItemsResetRemove(mItems.size());
+    //emit preItemsResetRemove(mItems.size());
+    emit preItemDataChanged();
     mItems.clear();
-    emit postItemResetRemove();
-    emit preItemsResetAppend(jsonArray.size());
+    //emit postItemResetRemove();
+    //emit preItemsResetAppend(jsonArray.size());
     for(int i=0;i<jsonArray.size();i++){
         QJsonObject jsonItem = jsonArray.at(i).toObject();
         PinItem item;
@@ -91,7 +92,8 @@ void PinList::setPinList(QJsonObject json, bool isShared)
         item.pinTypeName = jsonItem["pinTypeName"].toString();
         mItems.append(item);
     }
-    emit postItemResetAppend();
+    //emit postItemResetAppend();
+    emit postItemDataChanged();
 }
 
 RemoteReplica *PinList::remote() const

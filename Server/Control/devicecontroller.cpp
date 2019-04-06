@@ -256,7 +256,7 @@ QJsonObject DeviceController::editPin(QJsonObject json, int userID)
         for (int i = 0;i<jsonArray.size();i++) {
             QJsonObject jsonObject = jsonArray.at(i).toObject();
             QUuid UUID = QUuid::fromString(jsonObject["UUID"].toString());
-            QJsonObject error = pin.read("UUID=UuidToBin('"+UUID.toString(QUuid::WithoutBraces)+"'");
+            QJsonObject error = pin.read("UUID=UuidToBin('"+UUID.toString(QUuid::WithoutBraces)+"')");
             if(pin.mPins.size() == 1){
                 error = pin.update(pin.mPins.at(0).pinID,pin.mPins.at(0).UUID,userID,jsonObject["groupID"].toInt(),jsonObject["deviceID"].toInt(),jsonObject["iconID"].toInt(),jsonObject["pinTypeID"].toInt(),jsonObject["pinName"].toString(),pin.mPins.at(0).value,jsonObject["option"].toString(),jsonObject["description"].toString());
             }
@@ -385,9 +385,9 @@ QJsonObject DeviceController::deletePin(QJsonObject json, int userID)
         for (int i = 0;i<jsonArray.size();i++) {
             QJsonObject jsonObject = jsonArray.at(i).toObject();
             QUuid UUID = QUuid::fromString(jsonObject["UUID"].toString());
-            QJsonObject error = pin.read("UUID=UuidToBin('"+UUID.toString(QUuid::WithoutBraces)+"'");
+            QJsonObject error = pin.read("UUID=UuidToBin('"+UUID.toString(QUuid::WithoutBraces)+"')");
             if(pin.mPins.size() == 1){
-                error = pin.deletes("UUID=UuidToBin('"+UUID.toString(QUuid::WithoutBraces)+"'");
+                error = pin.deletes("UUID=UuidToBin('"+UUID.toString(QUuid::WithoutBraces)+"')");
                 emit deletedPin(UUID,userID);
             }
             errorArray.append(error);
@@ -473,7 +473,7 @@ QJsonObject DeviceController::getPinList(int userID)
     Pin pin(&db);
     QJsonObject response;
     QJsonArray jsonArray,errorArray,notificationArray;
-    QJsonObject error = pin.read("userID='"+QString::number(userID)+"'");
+    QJsonObject error = pin.read("Pin.userID='"+QString::number(userID)+"'");
 
     if(pin.mPins.size()<1){
         QJsonObject error,notification;

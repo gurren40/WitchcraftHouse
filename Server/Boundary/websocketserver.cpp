@@ -204,7 +204,7 @@ void WebsocketServer::controlProcessTextMessage(QString message)
     //connect(&SC,SIGNAL(sendMail(QString,QString,QString)),this,SIGNAL(sendMail(QString,QString,QString)));
     //connect(&ShC,SIGNAL(sendMail(QString,QString,QString)),this,SIGNAL(sendMail(QString,QString,QString)));
     connect(&DC,SIGNAL(broadcastToDevice(QUuid,QJsonObject)),this,SLOT(broadcastToDevice(QUuid,QJsonObject)));
-    connect(&DC,SIGNAL(deletedDevice()),this,SLOT(deletedDevice()));
+    connect(&DC,SIGNAL(deletedDevice(QUuid)),this,SLOT(deletedDevice(QUuid)));
     connect(&SC,SIGNAL(createNewCron(QUuid, QString, QUuid, QString, int)),cronScheduler,SLOT(createNewCron(QUuid, QString, QUuid, QString, int)));
     connect(&SC,SIGNAL(editCron(QUuid, QString, QUuid, QString, int)),cronScheduler,SLOT(editCron(QUuid, QString, QUuid, QString, int)));
     connect(&SC,SIGNAL(deleteCron(QUuid)),cronScheduler,SLOT(deleteCron(QUuid)));
