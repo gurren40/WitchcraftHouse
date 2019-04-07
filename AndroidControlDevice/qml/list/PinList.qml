@@ -10,8 +10,13 @@ import Device 1.0
 
 Pane {
     padding: 0
-    property string title: "Witchcraft House"
-    function create(){createNewPin.open()}
+    property bool isShared: false
+    property string title: isShared ? "Shared Pin" : "Witchcraft House"
+    function create(){
+        if(!isShared){
+            createNewPin.open()
+        }
+    }
     property var delegateComponentMap: {
         "default": defaultDelegateComponent,
         "switch": switchDelegateComponent,
@@ -175,7 +180,7 @@ Pane {
             }
 
             model: PinModel{
-                list: pinList
+                list: isShared ? sharedPinList : pinList
             }
 
             section.property: "groupName"
@@ -268,10 +273,12 @@ Pane {
                     Button {
                         text: "Edit"
                         onClicked: editPin.open()
+                        enabled: !isShared
                     }
                     Button {
                         text: "Delete"
                         onClicked: deletePin.open()
+                        enabled: !isShared
                     }
                 }
             }

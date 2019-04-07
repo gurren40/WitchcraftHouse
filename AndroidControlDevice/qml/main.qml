@@ -113,14 +113,23 @@ ApplicationWindow {
                         inPortrait ? drawer.close() : undefined
                         if(listView.currentIndex != index){
                             listView.currentIndex = index
-                            stackView.replace(model.source)
+                            if(model.title === "Home"){
+                                stackView.replace(model.source,{isShared : false})
+                            }
+                            else if(model.title === "Shared Pin"){
+                                stackView.replace(model.source,{isShared : true})
+                            }
+                            else{
+                                stackView.replace(model.source)
+                            }
                         }
                     }
                 }
 
                 model: ListModel{
                     ListElement { title: "Home"; source: "./list/PinList.qml" }
-                    ListElement { title: "Shared Pin"; source: "./list/SharedPinList.qml" }
+                    //ListElement { title: "Shared Pin"; source: "./list/SharedPinList.qml" }
+                    ListElement { title: "Shared Pin"; source: "./list/PinList.qml" }
                     ListElement { title: "Device"; source: "./list/DeviceList.qml" }
                     ListElement { title: "Group"; source: "./list/GroupList.qml" }
                     ListElement { title: "Schedule"; source: "./list/ScheduleList.qml" }
