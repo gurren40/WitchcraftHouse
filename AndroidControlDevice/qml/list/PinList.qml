@@ -51,19 +51,43 @@ Pane {
     Component{
         id: switchDelegateComponent
         ItemDelegate{
-            contentItem : Row{
+            contentItem : Text{
                 width: parent.width
-                spacing: 5
-//                Icon{
-//                    icon.name : iconName
-//                }
+                color: transparent
+                ItemDelegate{
+                    id:switchIcon
+                    padding: 0
+                    anchors.verticalCenter : parent.verticalCenter
+                    icon.name: iconName
+                }
                 Label{
+                    id:switchLabel
+                    leftPadding: 15
+                    anchors.left: switchIcon.right
                     text: pinName
                     anchors.verticalCenter : parent.verticalCenter
                 }
                 Switch{
+                    id:actualSwitch
+                    anchors.right: parent.right
                     anchors.verticalCenter : parent.verticalCenter
-                    anchors.right : parent.right
+                    checked: function(){
+                        if(value === "0"){
+                            return false
+                        }
+                        else if(value === "1"){
+                            return true
+                        }
+                    }
+                    onClicked: function(){
+                        if(checked){
+                            //void setPinValue(QVariant UUID, QVariant value);
+                            pinList.setPinValue(uuid,"1")
+                        }
+                        else if(!checked){
+                            pinList.setPinValue(uuid,"0")
+                        }
+                    }
                 }
             }
             onClicked: {
@@ -80,20 +104,26 @@ Pane {
         ItemDelegate{
             text: pinName
             icon.name: iconName
-            contentItem: Row{
+            contentItem: Text{
                 width: parent.width
-                spacing: 5
-//                Icon{
-//                    icon.name : iconName
-//                }
+                color: transparent
+                ItemDelegate{
+                    id:webviewIcon
+                    padding: 0
+                    anchors.verticalCenter : parent.verticalCenter
+                    icon.name: iconName
+                }
                 Label{
+                    id:webviewLabel
+                    leftPadding: 15
+                    anchors.left: webviewIcon.right
                     text: pinName
                     anchors.verticalCenter : parent.verticalCenter
                 }
                 Button{
                     text: "View"
                     anchors.verticalCenter : parent.verticalCenter
-                    anchors.right : parent.right
+                    anchors.right: parent.right
                     onClicked: {
                         webviewDialog.title = pinName
                         webviewDialog.url = value
@@ -141,7 +171,6 @@ Pane {
             footer: Text{
                 height: 105
                 width: parent.width
-                anchors.centerIn: parent
                 text: ""
             }
 

@@ -181,6 +181,13 @@ void SharedModel::setList(SharedList *list)
         connect(mList, &SharedList::postItemResetAppend, this, [=]() {
             endInsertRows();
         });
+        //try reset all we see?
+        connect(mList, &SharedList::preItemDataChanged, this, [=](){
+            beginResetModel();
+        });
+        connect(mList, &SharedList::postItemDataChanged, this, [=](){
+            endResetModel();
+        });
     }
 
     endResetModel();

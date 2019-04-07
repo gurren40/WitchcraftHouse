@@ -138,6 +138,13 @@ void GroupModel::setList(GroupList *list)
         connect(mList, &GroupList::postItemResetAppend, this, [=]() {
             endInsertRows();
         });
+        //try reset all we see?
+        connect(mList, &GroupList::preItemDataChanged, this, [=](){
+            beginResetModel();
+        });
+        connect(mList, &GroupList::postItemDataChanged, this, [=](){
+            endResetModel();
+        });
     }
 
     endResetModel();

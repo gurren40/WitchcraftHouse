@@ -138,6 +138,13 @@ void ControlDeviceModel::setList(ControlDeviceList *list)
         connect(mList, &ControlDeviceList::postItemResetAppend, this, [=]() {
             endInsertRows();
         });
+        //try reset all we see?
+        connect(mList, &ControlDeviceList::preItemDataChanged, this, [=](){
+            beginResetModel();
+        });
+        connect(mList, &ControlDeviceList::postItemDataChanged, this, [=](){
+            endResetModel();
+        });
     }
 
     endResetModel();

@@ -41,10 +41,11 @@ bool SharedList::setItemAt(int index, const SharedItem &item)
 void SharedList::setSharedList(QJsonObject json)
 {
     QJsonArray jsonArray = json.value("sharedList").toArray();
-    emit preItemsResetRemove(mItems.size());
+    emit preItemDataChanged();
+    //emit preItemsResetRemove(mItems.size());
     mItems.clear();
-    emit postItemResetRemove();
-    emit preItemsResetAppend(jsonArray.size());
+    //emit postItemResetRemove();
+    //emit preItemsResetAppend(jsonArray.size());
     for(int i=0;i<jsonArray.size();i++){
         QJsonObject jsonItem = jsonArray.at(i).toObject();
         SharedItem item;
@@ -60,7 +61,8 @@ void SharedList::setSharedList(QJsonObject json)
         item.description = jsonItem["description"].toString();
         mItems.append(item);
     }
-    emit postItemResetAppend();
+    //emit postItemResetAppend();
+    emit postItemDataChanged();
 }
 
 RemoteReplica *SharedList::remote() const

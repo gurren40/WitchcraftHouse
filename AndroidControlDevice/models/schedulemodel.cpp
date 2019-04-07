@@ -209,6 +209,13 @@ void ScheduleModel::setList(ScheduleList *list)
         connect(mList, &ScheduleList::postItemResetAppend, this, [=]() {
             endInsertRows();
         });
+        //try reset all we see?
+        connect(mList, &ScheduleList::preItemDataChanged, this, [=](){
+            beginResetModel();
+        });
+        connect(mList, &ScheduleList::postItemDataChanged, this, [=](){
+            endResetModel();
+        });
     }
 
     endResetModel();
