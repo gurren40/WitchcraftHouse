@@ -14,6 +14,7 @@ ControlDeviceList::ControlDeviceList(QObject *parent) : QObject(parent)
     item.expireDate = QDate::currentDate();
     ControlDeviceItem item2;
     item2 = item;
+    item.isControlDeviceOnline = false;
     mItems.append(item);
     mItems.append(item2);
     mItems.append(item);

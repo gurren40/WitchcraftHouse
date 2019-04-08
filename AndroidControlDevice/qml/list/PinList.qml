@@ -7,6 +7,7 @@ import Icon 1.0
 import Group 1.0
 import PinType 1.0
 import Device 1.0
+import QtQuick.Controls.Material 2.12
 
 Pane {
     padding: 0
@@ -186,8 +187,11 @@ Pane {
             section.property: "groupName"
             section.delegate: ItemDelegate {
                 icon.name : "expand_more"
-                text: "Group : " + section
+                text: section + " group"
                 width: parent.width
+                font.pointSize: 18
+                font.bold: true
+                font.italic: true
             }
 
             delegate: Loader {
@@ -229,42 +233,42 @@ Pane {
         contentItem: ScrollView {
             width: parent.width
             clip: true
-            contentWidth: parent.width
+            //contentWidth: parent.width
             anchors.centerIn: parent
             Column {
-                width: parent.width
+                //width: parent.width
                 anchors.centerIn: parent
                 spacing: 10
                 Text {
                     focus: true
-                    text: "Pin Name\t: " + listViewElement.currentItem.pinName
+                    text: "Pin Name\t\t: " + listViewElement.currentItem.pinName
                 }
                 Text {
-                    text: "Pin UUID\t: " + listViewElement.currentItem.uuid
+                    text: "Pin UUID\t\t: " + listViewElement.currentItem.uuid
                 }
                 Text {
-                    text: "User Email\t: " + listViewElement.currentItem.userName
+                    text: "User Email\t\t: " + listViewElement.currentItem.userName
                 }
                 Text {
-                    text: "Group Name\t: " + listViewElement.currentItem.groupName
+                    text: "Group Name\t\t: " + listViewElement.currentItem.groupName
                 }
                 Text {
                     text: "Device Name\t: " + listViewElement.currentItem.deviceName
                 }
                 Text {
-                    text: "Icon\t: " + listViewElement.currentItem.iconName
+                    text: "Icon\t\t: " + listViewElement.currentItem.iconName
                 }
                 Text {
-                    text: "Pin Type\t: " + listViewElement.currentItem.pinTypeName
+                    text: "Pin Type\t\t: " + listViewElement.currentItem.pinTypeName
                 }
                 Text {
                     text: "Current value\t: " + listViewElement.currentItem.value
                 }
                 Text {
-                    text: "Option\t: " + listViewElement.currentItem.option
+                    text: "Option\t\t: " + listViewElement.currentItem.option
                 }
                 Text {
-                    text: "Description\t: " + listViewElement.currentItem.description
+                    text: "Description\t\t: " + listViewElement.currentItem.description
                 }
                 Row {
                     anchors.horizontalCenter: parent.horizontalCenter

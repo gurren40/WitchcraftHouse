@@ -14,6 +14,11 @@ Page {
         model: PinModel{
             list: sharedPinList
         }
+        footer: Text{
+            height: 105
+            width: parent.width
+            text: ""
+        }
 
         delegate: ItemDelegate {
             width: parent.width

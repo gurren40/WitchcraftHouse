@@ -17,6 +17,11 @@ Page {
         model: DeviceModel{
             list: deviceList
         }
+        footer: Text{
+            height: 105
+            width: parent.width
+            text: ""
+        }
 
         delegate: ItemDelegate{
             property string deviceName: model.deviceName
@@ -49,12 +54,12 @@ Page {
         title: "Device Details"
         standardButtons: Dialog.Close
         contentItem: ScrollView {
-            width: parent.width
+            //width: parent.width
             clip: true
-            contentWidth: parent.width
+            //contentWidth: parent.width
             anchors.centerIn: parent
             Column {
-                width: parent.width
+                //width: parent.width
                 anchors.centerIn: parent
                 spacing: 10
                 Text {

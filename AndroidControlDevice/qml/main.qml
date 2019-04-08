@@ -203,14 +203,17 @@ ApplicationWindow {
     }
     RoundButton {
         id: createButton
-        text: qsTr("+")
+        //text: qsTr("+")
+        icon.name: "plus"
+        icon.height: 36
+        icon.width: 36
         highlighted: true
         anchors.margins: 15
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         height: 75
         width: height
-        font.pointSize: 35
+        //font.pointSize: 35
         onClicked: stackView.currentItem.create()
     }
 }

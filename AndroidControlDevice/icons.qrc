@@ -1,45 +1,112 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/witchcraft/20x20/back.png</file>
-        <file>icons/witchcraft/20x20/chevron_left.png</file>
-        <file>icons/witchcraft/20x20/chevron_right.png</file>
-        <file>icons/witchcraft/20x20/close.png</file>
-        <file>icons/witchcraft/20x20/expand_less.png</file>
-        <file>icons/witchcraft/20x20/expand_more.png</file>
-        <file>icons/witchcraft/20x20/forward.png</file>
-        <file>icons/witchcraft/20x20/menu.png</file>
-        <file>icons/witchcraft/20x20/more.png</file>
-        <file>icons/witchcraft/20x20/refresh.png</file>
-        <file>icons/witchcraft/20x20@2/back.png</file>
-        <file>icons/witchcraft/20x20@2/chevron_left.png</file>
-        <file>icons/witchcraft/20x20@2/chevron_right.png</file>
-        <file>icons/witchcraft/20x20@2/close.png</file>
-        <file>icons/witchcraft/20x20@2/expand_less.png</file>
-        <file>icons/witchcraft/20x20@2/expand_more.png</file>
-        <file>icons/witchcraft/20x20@2/forward.png</file>
-        <file>icons/witchcraft/20x20@2/menu.png</file>
-        <file>icons/witchcraft/20x20@2/more.png</file>
-        <file>icons/witchcraft/20x20@2/refresh.png</file>
-        <file>icons/witchcraft/20x20@3/back.png</file>
-        <file>icons/witchcraft/20x20@3/chevron_left.png</file>
-        <file>icons/witchcraft/20x20@3/chevron_right.png</file>
-        <file>icons/witchcraft/20x20@3/close.png</file>
-        <file>icons/witchcraft/20x20@3/expand_less.png</file>
-        <file>icons/witchcraft/20x20@3/expand_more.png</file>
-        <file>icons/witchcraft/20x20@3/forward.png</file>
-        <file>icons/witchcraft/20x20@3/menu.png</file>
-        <file>icons/witchcraft/20x20@3/more.png</file>
-        <file>icons/witchcraft/20x20@3/refresh.png</file>
-        <file>icons/witchcraft/20x20@4/back.png</file>
-        <file>icons/witchcraft/20x20@4/chevron_left.png</file>
-        <file>icons/witchcraft/20x20@4/chevron_right.png</file>
-        <file>icons/witchcraft/20x20@4/close.png</file>
-        <file>icons/witchcraft/20x20@4/expand_less.png</file>
-        <file>icons/witchcraft/20x20@4/expand_more.png</file>
-        <file>icons/witchcraft/20x20@4/forward.png</file>
-        <file>icons/witchcraft/20x20@4/menu.png</file>
-        <file>icons/witchcraft/20x20@4/more.png</file>
-        <file>icons/witchcraft/20x20@4/refresh.png</file>
+        <file>icons/witchcraft/24x24S/AC.svg</file>
+        <file>icons/witchcraft/24x24S/back.svg</file>
+        <file>icons/witchcraft/24x24S/bell.svg</file>
+        <file>icons/witchcraft/24x24S/cctv.svg</file>
+        <file>icons/witchcraft/24x24S/chevron_left.svg</file>
+        <file>icons/witchcraft/24x24S/chevron_right.svg</file>
+        <file>icons/witchcraft/24x24S/close.svg</file>
+        <file>icons/witchcraft/24x24S/default.svg</file>
+        <file>icons/witchcraft/24x24S/door.svg</file>
+        <file>icons/witchcraft/24x24S/expand_less.svg</file>
+        <file>icons/witchcraft/24x24S/expand_more.svg</file>
+        <file>icons/witchcraft/24x24S/fan.svg</file>
+        <file>icons/witchcraft/24x24S/fire.svg</file>
+        <file>icons/witchcraft/24x24S/forward.svg</file>
+        <file>icons/witchcraft/24x24S/home.svg</file>
+        <file>icons/witchcraft/24x24S/house.svg</file>
+        <file>icons/witchcraft/24x24S/key.svg</file>
+        <file>icons/witchcraft/24x24S/lamp.svg</file>
+        <file>icons/witchcraft/24x24S/leaf.svg</file>
+        <file>icons/witchcraft/24x24S/lock.svg</file>
+        <file>icons/witchcraft/24x24S/menu.svg</file>
+        <file>icons/witchcraft/24x24S/moon.svg</file>
+        <file>icons/witchcraft/24x24S/more.svg</file>
+        <file>icons/witchcraft/24x24S/outlet.svg</file>
+        <file>icons/witchcraft/24x24S/power.svg</file>
+        <file>icons/witchcraft/24x24S/refresh.svg</file>
+        <file>icons/witchcraft/24x24S/sun.svg</file>
+        <file>icons/witchcraft/24x24S/switch.svg</file>
+        <file>icons/witchcraft/24x24S/sync.svg</file>
+        <file>icons/witchcraft/24x24S/thermometer.svg</file>
+        <file>icons/witchcraft/24x24S/thermostat.svg</file>
+        <file>icons/witchcraft/24x24S/water.svg</file>
+        <file>icons/witchcraft/navigation/back.svg</file>
+        <file>icons/witchcraft/navigation/chevron_left.svg</file>
+        <file>icons/witchcraft/navigation/chevron_right.svg</file>
+        <file>icons/witchcraft/navigation/close.svg</file>
+        <file>icons/witchcraft/navigation/expand_less.svg</file>
+        <file>icons/witchcraft/navigation/expand_more.svg</file>
+        <file>icons/witchcraft/navigation/forward.svg</file>
+        <file>icons/witchcraft/navigation/home.svg</file>
+        <file>icons/witchcraft/navigation/menu.svg</file>
+        <file>icons/witchcraft/navigation/more.svg</file>
+        <file>icons/witchcraft/navigation/refresh.svg</file>
+        <file>icons/witchcraft/navigation/sync.svg</file>
+        <file>icons/witchcraft/oldfixed/18x18/back.png</file>
+        <file>icons/witchcraft/oldfixed/18x18/chevron_left.png</file>
+        <file>icons/witchcraft/oldfixed/18x18/chevron_right.png</file>
+        <file>icons/witchcraft/oldfixed/18x18/close.png</file>
+        <file>icons/witchcraft/oldfixed/18x18/expand_less.png</file>
+        <file>icons/witchcraft/oldfixed/18x18/expand_more.png</file>
+        <file>icons/witchcraft/oldfixed/18x18/forward.png</file>
+        <file>icons/witchcraft/oldfixed/18x18/menu.png</file>
+        <file>icons/witchcraft/oldfixed/18x18/more.png</file>
+        <file>icons/witchcraft/oldfixed/18x18/refresh.png</file>
+        <file>icons/witchcraft/oldfixed/24x24/back.png</file>
+        <file>icons/witchcraft/oldfixed/24x24/chevron_left.png</file>
+        <file>icons/witchcraft/oldfixed/24x24/chevron_right.png</file>
+        <file>icons/witchcraft/oldfixed/24x24/close.png</file>
+        <file>icons/witchcraft/oldfixed/24x24/expand_less.png</file>
+        <file>icons/witchcraft/oldfixed/24x24/expand_more.png</file>
+        <file>icons/witchcraft/oldfixed/24x24/forward.png</file>
+        <file>icons/witchcraft/oldfixed/24x24/menu.png</file>
+        <file>icons/witchcraft/oldfixed/24x24/more.png</file>
+        <file>icons/witchcraft/oldfixed/24x24/refresh.png</file>
+        <file>icons/witchcraft/oldfixed/36x36/back.png</file>
+        <file>icons/witchcraft/oldfixed/36x36/chevron_left.png</file>
+        <file>icons/witchcraft/oldfixed/36x36/chevron_right.png</file>
+        <file>icons/witchcraft/oldfixed/36x36/close.png</file>
+        <file>icons/witchcraft/oldfixed/36x36/expand_less.png</file>
+        <file>icons/witchcraft/oldfixed/36x36/expand_more.png</file>
+        <file>icons/witchcraft/oldfixed/36x36/forward.png</file>
+        <file>icons/witchcraft/oldfixed/36x36/menu.png</file>
+        <file>icons/witchcraft/oldfixed/36x36/more.png</file>
+        <file>icons/witchcraft/oldfixed/36x36/refresh.png</file>
+        <file>icons/witchcraft/oldfixed/48x48/back.png</file>
+        <file>icons/witchcraft/oldfixed/48x48/chevron_left.png</file>
+        <file>icons/witchcraft/oldfixed/48x48/chevron_right.png</file>
+        <file>icons/witchcraft/oldfixed/48x48/close.png</file>
+        <file>icons/witchcraft/oldfixed/48x48/expand_less.png</file>
+        <file>icons/witchcraft/oldfixed/48x48/expand_more.png</file>
+        <file>icons/witchcraft/oldfixed/48x48/forward.png</file>
+        <file>icons/witchcraft/oldfixed/48x48/menu.png</file>
+        <file>icons/witchcraft/oldfixed/48x48/more.png</file>
+        <file>icons/witchcraft/oldfixed/48x48/refresh.png</file>
+        <file>icons/witchcraft/oldfixed/index.theme</file>
+        <file>icons/witchcraft/smarthome icons/AC.svg</file>
+        <file>icons/witchcraft/smarthome icons/bell.svg</file>
+        <file>icons/witchcraft/smarthome icons/cctv.svg</file>
+        <file>icons/witchcraft/smarthome icons/default.svg</file>
+        <file>icons/witchcraft/smarthome icons/door.svg</file>
+        <file>icons/witchcraft/smarthome icons/fan.svg</file>
+        <file>icons/witchcraft/smarthome icons/fire.svg</file>
+        <file>icons/witchcraft/smarthome icons/house.svg</file>
+        <file>icons/witchcraft/smarthome icons/key.svg</file>
+        <file>icons/witchcraft/smarthome icons/lamp.svg</file>
+        <file>icons/witchcraft/smarthome icons/leaf.svg</file>
+        <file>icons/witchcraft/smarthome icons/lock.svg</file>
+        <file>icons/witchcraft/smarthome icons/moon.svg</file>
+        <file>icons/witchcraft/smarthome icons/outlet.svg</file>
+        <file>icons/witchcraft/smarthome icons/power.svg</file>
+        <file>icons/witchcraft/smarthome icons/sun.svg</file>
+        <file>icons/witchcraft/smarthome icons/switch.svg</file>
+        <file>icons/witchcraft/smarthome icons/thermometer.svg</file>
+        <file>icons/witchcraft/smarthome icons/thermostat.svg</file>
+        <file>icons/witchcraft/smarthome icons/water.svg</file>
         <file>icons/witchcraft/index.theme</file>
+        <file>icons/witchcraft/24x24S/plus.svg</file>
+        <file>icons/witchcraft/navigation/plus.svg</file>
     </qresource>
 </RCC>

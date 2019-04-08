@@ -14,7 +14,7 @@ PinList::PinList(QObject *parent) : QObject(parent)
     item.groupID = 4;
     item.pinName = "pinName";
     item.deviceID = 5;
-    item.iconName = "back";
+    item.iconName = "fire";
     item.userName = "userName";
     item.groupName = "Lol";
     item.pinTypeID = 6;
@@ -29,12 +29,14 @@ PinList::PinList(QObject *parent) : QObject(parent)
     item3.pinName = "Ruang Tengah";
     item3.groupName = "CCTV";
     item3.pinTypeName = "webview";
+    item3.iconName = "cctv";
     item3.value = "http://192.168.0.4:8081/";
     PinItem item4 = item3;
     item4.pinName = "ArchLinux.org";
     item4.groupName = "Website";
     item4.pinTypeName = "webview";
     item4.value = "https://www.archlinux.org/";
+    item4.iconName = "fan";
     mItems.append(item);
     mItems.append(item2);
     mItems.append(item2);

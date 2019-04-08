@@ -10,7 +10,7 @@ GroupList::GroupList(QObject *parent) : QObject(parent)
     item.userName ="userName";
     item.groupName = "groupName";
     item.iconID = 3;
-    item.iconName = "iconName";
+    item.iconName = "house";
     item.description = "description";
     GroupItem item2;
     item2 = item;

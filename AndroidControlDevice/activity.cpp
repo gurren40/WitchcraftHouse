@@ -9,6 +9,7 @@
 #include <QSignalMapper>
 #include <QIcon>
 #include <QMetaType>
+#include <QtSvg>
 
 #include "rep_remote_replica.h"
 #include "models/pinmodel.h"

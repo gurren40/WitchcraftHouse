@@ -16,6 +16,11 @@ Page {
         model: GroupModel{
             list: groupList
         }
+        footer: Text{
+            height: 105
+            width: parent.width
+            text: ""
+        }
 
         delegate: ItemDelegate {
             property int groupID : model.groupID
@@ -50,10 +55,10 @@ Page {
         contentItem: ScrollView {
             width: parent.width
             clip: true
-            contentWidth: parent.width
+            //contentWidth: parent.width
             anchors.centerIn: parent
             Column {
-                width: parent.width
+                //width: parent.width
                 anchors.centerIn: parent
                 spacing: 10
                 Text {
