@@ -3,6 +3,7 @@ import QtQuick.Controls 2.2
 import Device 1.0
 
 Page {
+    property bool canCreate: true
     property int listID : 1
     function create(){createNewDevice.open()}
     anchors.fill: parent
@@ -17,8 +18,8 @@ Page {
         model: DeviceModel{
             list: deviceList
         }
-        footer: Text{
-            height: 105
+        footer: Label{
+            height: 90
             width: parent.width
             text: ""
         }
@@ -62,19 +63,19 @@ Page {
                 //width: parent.width
                 anchors.centerIn: parent
                 spacing: 10
-                Text {
+                Label {
                     text: "Device Name\t: " + listViewElement.currentItem.deviceName
                 }
-                Text {
+                Label {
                     text: "Device UUID\t\t: " + listViewElement.currentItem.deviceUUID
                 }
-                Text {
+                Label {
                     text: "Device Token\t: " + listViewElement.currentItem.deviceToken
                 }
-                Text {
+                Label {
                     text: "Owner\t\t: " + listViewElement.currentItem.userName
                 }
-                Text {
+                Label {
                     text: "Description\t\t: " + listViewElement.currentItem.description
                 }
                 Row {
@@ -108,14 +109,14 @@ Page {
             Column{
                 spacing: 10
                 width: parent.width
-                Text {
+                Label {
                     text: qsTr("Device Name :")
                 }
                 TextField{
                     id : newName
                     width: parent.width
                 }
-                Text {
+                Label {
                     text: qsTr("Device Description :")
                 }
                 TextField{
@@ -146,13 +147,13 @@ Page {
             Column{
                 spacing: 10
                 width: parent.width
-                Text {
+                Label {
                     text: "Device ID : " + listViewElement.currentItem.deviceID
                 }
-                Text {
+                Label {
                     text: "Device UUID : " + listViewElement.currentItem.deviceUUID
                 }
-                Text {
+                Label {
                     text: qsTr("Device Name :")
                 }
                 TextField{
@@ -160,7 +161,7 @@ Page {
                     width: parent.width
                     text: listViewElement.currentItem.deviceName
                 }
-                Text {
+                Label {
                     text: qsTr("Device Description :")
                 }
                 TextField{
@@ -190,10 +191,10 @@ Page {
             Column{
                 spacing: 10
                 width: parent.width
-                Text {
+                Label {
                     text: "Device ID : " + listViewElement.currentItem.deviceID
                 }
-                Text {
+                Label {
                     text: "Device UUID : " + listViewElement.currentItem.deviceUUID
                 }
             }

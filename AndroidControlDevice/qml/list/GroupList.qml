@@ -4,6 +4,7 @@ import Group 1.0
 import Icon 1.0
 
 Page {
+    property bool canCreate: true
     property int listID : 2
     function create(){createNewGroup.open()}
     anchors.fill: parent
@@ -16,8 +17,8 @@ Page {
         model: GroupModel{
             list: groupList
         }
-        footer: Text{
-            height: 105
+        footer: Label{
+            height: 90
             width: parent.width
             text: ""
         }
@@ -61,13 +62,13 @@ Page {
                 //width: parent.width
                 anchors.centerIn: parent
                 spacing: 10
-                Text {
+                Label {
                     text: "Group Name\t\t: " + listViewElement.currentItem.groupName
                 }
-                Text {
+                Label {
                     text: "Group Icon\t\t: " + listViewElement.currentItem.iconName
                 }
-                Text {
+                Label {
                     text: "Description\t\t: " + listViewElement.currentItem.description
                 }
                 Row {
@@ -101,21 +102,21 @@ Page {
             Column{
                 spacing: 10
                 width: parent.width
-                Text {
+                Label {
                     text: qsTr("Group Name :")
                 }
                 TextField{
                     id : newName
                     width: parent.width
                 }
-                Text {
+                Label {
                     text: qsTr("Group Description :")
                 }
                 TextField{
                     id : newDescription
                     width: parent.width
                 }
-                Text {
+                Label {
                     text: qsTr("Select Icon :")
                 }
                 ComboBox{
@@ -157,10 +158,10 @@ Page {
             Column{
                 spacing: 10
                 width: parent.width
-                Text {
+                Label {
                     text: "Group ID : " + listViewElement.currentItem.groupID
                 }
-                Text {
+                Label {
                     text: qsTr("Group Name :")
                 }
                 TextField{
@@ -168,7 +169,7 @@ Page {
                     width: parent.width
                     text: listViewElement.currentItem.groupName
                 }
-                Text {
+                Label {
                     text: qsTr("Group Description :")
                 }
                 TextField{
@@ -176,7 +177,7 @@ Page {
                     width: parent.width
                     text: listViewElement.currentItem.description
                 }
-                Text {
+                Label {
                     text: qsTr("Select Icon :")
                 }
                 ComboBox{
@@ -218,10 +219,10 @@ Page {
             Column{
                 spacing: 10
                 width: parent.width
-                Text {
+                Label {
                     text: "Group ID : " + listViewElement.currentItem.groupID
                 }
-                Text {
+                Label {
                     text: "Group Name : " + listViewElement.currentItem.groupName
                 }
             }

@@ -5,6 +5,7 @@ import Group 1.0
 import Pin 1.0
 
 Page {
+    property bool canCreate: true
     property int listID : 4
     function create(){createNewShared.open()}
     anchors.fill: parent
@@ -17,8 +18,8 @@ Page {
         model: SharedModel{
             list: sharedList
         }
-        footer: Text{
-            height: 105
+        footer: Label{
+            height: 90
             width: parent.width
             text: ""
         }
@@ -63,24 +64,24 @@ Page {
                 //width: parent.width
                 anchors.centerIn: parent
                 spacing: 10
-                Text {
+                Label {
                     text: "Shared To\t\t: " + listViewElement.currentItem.sharedToName
                 }
-                Text {
+                Label {
                     text: "Email\t\t: " + listViewElement.currentItem.sharedTo
                 }
-                Text {
+                Label {
                     text: listViewElement.currentItem.sharedType ? "Shared Type\t\t: Pin" : "Shared Type\t\t: Group"
                 }
-                Text {
+                Label {
                     visible: !listViewElement.currentItem.sharedType
                     text: "Shared Group\t\t: " + listViewElement.currentItem.groupName
                 }
-                Text {
+                Label {
                     visible: listViewElement.currentItem.sharedType
                     text: "Shared Pin\t\t: " + listViewElement.currentItem.pinName
                 }
-                Text {
+                Label {
                     text: "Description\t\t: " + listViewElement.currentItem.description
                 }
                 Row {
@@ -114,27 +115,27 @@ Page {
             Column{
                 spacing: 10
                 width: parent.width
-                Text {
+                Label {
                     text: qsTr("Shared Name :")
                 }
                 TextField{
                     id : newName
                     width: parent.width
                 }
-                Text {
+                Label {
                     text: qsTr("Shared To (Email) :")
                 }
                 TextField{
                     id : newSharedTo
                     width: parent.width
                 }
-                Text {
+                Label {
                     text: qsTr("Select Shared Type :")
                 }
                 Row{
                     anchors.horizontalCenter: parent.horizontalCenter
                     spacing: 15
-                    Text {
+                    Label {
                         anchors.verticalCenter: parent.verticalCenter
                         text: qsTr("Group")
                     }
@@ -142,13 +143,13 @@ Page {
                         anchors.verticalCenter: parent.verticalCenter
                         id : newSharedType
                     }
-                    Text {
+                    Label {
                         anchors.verticalCenter: parent.verticalCenter
                         text: qsTr("Pin")
                     }
                 }
 
-                Text {
+                Label {
                     text: qsTr("Select Group or Pin :")
                 }
                 ComboBox{
@@ -183,7 +184,7 @@ Page {
                         onClicked: newPin.displayName = model.pinName
                     }
                 }
-                Text {
+                Label {
                     text: qsTr("Description :")
                 }
                 TextField{
@@ -213,10 +214,10 @@ Page {
             Column{
                 spacing: 10
                 width: parent.width
-                Text {
+                Label {
                     text: "Shared ID : " + listViewElement.currentItem.sharedID
                 }
-                Text {
+                Label {
                     text: qsTr("Shared Name :")
                 }
                 TextField{
@@ -224,7 +225,7 @@ Page {
                     width: parent.width
                     text: listViewElement.currentItem.sharedName
                 }
-                Text {
+                Label {
                     text: qsTr("Shared To (Email) :")
                 }
                 TextField{
@@ -232,13 +233,13 @@ Page {
                     width: parent.width
                     text : listViewElement.currentItem.sharedTo
                 }
-                Text {
+                Label {
                     text: qsTr("Select Shared Type :")
                 }
                 Row{
                     anchors.horizontalCenter: parent.horizontalCenter
                     spacing: 15
-                    Text {
+                    Label {
                         anchors.verticalCenter: parent.verticalCenter
                         text: qsTr("Group")
                     }
@@ -247,13 +248,13 @@ Page {
                         id : editSharedType
                         checked: listViewElement.currentItem.sharedType
                     }
-                    Text {
+                    Label {
                         anchors.verticalCenter: parent.verticalCenter
                         text: qsTr("Pin")
                     }
                 }
 
-                Text {
+                Label {
                     text: qsTr("Select Group or Pin :")
                 }
                 ComboBox{
@@ -288,7 +289,7 @@ Page {
                         onClicked: editPin.displayName = model.pinName
                     }
                 }
-                Text {
+                Label {
                     text: qsTr("Description :")
                 }
                 TextField{
@@ -319,27 +320,27 @@ Page {
             Column{
                 spacing: 10
                 width: parent.width
-                Text {
+                Label {
                     text: "Shared ID\t\t: " + listViewElement.currentItem.sharedID
                 }
-                Text {
+                Label {
                     text: "Shared To\t\t: " + listViewElement.currentItem.sharedToName
                 }
-                Text {
+                Label {
                     text: "Email\t\t: " + listViewElement.currentItem.sharedTo
                 }
-                Text {
+                Label {
                     text: listViewElement.currentItem.sharedType ? "Shared Type\t\t: Pin" : "Shared Type\t\t: Group"
                 }
-                Text {
+                Label {
                     visible: !listViewElement.currentItem.sharedType
                     text: "Shared Group\t\t: " + listViewElement.currentItem.groupName
                 }
-                Text {
+                Label {
                     visible: listViewElement.currentItem.sharedType
                     text: "Shared Pin\t\t: " + listViewElement.currentItem.pinName
                 }
-                Text {
+                Label {
                     text: "Description\t\t: " + listViewElement.currentItem.description
                 }
             }

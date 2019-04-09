@@ -3,6 +3,7 @@ import QtQuick.Controls 2.2
 import ControlDevice 1.0
 
 Page {
+    property bool canCreate: true
     property int listID : 5
     anchors.fill: parent
     title: qsTr("Devices")
@@ -14,8 +15,8 @@ Page {
         model: ControlDeviceModel{
             list: controlDeviceList
         }
-        footer: Text{
-            height: 105
+        footer: Label{
+            height: 90
             width: parent.width
             text: ""
         }
@@ -55,13 +56,13 @@ Page {
                     //width: parent.width
                     anchors.centerIn: parent
                     spacing: 10
-                    Text {
+                    Label {
                         text: "Control Device Name\t: " + listViewElement.currentItem.controlDeviceName
                     }
-                    Text {
+                    Label {
                         text: "Control Device Token\t: " + listViewElement.currentItem.controlDeviceToken
                     }
-                    Text {
+                    Label {
                         text: "Owner\t\t: " + listViewElement.currentItem.userName
                     }
                     Button {
@@ -86,13 +87,13 @@ Page {
                 Column{
                     spacing: 10
                     width: parent.width
-                    Text {
+                    Label {
                         text: "Control Device Name\t: " + listViewElement.currentItem.controlDeviceName
                     }
-                    Text {
+                    Label {
                         text: "Control Device Token\t: " + listViewElement.currentItem.controlDeviceToken
                     }
-                    Text {
+                    Label {
                         text: "Owner\t\t: " + listViewElement.currentItem.userName
                     }
                 }

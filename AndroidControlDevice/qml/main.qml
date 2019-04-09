@@ -15,7 +15,8 @@ ApplicationWindow {
     //! [orientation]
     readonly property bool inPortrait: window.width < window.height
     //! [orientation]
-
+    Material.theme: user.darkTheme ? Material.Dark : Material.Light
+    Material.primary: user.darkTheme ? Material.background : Material.Orange
     Dialog{
         id: exitDialog
         modal: true
@@ -96,10 +97,6 @@ ApplicationWindow {
             //position: inPortrait ? 0 : 1
             //visible: !inPortrait
             visible: false
-            background: Rectangle{
-                anchors.fill: parent
-                color: window.palette.alternateBase
-            }
 
             ListView{
                 id : listView
@@ -208,12 +205,13 @@ ApplicationWindow {
         icon.height: 36
         icon.width: 36
         highlighted: true
-        anchors.margins: 15
+        anchors.margins: 10
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        height: 75
+        height: 70
         width: height
         //font.pointSize: 35
         onClicked: stackView.currentItem.create()
+        visible: stackView.currentItem.canCreate
     }
 }

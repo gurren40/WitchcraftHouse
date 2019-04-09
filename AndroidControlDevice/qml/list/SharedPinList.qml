@@ -3,6 +3,7 @@ import QtQuick.Controls 2.2
 import Pin 1.0
 
 Page {
+    property bool canCreate: false
     property int listID : 6
     anchors.fill: parent
     title: qsTr("Shared Pin List")
@@ -14,8 +15,8 @@ Page {
         model: PinModel{
             list: sharedPinList
         }
-        footer: Text{
-            height: 105
+        footer: Label{
+            height: 90
             width: parent.width
             text: ""
         }
@@ -24,16 +25,16 @@ Page {
             width: parent.width
             Row {
                 spacing: 20
-                Text {
+                Label {
                     text: qsTr("Shared Pin %1 : ").arg(index + 1)
                 }
-                Text {
+                Label {
                     text: model.pinID
                 }
-                Text {
+                Label {
                     text: model.pinName
                 }
-                Text {
+                Label {
                     text: model.value
                 }
             }

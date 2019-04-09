@@ -175,6 +175,25 @@ void User::setName(const QString &name)
     emit nameSig();
 }
 
+bool User::darkTheme()
+{
+    QSettings setting;
+    if(setting.contains("isDarkTheme")){
+        return setting.value("isDarkTheme").toBool();
+    }
+    else{
+        setting.setValue("isDarkTheme",false);
+        return setting.value("isDarkTheme").toBool();
+    }
+}
+
+void User::setDarkTheme(bool value)
+{
+    QSettings setting;
+    setting.setValue("isDarkTheme",value);
+    emit darkThemeSig();
+}
+
 void User::logOut()
 {
     QSettings setting;

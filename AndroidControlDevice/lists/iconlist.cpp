@@ -12,6 +12,16 @@ IconList::IconList(QObject *parent) : QObject(parent)
     mItems.append({ 7, QStringLiteral("lock") });
     mItems.append({ 8, QStringLiteral("key") });
     mItems.append({ 9, QStringLiteral("fire") });
+    mItems.append({ 10, QStringLiteral("AC") });
+    mItems.append({ 11, QStringLiteral("cctv") });
+    mItems.append({ 12, QStringLiteral("bell") });
+    mItems.append({ 13, QStringLiteral("sun") });
+    mItems.append({ 14, QStringLiteral("moon") });
+    mItems.append({ 15, QStringLiteral("thermostat") });
+    mItems.append({ 16, QStringLiteral("power") });
+    mItems.append({ 17, QStringLiteral("door") });
+    mItems.append({ 18, QStringLiteral("water") });
+    mItems.append({ 19, QStringLiteral("leaf") });
 }
 
 QVector<IconItem> IconList::items() const

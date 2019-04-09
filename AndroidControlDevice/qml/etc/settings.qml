@@ -3,6 +3,7 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.12
 
 ScrollView {
+    property bool canCreate: false
     property string title: qsTr("Settings")
     anchors.fill: parent
     width: parent.width
@@ -46,6 +47,13 @@ ScrollView {
                 width: parent.width
                 text: "Token : " + user.jwt
             }
+        }
+        SwitchDelegate{
+            icon.name: "default"
+            width: parent.width
+            text: qsTr("Dark Theme")
+            checked: user.darkTheme
+            onClicked: user.darkTheme = checked
         }
     }
     ScrollBar.horizontal: ScrollBar { }

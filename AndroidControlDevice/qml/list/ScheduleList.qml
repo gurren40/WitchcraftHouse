@@ -4,6 +4,7 @@ import Schedule 1.0
 import Pin 1.0
 
 Page {
+    property bool canCreate: true
     property int listID : 3
     function create(){createNewSchedule.open()}
     anchors.fill: parent
@@ -16,8 +17,8 @@ Page {
         model: ScheduleModel{
             list: scheduleList
         }
-        footer: Text{
-            height: 105
+        footer: Label{
+            height: 90
             width: parent.width
             text: ""
         }
@@ -67,28 +68,28 @@ Page {
                     //width: parent.width
                     anchors.centerIn: parent
                     spacing: 10
-                    Text {
+                    Label {
                         text: "Schedule Name\t: " + listViewElement.currentItem.scheduleName
                     }
-                    Text {
+                    Label {
                         text: "Schedule UUID\t: " + listViewElement.currentItem.scheduleUUID
                     }
-                    Text {
+                    Label {
                         text: "Pin Name\t\t: " + listViewElement.currentItem.pinName
                     }
-                    Text {
+                    Label {
                         text: "Pin UUID\t\t: " + listViewElement.currentItem.pinUUID
                     }
-                    Text {
+                    Label {
                         text: "Pin Value\t\t: " + listViewElement.currentItem.value
                     }
-                    Text {
+                    Label {
                         text: "Owner\t\t: " + listViewElement.currentItem.userName
                     }
-                    Text {
+                    Label {
                         text: "CRON Syntax\t: " + listViewElement.currentItem.minute+" "+listViewElement.currentItem.hour+" "+listViewElement.currentItem.dayOfMonth+" "+listViewElement.currentItem.month+" "+listViewElement.currentItem.dayOfWeek
                     }
-                    Text {
+                    Label {
                         text: "Description\t\t: " + listViewElement.currentItem.description
                     }
                     Row {
@@ -122,14 +123,14 @@ Page {
                 Column{
                     spacing: 10
                     width: parent.width
-                    Text {
+                    Label {
                         text: qsTr("Schedule Name :")
                     }
                     TextField{
                         id : newName
                         width: parent.width
                     }
-                    Text {
+                    Label {
                         text: qsTr("Select Pin :")
                     }
                     ComboBox{
@@ -147,7 +148,7 @@ Page {
                             onClicked: newPin.displayName = model.pinName
                         }
                     }
-                    Text {
+                    Label {
                         text: qsTr("Cron Syntax :")
                     }
                     Row{
@@ -173,21 +174,21 @@ Page {
                             width: 40
                         }
                     }
-                    Text {
+                    Label {
                         text: qsTr("Time Zone :")
                     }
                     TextField{
                         id : newTimeZone
                         width: parent.width
                     }
-                    Text {
+                    Label {
                         text: qsTr("Pin Value :")
                     }
                     TextField{
                         id : newValue
                         width: parent.width
                     }
-                    Text {
+                    Label {
                         text: qsTr("Group Description :")
                     }
                     TextField{
@@ -217,13 +218,13 @@ Page {
                 Column{
                     spacing: 10
                     width: parent.width
-                    Text {
+                    Label {
                         text: "Schedule ID : " + listViewElement.currentItem.scheduleID
                     }
-                    Text {
+                    Label {
                         text: "Schedule UUID : " + listViewElement.currentItem.scheduleUUID
                     }
-                    Text {
+                    Label {
                         text: qsTr("Schedule Name :")
                     }
                     TextField{
@@ -231,7 +232,7 @@ Page {
                         width: parent.width
                         text: listViewElement.currentItem.scheduleName
                     }
-                    Text {
+                    Label {
                         text: qsTr("Select Pin :")
                     }
                     ComboBox{
@@ -249,7 +250,7 @@ Page {
                             onClicked: editPin.displayName = model.pinName
                         }
                     }
-                    Text {
+                    Label {
                         text: qsTr("Cron Syntax :")
                     }
                     Row{
@@ -280,7 +281,7 @@ Page {
                             text: listViewElement.currentItem.dayOfWeek
                         }
                     }
-                    Text {
+                    Label {
                         text: qsTr("Time Zone :")
                     }
                     TextField{
@@ -288,7 +289,7 @@ Page {
                         width: parent.width
                         text: listViewElement.currentItem.timeZone
                     }
-                    Text {
+                    Label {
                         text: qsTr("Pin Value :")
                     }
                     TextField{
@@ -296,7 +297,7 @@ Page {
                         width: parent.width
                         text: listViewElement.currentItem.value
                     }
-                    Text {
+                    Label {
                         text: qsTr("Group Description :")
                     }
                     TextField{
@@ -327,25 +328,25 @@ Page {
                 Column{
                     spacing: 10
                     //width: parent.width
-                    Text {
+                    Label {
                         text: "Schedule Name\t: " + listViewElement.currentItem.scheduleName
                     }
-                    Text {
+                    Label {
                         text: "Schedule UUID\t: " + listViewElement.currentItem.scheduleUUID
                     }
-                    Text {
+                    Label {
                         text: "Pin Name\t\t: " + listViewElement.currentItem.pinName
                     }
-                    Text {
+                    Label {
                         text: "Pin UUID\t\t: " + listViewElement.currentItem.pinUUID
                     }
-                    Text {
+                    Label {
                         text: "Pin Value\t\t: " + listViewElement.currentItem.value
                     }
-                    Text {
+                    Label {
                         text: "Owner\t\t: " + listViewElement.currentItem.userName
                     }
-                    Text {
+                    Label {
                         text: "CRON Syntax\t: " + listViewElement.currentItem.minute+" "+listViewElement.currentItem.hour+" "+listViewElement.currentItem.dayOfMonth+" "+listViewElement.currentItem.month+" "+listViewElement.currentItem.dayOfWeek
                     }
                 }

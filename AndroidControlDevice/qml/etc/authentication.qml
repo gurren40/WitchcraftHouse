@@ -3,6 +3,7 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.12
 
 ScrollView {
+    property bool canCreate: false
     property string title: qsTr("Authentication")
     anchors.fill: parent
     width: parent.width

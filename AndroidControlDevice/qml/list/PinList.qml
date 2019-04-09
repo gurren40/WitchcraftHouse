@@ -18,6 +18,7 @@ Pane {
             createNewPin.open()
         }
     }
+    property bool canCreate: !isShared
     property var delegateComponentMap: {
         "default": defaultDelegateComponent,
         "switch": switchDelegateComponent,
@@ -43,7 +44,7 @@ Pane {
         id: defaultDelegateComponent
 
         ItemDelegate{
-            icon.name : "iconName"
+            icon.name : iconName
             text : pinName
             onClicked: {
                 if(listViewElement.currentIndex != thisIndex){
@@ -57,7 +58,7 @@ Pane {
     Component{
         id: switchDelegateComponent
         ItemDelegate{
-            contentItem : Text{
+            contentItem : Label{
                 width: parent.width
                 color: transparent
                 ItemDelegate{
@@ -110,7 +111,7 @@ Pane {
         ItemDelegate{
             text: pinName
             icon.name: iconName
-            contentItem: Text{
+            contentItem: Label{
                 width: parent.width
                 color: transparent
                 ItemDelegate{
@@ -174,8 +175,8 @@ Pane {
             Layout.fillWidth: true
             Layout.fillHeight: true
             clip: true
-            footer: Text{
-                height: 105
+            footer: Label{
+                height: 90
                 width: parent.width
                 text: ""
             }
@@ -239,35 +240,35 @@ Pane {
                 //width: parent.width
                 anchors.centerIn: parent
                 spacing: 10
-                Text {
+                Label {
                     focus: true
                     text: "Pin Name\t\t: " + listViewElement.currentItem.pinName
                 }
-                Text {
+                Label {
                     text: "Pin UUID\t\t: " + listViewElement.currentItem.uuid
                 }
-                Text {
+                Label {
                     text: "User Email\t\t: " + listViewElement.currentItem.userName
                 }
-                Text {
+                Label {
                     text: "Group Name\t\t: " + listViewElement.currentItem.groupName
                 }
-                Text {
+                Label {
                     text: "Device Name\t: " + listViewElement.currentItem.deviceName
                 }
-                Text {
+                Label {
                     text: "Icon\t\t: " + listViewElement.currentItem.iconName
                 }
-                Text {
+                Label {
                     text: "Pin Type\t\t: " + listViewElement.currentItem.pinTypeName
                 }
-                Text {
+                Label {
                     text: "Current value\t: " + listViewElement.currentItem.value
                 }
-                Text {
+                Label {
                     text: "Option\t\t: " + listViewElement.currentItem.option
                 }
-                Text {
+                Label {
                     text: "Description\t\t: " + listViewElement.currentItem.description
                 }
                 Row {
@@ -306,14 +307,14 @@ Pane {
                 width: parent.width
                 anchors.centerIn: parent
                 spacing: 5
-                Text {
+                Label {
                     text: qsTr("Pin Name :")
                 }
                 TextField{
                     id : newPinName
                     width: parent.width
                 }
-                Text {
+                Label {
                     text: qsTr("Select Group :")
                 }
                 ComboBox{
@@ -331,7 +332,7 @@ Pane {
                         onClicked: newGroup.displayName = model.groupName
                     }
                 }
-                Text {
+                Label {
                     text: qsTr("Select Device :")
                 }
                 ComboBox{
@@ -348,7 +349,7 @@ Pane {
                         onClicked: newDevice.displayName = model.deviceName
                     }
                 }
-                Text {
+                Label {
                     text: qsTr("Select Icon :")
                 }
                 ComboBox{
@@ -366,7 +367,7 @@ Pane {
                         onClicked: newIcon.displayName = model.iconName
                     }
                 }
-                Text {
+                Label {
                     text: qsTr("Select Pin Type :")
                 }
                 ComboBox{
@@ -383,21 +384,21 @@ Pane {
                         onClicked: newPinType.displayName = model.pinTypeName
                     }
                 }
-                Text {
+                Label {
                     text: qsTr("Initial Value :")
                 }
                 TextField{
                     id : newValue
                     width: parent.width
                 }
-                Text {
+                Label {
                     text: qsTr("Options :")
                 }
                 TextField{
                     id : newOption
                     width: parent.width
                 }
-                Text {
+                Label {
                     text: qsTr("Description :")
                 }
                 TextField{
@@ -430,15 +431,15 @@ Pane {
                 width: parent.width
                 anchors.centerIn: parent
                 spacing: 5
-                Text {
+                Label {
                     id:pinID
                     text: "Pin ID : " + listViewElement.currentItem.pinID
                 }
-                Text {
+                Label {
                     id:uuid
                     text: "Pin UUID : " + listViewElement.currentItem.uuid
                 }
-                Text {
+                Label {
                     text: qsTr("Pin Name :")
                 }
                 TextField{
@@ -446,7 +447,7 @@ Pane {
                     width: parent.width
                     text: listViewElement.currentItem.pinName
                 }
-                Text {
+                Label {
                     text: qsTr("Select Group :")
                 }
                 ComboBox{
@@ -464,7 +465,7 @@ Pane {
                         onClicked: group.displayName = model.groupName
                     }
                 }
-                Text {
+                Label {
                     text: qsTr("Select Device :")
                 }
                 ComboBox{
@@ -481,7 +482,7 @@ Pane {
                         onClicked: device.displayName = model.deviceName
                     }
                 }
-                Text {
+                Label {
                     text: qsTr("Select Icon :")
                 }
                 ComboBox{
@@ -499,7 +500,7 @@ Pane {
                         onClicked: editIcon.displayName = model.iconName
                     }
                 }
-                Text {
+                Label {
                     text: qsTr("Select Pin Type :")
                 }
                 ComboBox{
@@ -516,7 +517,7 @@ Pane {
                         onClicked: pinType.displayName = model.pinTypeName
                     }
                 }
-                Text {
+                Label {
                     text: qsTr("New Value :")
                 }
                 TextField{
@@ -524,7 +525,7 @@ Pane {
                     width: parent.width
                     text: listViewElement.currentItem.value
                 }
-                Text {
+                Label {
                     text: qsTr("Options :")
                 }
                 TextField{
@@ -532,7 +533,7 @@ Pane {
                     width: parent.width
                     text: listViewElement.currentItem.option
                 }
-                Text {
+                Label {
                     text: qsTr("Description :")
                 }
                 TextField{
@@ -563,13 +564,13 @@ Pane {
             Column{
                 spacing: 10
                 width: parent.width
-                Text {
+                Label {
                     text: "Pin ID : " + listViewElement.currentItem.pinID
                 }
-                Text {
+                Label {
                     text: "Pin UUID : " + listViewElement.currentItem.uuid
                 }
-                Text {
+                Label {
                     text: "Pin Name : " + listViewElement.currentItem.pinName
                 }
             }

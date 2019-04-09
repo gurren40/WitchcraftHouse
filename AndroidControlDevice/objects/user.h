@@ -21,6 +21,7 @@ class User : public QObject
     Q_PROPERTY(QString thisDeviceModel READ thisDeviceModel)
     Q_PROPERTY(QString name READ getName WRITE setName NOTIFY nameSig)
     Q_PROPERTY(QString jwt READ getJwt)
+    Q_PROPERTY(bool darkTheme READ darkTheme WRITE setDarkTheme NOTIFY darkThemeSig)
 
 public:
     explicit User(QObject *parent = nullptr);
@@ -39,6 +40,9 @@ public:
     QString getName() const;
     void setName(const QString &name);
 
+    bool darkTheme();
+    void setDarkTheme(bool value);
+
 signals:
     void isOnlineSig();
     void isTokenExpiredSig();
@@ -46,6 +50,7 @@ signals:
     void serverDomainSig();
     void emailSig();
     void nameSig();
+    void darkThemeSig();
 
 public slots:
     void setIsOnline(bool isOnline);
