@@ -6,12 +6,12 @@ PinTypeList::PinTypeList(QObject *parent) : QObject(parent)
     mItems.append({ 1, QStringLiteral("switch") });
     mItems.append({ 2, QStringLiteral("textout") });
     mItems.append({ 3, QStringLiteral("tempc") });
-    mItems.append({ 4, QStringLiteral("tempf") });
-    mItems.append({ 5, QStringLiteral("textfield") });
-    mItems.append({ 6, QStringLiteral("spinbox") });
-    mItems.append({ 7, QStringLiteral("textarea") });
-    mItems.append({ 8, QStringLiteral("tubler") });
-    mItems.append({ 9, QStringLiteral("combobox") });
+    mItems.append({ 4, QStringLiteral("textfield") });
+    mItems.append({ 5, QStringLiteral("textarea") });
+    mItems.append({ 6, QStringLiteral("tumbler") });
+    mItems.append({ 7, QStringLiteral("spinbox") });
+    mItems.append({ 8, QStringLiteral("combobox") });
+    mItems.append({ 9, QStringLiteral("webview") });
 }
 
 QVector<PinTypeItem> PinTypeList::items() const

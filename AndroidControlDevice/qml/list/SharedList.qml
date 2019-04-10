@@ -7,8 +7,10 @@ import Pin 1.0
 Page {
     property bool canCreate: true
     property int listID : 4
-    function create(){createNewShared.open()}
-    anchors.fill: parent
+    //function create(){createNewShared.open()}
+    function create(){stackView.push("../create/createShared.qml")}
+    padding: 0
+    //anchors.fill: parent
     title: qsTr("Shared List")
 
     ListView{
@@ -102,105 +104,6 @@ Page {
     }
 
     Dialog{
-        id:createNewShared
-        modal: true
-        anchors.centerIn: parent
-        title: "Create New Shared"
-        width: parent.width * 0.9
-        height: parent.height * 0.9
-        standardButtons: Dialog.Ok | Dialog.Cancel
-        contentItem: ScrollView {
-            clip: true
-            contentWidth: -1
-            Column{
-                spacing: 10
-                width: parent.width
-                Label {
-                    text: qsTr("Shared Name :")
-                }
-                TextField{
-                    id : newName
-                    width: parent.width
-                }
-                Label {
-                    text: qsTr("Shared To (Email) :")
-                }
-                TextField{
-                    id : newSharedTo
-                    width: parent.width
-                }
-                Label {
-                    text: qsTr("Select Shared Type :")
-                }
-                Row{
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 15
-                    Label {
-                        anchors.verticalCenter: parent.verticalCenter
-                        text: qsTr("Group")
-                    }
-                    Switch{
-                        anchors.verticalCenter: parent.verticalCenter
-                        id : newSharedType
-                    }
-                    Label {
-                        anchors.verticalCenter: parent.verticalCenter
-                        text: qsTr("Pin")
-                    }
-                }
-
-                Label {
-                    text: qsTr("Select Group or Pin :")
-                }
-                ComboBox{
-                    enabled: !newSharedType.checked
-                    property string displayName : "Select Group"
-                    id : newGroup
-                    textRole: "groupID"
-                    displayText: displayName
-                    width: parent.width
-                    model: GroupModel{
-                        list: groupList
-                    }
-                    delegate: ItemDelegate{
-                        icon.name : model.iconName
-                        text: model.groupName
-                        onClicked: newGroup.displayName = model.groupName
-                    }
-                }
-                ComboBox{
-                    enabled: newSharedType.checked
-                    property string displayName : "Select Pin"
-                    id : newPin
-                    textRole: "UUID"
-                    displayText: displayName
-                    width: parent.width
-                    model: PinModel{
-                        list: pinList
-                    }
-                    delegate: ItemDelegate{
-                        icon.name : model.iconName
-                        text: model.pinName
-                        onClicked: newPin.displayName = model.pinName
-                    }
-                }
-                Label {
-                    text: qsTr("Description :")
-                }
-                TextField{
-                    id : newDescription
-                    width: parent.width
-                }
-            }
-        }
-        onAccepted: {
-            //void createNewShared(QVariant sharedName, QVariant sharedTo, QVariant sharedType, QVariant groupID, QVariant pinUUID, QVariant description);
-            sharedList.createNewShared(newName.text,newSharedTo.text,newSharedType.checked,newGroup.currentText,newPin.currentText,newDescription.text)
-        }
-        onRejected: console.log("Cancel clicked")
-    }
-
-    Dialog{
         id:editShared
         modal: true
         anchors.centerIn: parent
@@ -258,7 +161,7 @@ Page {
                     text: qsTr("Select Group or Pin :")
                 }
                 ComboBox{
-                    enabled: !newSharedType.checked
+                    enabled: !editSharedType.checked
                     property string displayName : "Select Group"
                     id : editGroup
                     textRole: "groupID"
@@ -274,7 +177,7 @@ Page {
                     }
                 }
                 ComboBox{
-                    enabled: newSharedType.checked
+                    enabled: editSharedType.checked
                     property string displayName : "Select Pin"
                     id : editPin
                     textRole: "UUID"
@@ -312,7 +215,7 @@ Page {
         anchors.centerIn: parent
         title: "Are you sure want to delete this Shared Item?"
         width: parent.width * 0.9
-        height: parent.height * 0.9
+        //height: parent.height * 0.9
         standardButtons: Dialog.Ok | Dialog.Cancel
         contentItem: ScrollView {
             clip: true

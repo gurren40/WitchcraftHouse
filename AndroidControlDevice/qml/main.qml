@@ -12,6 +12,18 @@ ApplicationWindow {
     height: 480
     title: qsTr("Witchcraft House")
 
+    //timer and stuff
+    Timer{
+        id : initTimer
+        repeat: false
+        interval: 200
+        running: true
+        onTriggered: {
+            user.initActivity()
+            user.getAllData()
+        }
+    }
+
     //! [orientation]
     readonly property bool inPortrait: window.width < window.height
     //! [orientation]
@@ -51,14 +63,19 @@ ApplicationWindow {
             anchors.fill: parent
             ToolButton {
                 id: toolButton
-                icon.name: drawer.visible ? "chevron_left" : "menu"
+                icon.name: (drawer.visible || (stackView.depth > 1)) ? "chevron_left" : "menu"
                 font.pixelSize: Qt.application.font.pixelSize * 1.6
                 onClicked: {
-                    if(drawer.visible){
-                        drawer.close()
+                    if(stackView.depth > 1){
+                        stackView.pop()
                     }
                     else{
-                        drawer.open()
+                        if(drawer.visible){
+                            drawer.close()
+                        }
+                        else{
+                            drawer.open()
+                        }
                     }
                 }
                 anchors.left: parent.left

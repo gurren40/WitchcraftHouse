@@ -5,7 +5,8 @@ import Pin 1.0
 Page {
     property bool canCreate: false
     property int listID : 6
-    anchors.fill: parent
+    padding: 0
+    //anchors.fill: parent
     title: qsTr("Shared Pin List")
 
     ListView{

@@ -1,118 +1,82 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
+import QtQuick.Layouts 1.3
+//import QtWebView 1.1
+import Pin 1.0
+import Icon 1.0
+import Group 1.0
+import PinType 1.0
+import Device 1.0
+import QtQuick.Controls.Material 2.12
 
-Flickable {
-    width: parent.width
-    contentHeight: (theColumn.height > parent.height) ? theColumn.height : parent.height
-    property string serverUrl: "What Server?"
-    ScrollBar.vertical: ScrollBar { }
-
+ScrollView{
+    property string title: "Create New User"
+    property bool canCreate : false
+    id : createNewSchedule
+    padding: 15
+    contentWidth: -1
     Column{
-        id: theColumn
+        spacing: 15
+        clip: true
         width: parent.width
-        anchors.centerIn: parent
-        spacing: 20
-
-        Label {
-            text: serverUrl
-            anchors.horizontalCenter: parent.horizontalCenter
-        }
-
-        Rectangle{
-            anchors.horizontalCenter: parent.horizontalCenter
-            width: parent.width * 0.8
-            height: 2
-            border.width: 2
-            border.color: "black"
-        }
-
-        Label {
-            text: "Create New User"
-            anchors.horizontalCenter: parent.horizontalCenter
+        Label{
+            text: "Please set your server first"
         }
 
         TextField{
-            width: parent.width * 0.8
-            placeholderText: qsTr("Username")
-            id: username
-            anchors.horizontalCenter: parent.horizontalCenter
+            id:newName
+            width: parent.width
+            placeholderText: "Name"
         }
-
         TextField{
-            width: parent.width * 0.8
-            placeholderText: qsTr("Email")
-            id: email
-            anchors.horizontalCenter: parent.horizontalCenter
+            id:newEmail
+            width: parent.width
+            placeholderText: "Email"
         }
-
         TextField{
-            width: parent.width * 0.8
-            id: password
-            placeholderText: qsTr("Password")
+            id:newPassword
+            width: parent.width
             echoMode: TextInput.Password
-            anchors.horizontalCenter: parent.horizontalCenter
+            passwordMaskDelay: 100
+            placeholderText: "Password"
         }
-
         TextField{
-            width: parent.width * 0.8
-            id: passwordRepeat
-            placeholderText: qsTr("Repeat Password")
+            id:newPasswordRepeat
+            width: parent.width
             echoMode: TextInput.Password
-            anchors.horizontalCenter: parent.horizontalCenter
-            ToolTip.text: qsTr("Password did not match")
-            ToolTip.visible: false
-            ToolTip.timeout: 5000
+            passwordMaskDelay: 100
+            placeholderText: "Repeat Password"
         }
-
         Row{
             anchors.horizontalCenter: parent.horizontalCenter
             spacing: 20
             Button{
-                id: createNewUser
-                text: qsTr("Create New User")
+                id : createButton
+                text: "Create"
                 onClicked: function(){
-                    messageDialog.open()
-                    if((username.length < 1) || (email.length < 1) || (password.length < 1) || (passwordRepeat.length < 1)){
-                        //ga usah panggil fungsi
+                    if(newPassword.text == newPasswordRepeat.text){
+                        //void createNewUser(QVariant email, QVariant name, QVariant password);
+                        user.createNewUser(newEmail.text,newName.text,newPassword.text)
                     }
-                    else {
-                        if(password.text != passwordRepeat.text){
-                            passwordRepeat.ToolTip.visible = true
-                        }
-                        else {
-                            //panggil fungsi
-                        }
+                    else{
+                        passwordMismatch.open()
                     }
                 }
+                enabled: user.isOnline
             }
-
             Button{
-                text: qsTr("Cancel")
-                onClicked: function(){
-                    stackView.pop()
-                }
+                id : cancelButton
+                text: "Cancel"
+                onClicked: stackView.pop()
             }
         }
     }
-
     Dialog{
-        id: messageDialog
+        id: passwordMismatch
+        title: "Password Mismatch"
+        standardButtons: Dialog.Ok
+        modal: true
         anchors.centerIn: parent
-        width: ((username.length < 1) || (email.length < 1) || (password.length < 1) || (passwordRepeat.length < 1)) ? errorLabel.width * 1.2 : busyIndicator.width * 1.5
-        height: ((username.length < 1) || (email.length < 1) || (password.length < 1) || (passwordRepeat.length < 1)) ? errorLabel.height * 1.5 : busyIndicator.height * 1.5
-
-        BusyIndicator {
-            id : busyIndicator
-            //anchors.horizontalCenter: parent.horizontalCenter
-            visible: ((username.length < 1) || (email.length < 1) || (password.length < 1) || (passwordRepeat.length < 1)) ? false : true
-            anchors.centerIn: parent
-        }
-
-        Label {
-            id : errorLabel
-            visible: ((username.length < 1) || (email.length < 1) || (password.length < 1) || (passwordRepeat.length < 1)) ? true : false
-            anchors.centerIn: parent
-            text: password.text != passwordRepeat.text ? qsTr("Password did not match") : qsTr("Please fill the blank field")
-        }
     }
 }
+

@@ -2,6 +2,7 @@
 
 Server::Server(QObject *parent) : QObject(parent)
 {
+    m_isOnline = false;
     m_connection = new Connection(this);
     m_notification = new Notification(this);
     m_notification->setJavaClass("id/web/witchcraft/house/MyService");
@@ -29,6 +30,9 @@ void Server::setRemote(RemoteReplica *remote)
 
     //variant
     //connect(m_remote,&RemoteReplica::sendToServerVariantSig,this,&Server::sentToServerVariant);
+
+    //init activity
+    connect(m_remote,&RemoteReplica::initActivitySig,this,&Server::initActivity);
 }
 
 void Server::sentToServer(QVariant jvar)
@@ -128,9 +132,16 @@ QJsonObject Server::variantToJson(QVariant jvar)
 void Server::isOnline()
 {
     m_remote->setIsOnline(true);
+    m_isOnline = true;
 }
 
 void Server::isOffline()
 {
     m_remote->setIsOnline(false);
+    m_isOnline = false;
+}
+
+void Server::initActivity()
+{
+    m_remote->setIsOnline(m_isOnline);
 }

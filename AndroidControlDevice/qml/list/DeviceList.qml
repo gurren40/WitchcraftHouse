@@ -5,8 +5,10 @@ import Device 1.0
 Page {
     property bool canCreate: true
     property int listID : 1
-    function create(){createNewDevice.open()}
-    anchors.fill: parent
+    padding: 0
+    //function create(){createNewDevice.open()}
+    function create(){stackView.push("../create/createDevice.qml")}
+    //anchors.fill: parent
     title: qsTr("Devices")
 
     ListView{
@@ -96,44 +98,6 @@ Page {
     }
 
     Dialog{
-        id:createNewDevice
-        modal: true
-        anchors.centerIn: parent
-        title: "Create New Device"
-        width: parent.width * 0.9
-        height: parent.height * 0.9
-        standardButtons: Dialog.Ok | Dialog.Cancel
-        contentItem: ScrollView {
-            clip: true
-            contentWidth: -1
-            Column{
-                spacing: 10
-                width: parent.width
-                Label {
-                    text: qsTr("Device Name :")
-                }
-                TextField{
-                    id : newName
-                    width: parent.width
-                }
-                Label {
-                    text: qsTr("Device Description :")
-                }
-                TextField{
-                    id : newDescription
-                    width: parent.width
-                }
-            }
-        }
-
-        onAccepted: {
-            //deviceList.createNewDevice(QVariant deviceName, QVariant description);
-            deviceList.createNewDevice(newName.text,newDescription.text);
-        }
-        onRejected: console.log("Cancel clicked")
-    }
-
-    Dialog{
         id: editDevice
         modal: true
         anchors.centerIn: parent
@@ -183,7 +147,7 @@ Page {
         anchors.centerIn: parent
         title: "Are you sure want to delete this Device"
         width: parent.width * 0.9
-        height: parent.height * 0.9
+        //height: parent.height * 0.9
         standardButtons: Dialog.Ok | Dialog.Cancel
         contentItem: ScrollView {
             clip: true
@@ -202,6 +166,8 @@ Page {
         onAccepted: {
             //void deleteDevice(QVariant deviceID);
             deviceList.deleteDevice(listViewElement.currentItem.deviceID);
+            deviceList.getDeviceList()
+            deviceDetails.close()
         }
         onRejected: console.log("Cancel clicked")
     }

@@ -80,26 +80,42 @@ QJsonObject DeviceController::createNewDevice(QJsonObject json, int userID)
             QJsonWebToken jwt;
             QJsonObject jsonObject = jsonArray.at(i).toObject();
             QUuid newUUID = QUuid::createUuid();
-            jwt.setSecret(secret);
-            //set jwt
-            jwt.appendClaim("iss", "WitchcraftHouse");
-            jwt.appendClaim("aud", jsonObject["email"].toString());
-            jwt.appendClaim("jti", newUUID.toString(QUuid::WithoutBraces));
 
-            //create new device
-            QJsonObject error = device.create(newUUID,userID,jsonObject["deviceName"].toString(),jwt.getToken(),0,jsonObject["description"].toString());
-            QJsonObject notification;
-            notification["title"] = "Error";
-            notification["description"] = error["error"].toString();
-            //send email
-            QString title = "Device token has been created";
-            QString body = "Your new device token has been created.\nYour token is\n\n "+jwt.getToken()+" \n\nPlease use this token carefully, and If this is not you, you can disable this token from Witchcraft House application.\nplease do not reveal your password to anyone\nThank you";
-
-            if(error["error"].toString() == "0"){
-                emit sendMail(jsonObject["email"].toString(),title,body);
+            User user(&db);
+            user.read("userID='"+QString::number(userID)+"'");
+            if(user.mUsers.size()!=1){
+                QTextStream(stdout) << userID << "\n";
+                QJsonObject error,notification;
+                error["error"] = "userID invalid";
+                error["errorCode"] = "7";
+                notification["title"]="Error";
+                notification["description"] = error["error"].toString();
+                errorArray.append(error);
+                notificationArray.append(notification);
             }
-            errorArray.append(error);
-            notificationArray.append(notification);
+            else {
+                jsonObject["email"] = user.mUsers.at(0).email;
+                jwt.setSecret(secret);
+                //set jwt
+                jwt.appendClaim("iss", "WitchcraftHouse");
+                jwt.appendClaim("aud", jsonObject["email"].toString());
+                jwt.appendClaim("jti", newUUID.toString(QUuid::WithoutBraces));
+
+                //create new device
+                QJsonObject error = device.create(newUUID,userID,jsonObject["deviceName"].toString(),jwt.getToken(),0,jsonObject["description"].toString());
+                QJsonObject notification;
+                notification["title"] = "Error";
+                notification["description"] = error["error"].toString();
+                //send email
+                QString title = "Device token has been created";
+                QString body = "Your new device token has been created.\nYour token is\n\n "+jwt.getToken()+" \n\nPlease use this token carefully, and If this is not you, you can disable this token from Witchcraft House application.\nplease do not reveal your password to anyone\nThank you";
+
+                if(error["error"].toString() == "0"){
+                    emit sendMail(jsonObject["email"].toString(),title,body);
+                }
+                errorArray.append(error);
+                notificationArray.append(notification);
+            }
         }
     }
     else {
@@ -287,11 +303,11 @@ QJsonObject DeviceController::deleteDevice(QJsonObject json, int userID)
     else {
         for (int i = 0;i<jsonArray.size();i++) {
             QJsonObject jsonObject = jsonArray.at(i).toObject();
-            QJsonObject error1 = device.read("deviceID='"+QString::number(jsonObject["deviceID"].toInt())+"'");
+            QJsonObject error1 = device.read("Device.deviceID='"+QString::number(jsonObject["deviceID"].toInt())+"'");
             if(device.mDevices.size() == 1){
 
                 //delete pin
-                pin.read("deviceID='"+QString::number(device.mDevices.at(0).deviceID)+"'");
+                pin.read("Pin.deviceID='"+QString::number(device.mDevices.at(0).deviceID)+"'");
                 if(pin.mPins.size()>0){
                     QJsonArray pinArray;
                     for (int j = 0;j<pin.mPins.size();j++) {
@@ -306,7 +322,9 @@ QJsonObject DeviceController::deleteDevice(QJsonObject json, int userID)
                 }
 
                 //delete device
-                emit deletedDevice(device.mDevices.at(i).deviceUUID);
+                //[ERROR]
+                //emit deletedDevice(device.mDevices.at(i).deviceUUID); ERRRORRRR
+                //[ERROR]
                 error1 = device.deletes("deviceID='"+QString::number(device.mDevices.at(0).deviceID)+"'");
             }
             errorArray.append(error1);

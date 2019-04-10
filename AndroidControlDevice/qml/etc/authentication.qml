@@ -5,11 +5,11 @@ import QtQuick.Layouts 1.12
 ScrollView {
     property bool canCreate: false
     property string title: qsTr("Authentication")
-    anchors.fill: parent
-    width: parent.width
+    //anchors.fill: parent
+    //width: parent.width
     contentWidth: -1
-    anchors.horizontalCenter: parent.horizontalCenter
-    anchors.verticalCenter: parent.verticalCenter
+    //anchors.horizontalCenter: parent.horizontalCenter
+    //anchors.verticalCenter: parent.verticalCenter
     Column{
         id: settingColumn
         spacing: 20
@@ -36,7 +36,8 @@ ScrollView {
             text: "Create New User"
             icon.name: "chevron_right"
             width: parent.width
-            onClicked: createNewUserDialog.open()
+            //onClicked: createNewUserDialog.open()
+            onClicked : stackView.push("../create/createUser.qml")
         }
         ItemDelegate{
             enabled: user.isLoggedIn
@@ -105,73 +106,6 @@ ScrollView {
         }
     }
 
-    Dialog{
-        id: createNewUserDialog
-        title: "Create New User"
-        modal: true
-        anchors.centerIn: parent
-        standardButtons: Dialog.Ok | Dialog.Cancel
-        //void createNewUser(QVariant email, QVariant name, QVariant password);
-        onAccepted: function(){
-            if(newPassword.text == newPasswordRepeat.text){
-                user.createNewUser(newEmail.text,newName.text,newPassword.text)
-            }
-            else{
-                passwordMismatch.open()
-            }
-        }
-
-        onRejected: console.log("Cancel clicked")
-        width: parent.width * 0.9
-        height: parent.height * 0.9
-        contentItem: ScrollView {
-            anchors.centerIn: parent
-            width: parent.width
-            clip: true
-            contentWidth: -1
-            Column{
-                spacing: 15
-                clip: true
-                width: parent.width
-                Label{
-                    text: "Please set your server first"
-                }
-
-                TextField{
-                    id:newName
-                    width: parent.width
-                    placeholderText: "Name"
-                }
-                TextField{
-                    id:newEmail
-                    width: parent.width
-                    placeholderText: "Email"
-                }
-                TextField{
-                    id:newPassword
-                    width: parent.width
-                    echoMode: TextInput.Password
-                    passwordMaskDelay: 100
-                    placeholderText: "Password"
-                }
-                TextField{
-                    id:newPasswordRepeat
-                    width: parent.width
-                    echoMode: TextInput.Password
-                    passwordMaskDelay: 100
-                    placeholderText: "Repeat Password"
-                }
-            }
-        }
-    }
-
-    Dialog{
-        id: passwordMismatch
-        title: "Password Mismatch"
-        standardButtons: Dialog.Ok
-        modal: true
-        anchors.centerIn: parent
-    }
     Dialog{
         id: logOutDialog
         modal: true

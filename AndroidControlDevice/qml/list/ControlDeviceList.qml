@@ -3,9 +3,10 @@ import QtQuick.Controls 2.2
 import ControlDevice 1.0
 
 Page {
-    property bool canCreate: true
+    property bool canCreate: false
     property int listID : 5
-    anchors.fill: parent
+    padding: 0
+    //anchors.fill: parent
     title: qsTr("Devices")
 
     ListView{
@@ -22,7 +23,7 @@ Page {
         }
 
         delegate: ItemDelegate {
-            property int controlDeviceID : model.controlDeviceID
+            property string controlDeviceID : model.controlDeviceID
             property int userID : model.userID
             property string userName : model.userName
             property string controlDeviceName : model.controlDeviceName
@@ -80,7 +81,7 @@ Page {
             anchors.centerIn: parent
             title: "Are you sure want to delete this Control Device?"
             width: parent.width * 0.9
-            height: parent.height * 0.9
+            //height: parent.height * 0.9
             standardButtons: Dialog.Ok | Dialog.Cancel
             contentItem: ScrollView {
                 clip: true

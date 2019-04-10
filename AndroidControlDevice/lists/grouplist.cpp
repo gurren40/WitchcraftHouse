@@ -85,7 +85,7 @@ void GroupList::createNewGroup(QVariant groupName, QVariant iconID, QVariant des
     //QJsonObject error = device.create(newUUID,userID,jsonObject["deviceName"].toString(),jwt.getToken(),0,jsonObject["description"].toString());
     QJsonObject jsonObj;
     jsonObj["groupName"] = groupName.toString();
-    jsonObj["iconID"] = iconID.toString();
+    jsonObj["iconID"] = iconID.toInt();
     jsonObj["description"] = description.toString();
     QJsonArray jsonArray;
     jsonArray.append(jsonObj);

@@ -5,10 +5,10 @@ import QtQuick.Layouts 1.12
 ScrollView {
     property bool canCreate: false
     property string title: qsTr("Settings")
-    anchors.fill: parent
-    width: parent.width
-    anchors.horizontalCenter: parent.horizontalCenter
-    anchors.verticalCenter: parent.verticalCenter
+    //anchors.fill: parent
+    //width: parent.width
+    //anchors.horizontalCenter: parent.horizontalCenter
+    //anchors.verticalCenter: parent.verticalCenter
     Column{
         id: settingColumn
         spacing: 15
@@ -45,7 +45,18 @@ ScrollView {
             }
             ItemDelegate{
                 width: parent.width
-                text: "Token : " + user.jwt
+                //text: "Token : " + user.jwt
+                contentItem: ColumnLayout{
+                    Label{
+                        text: "Token :"
+                    }
+                    TextArea{
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        text: user.jwt
+                        //enabled: false
+                    }
+                }
             }
         }
         SwitchDelegate{

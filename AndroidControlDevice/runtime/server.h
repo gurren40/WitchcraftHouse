@@ -34,11 +34,15 @@ public slots:
     void isOnline();
     void isOffline();
 
+    //when activity is created
+    void initActivity();
+
 private:
     RemoteReplica *m_remote;
     Connection *m_connection;
     Notification *m_notification;
     QJsonArray m_pinList;
+    bool m_isOnline;
 };
 
 #endif // SERVER_H

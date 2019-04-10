@@ -6,8 +6,10 @@ import Pin 1.0
 Page {
     property bool canCreate: true
     property int listID : 3
-    function create(){createNewSchedule.open()}
-    anchors.fill: parent
+    //function create(){createNewSchedule.open()}
+    function create(){stackView.push("../create/createSchedule.qml")}
+    padding: 0
+    //anchors.fill: parent
     title: qsTr("Schedule")
 
     ListView{
@@ -107,101 +109,6 @@ Page {
                     }
                 }
             }
-        }
-
-        Dialog{
-            id:createNewSchedule
-            modal: true
-            anchors.centerIn: parent
-            title: "Create New Schedule"
-            width: parent.width * 0.9
-            height: parent.height * 0.9
-            standardButtons: Dialog.Ok | Dialog.Cancel
-            contentItem: ScrollView {
-                clip: true
-                contentWidth: -1
-                Column{
-                    spacing: 10
-                    width: parent.width
-                    Label {
-                        text: qsTr("Schedule Name :")
-                    }
-                    TextField{
-                        id : newName
-                        width: parent.width
-                    }
-                    Label {
-                        text: qsTr("Select Pin :")
-                    }
-                    ComboBox{
-                        property string displayName : "Select Pin"
-                        id : newPin
-                        textRole: "UUID"
-                        displayText: displayName
-                        width: parent.width
-                        model: PinModel{
-                            list: pinList
-                        }
-                        delegate: ItemDelegate{
-                            icon.name : model.iconName
-                            text: model.pinName
-                            onClicked: newPin.displayName = model.pinName
-                        }
-                    }
-                    Label {
-                        text: qsTr("Cron Syntax :")
-                    }
-                    Row{
-                        spacing: 15
-                        TextField{
-                            id : newMinute
-                            width: 40
-                        }
-                        TextField{
-                            id : newHour
-                            width: 40
-                        }
-                        TextField{
-                            id : newDayOfMonth
-                            width: 40
-                        }
-                        TextField{
-                            id : newMonth
-                            width: 40
-                        }
-                        TextField{
-                            id : newDayOfWeek
-                            width: 40
-                        }
-                    }
-                    Label {
-                        text: qsTr("Time Zone :")
-                    }
-                    TextField{
-                        id : newTimeZone
-                        width: parent.width
-                    }
-                    Label {
-                        text: qsTr("Pin Value :")
-                    }
-                    TextField{
-                        id : newValue
-                        width: parent.width
-                    }
-                    Label {
-                        text: qsTr("Group Description :")
-                    }
-                    TextField{
-                        id : newDescription
-                        width: parent.width
-                    }
-                }
-            }
-            onAccepted: {
-                //void createNewSchedule(QVariant scheduleName, QVariant pinUUID, QVariant minute, QVariant hour, QVariant dayOfMonth, QVariant month, QVariant dayOfWeek, QVariant timeZone, QVariant value, QVariant description);
-                scheduleList.createNewSchedule(newName.text,newPin.currentText,newMinute.text,newHour.text,newDayOfMonth.text,newMonth.text,newDayOfWeek.text,newTimeZone.text,newValue.text,newDescription.text)
-            }
-            onRejected: console.log("Cancel clicked")
         }
 
         Dialog{
@@ -320,7 +227,7 @@ Page {
             anchors.centerIn: parent
             title: "Are you sure want to delete this Schedule?"
             width: parent.width * 0.9
-            height: parent.height * 0.9
+            //height: parent.height * 0.9
             standardButtons: Dialog.Ok | Dialog.Cancel
             contentItem: ScrollView {
                 clip: true

@@ -230,3 +230,8 @@ QJsonObject User::variantToJson(QVariant jvar)
     QJsonObject json = jdoc.object();
     return json;
 }
+
+void User::initActivity()
+{
+    m_remote->initActivity();
+}

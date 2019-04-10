@@ -32,6 +32,11 @@ public slots:
     void tokenExpired(bool isTokenExpired) override;
 
     void sendToServerVariant(QVariant jvar) override;
+
+    //initActivity -> to Service
+    //SIGNAL(initActivitySig());
+    void initActivity() override;
+
 };
 
 #endif // REMOTE_H

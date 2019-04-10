@@ -39,3 +39,8 @@ void Remote::sendToServerVariant(QVariant jvar)
 {
     emit sendToServerVariantSig(jvar);
 }
+
+void Remote::initActivity()
+{
+    emit initActivitySig();
+}

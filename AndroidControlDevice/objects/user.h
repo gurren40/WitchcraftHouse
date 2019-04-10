@@ -70,6 +70,9 @@ public slots:
     QVariant jsonToVariant(QJsonObject json);
     QJsonObject variantToJson(QVariant jvar);
 
+    //init activity
+    void initActivity();
+
 private:
     bool m_isOnline;
     bool m_isTokenExpired;

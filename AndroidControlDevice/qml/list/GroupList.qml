@@ -6,8 +6,10 @@ import Icon 1.0
 Page {
     property bool canCreate: true
     property int listID : 2
-    function create(){createNewGroup.open()}
-    anchors.fill: parent
+    padding: 0
+    //function create(){createNewGroup.open()}
+    function create(){stackView.push("../create/createGroup.qml")}
+    //anchors.fill: parent
     title: qsTr("Group List")
 
     ListView{
@@ -89,62 +91,6 @@ Page {
     }
 
     Dialog{
-        id:createNewGroup
-        modal: true
-        anchors.centerIn: parent
-        title: "Create New Group"
-        width: parent.width * 0.9
-        height: parent.height * 0.9
-        standardButtons: Dialog.Ok | Dialog.Cancel
-        contentItem: ScrollView {
-            clip: true
-            contentWidth: -1
-            Column{
-                spacing: 10
-                width: parent.width
-                Label {
-                    text: qsTr("Group Name :")
-                }
-                TextField{
-                    id : newName
-                    width: parent.width
-                }
-                Label {
-                    text: qsTr("Group Description :")
-                }
-                TextField{
-                    id : newDescription
-                    width: parent.width
-                }
-                Label {
-                    text: qsTr("Select Icon :")
-                }
-                ComboBox{
-                    property string displayName : "Select Icon"
-                    id : newIcon
-                    textRole: "iconID"
-                    displayText: displayName
-                    width: parent.width
-                    model: IconModel{
-                        list: iconList
-                    }
-                    delegate: ItemDelegate{
-                        icon.name : model.iconName
-                        text: model.iconName
-                        onClicked: newIcon.displayName = model.iconName
-                    }
-                }
-            }
-        }
-        onAccepted: {
-            //void createNewGroup(QVariant groupName, QVariant iconID, QVariant description);
-            groupList.createNewGroup(newName.text,newIcon.currentText,newDescription.text)
-            console.log(newName.text+" "+newIcon.currentText+" "+newDescription.text)
-        }
-        onRejected: console.log("Cancel clicked")
-    }
-
-    Dialog{
         id: editGroup
         modal: true
         anchors.centerIn: parent
@@ -211,7 +157,7 @@ Page {
         anchors.centerIn: parent
         title: "Are you sure want to delete this Group?"
         width: parent.width * 0.9
-        height: parent.height * 0.9
+        //height: parent.height * 0.9
         standardButtons: Dialog.Ok | Dialog.Cancel
         contentItem: ScrollView {
             clip: true
