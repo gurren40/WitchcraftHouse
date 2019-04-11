@@ -79,14 +79,17 @@ Page {
                     id:actualSwitch
                     anchors.right: parent.right
                     anchors.verticalCenter : parent.verticalCenter
-                    checked: function(){
-                        if(value === "0"){
-                            return false
+                    function thefunc(){
+                        if(value == "1"){
+                            actualSwitch.checked = true
                         }
-                        else if(value === "1"){
-                            return true
+                        else{
+                            actualSwitch.checked = false
                         }
                     }
+
+                    checked: thefunc()
+
                     onClicked: function(){
                         if(checked){
                             //void setPinValue(QVariant UUID, QVariant value);
@@ -387,152 +390,40 @@ Page {
                     spacing: 10
                     Button {
                         text: "Edit"
-                        onClicked: editPin.open()
                         enabled: !isShared
+                        visible: !isShared
+                        onClicked: {
+                            pinDetails.close()
+                            stackView.push("../edit/editPin.qml",{
+                                               pinID : listViewElement.currentItem.pinID,
+                                               uuid : listViewElement.currentItem.UUID,
+                                               userID : listViewElement.currentItem.userID,
+                                               userName : listViewElement.currentItem.userName,
+                                               groupID : listViewElement.currentItem.groupID,
+                                               groupName : listViewElement.currentItem.groupName,
+                                               deviceID : listViewElement.currentItem.deviceID,
+                                               deviceName : listViewElement.currentItem.deviceName,
+                                               iconID : listViewElement.currentItem.iconID,
+                                               iconName : listViewElement.currentItem.iconName,
+                                               pinTypeID : listViewElement.currentItem.pinTypeID,
+                                               pinTypeName : listViewElement.currentItem.pinTypeName,
+                                               pinName : listViewElement.currentItem.pinName,
+                                               value : listViewElement.currentItem.value,
+                                               option : listViewElement.currentItem.option,
+                                               description : listViewElement.currentItem.description
+                                           })
+                        }
                     }
                     Button {
                         text: "Delete"
-                        onClicked: deletePin.open()
+                        onClicked: {
+                            pinDetails.close()
+                            deletePin.open()
+                        }
                         enabled: !isShared
                     }
                 }
             }
-        }
-    }
-
-    Dialog{
-        id : editPin
-        width: parent.width * 0.9
-        height: parent.height * 0.9
-        modal: true
-        anchors.centerIn: parent
-        title: "Edit Pin"
-        standardButtons: Dialog.Ok | Dialog.Cancel
-        contentItem: ScrollView{
-            width: parent.width
-            clip: true
-            contentWidth: parent.width
-            anchors.centerIn: parent
-            Column{
-                width: parent.width
-                anchors.centerIn: parent
-                spacing: 5
-                Label {
-                    id:pinID
-                    text: "Pin ID : " + listViewElement.currentItem.pinID
-                }
-                Label {
-                    id:uuid
-                    text: "Pin UUID : " + listViewElement.currentItem.uuid
-                }
-                Label {
-                    text: qsTr("Pin Name :")
-                }
-                TextField{
-                    id : pinName
-                    width: parent.width
-                    text: listViewElement.currentItem.pinName
-                }
-                Label {
-                    text: qsTr("Select Group :")
-                }
-                ComboBox{
-                    property string displayName: "Select Icon (MUST)"
-                    id : group
-                    textRole: "groupID"
-                    displayText: displayName
-                    width: parent.width
-                    model: GroupModel{
-                        list: groupList
-                    }
-                    delegate: ItemDelegate{
-                        icon.name : model.iconName
-                        text: model.groupName
-                        onClicked: group.displayName = model.groupName
-                    }
-                }
-                Label {
-                    text: qsTr("Select Device :")
-                }
-                ComboBox{
-                    property string displayName : "Select Device (MUST)"
-                    id : device
-                    textRole: "deviceID"
-                    displayText: displayName
-                    width: parent.width
-                    model: DeviceModel{
-                        list: deviceList
-                    }
-                    delegate: ItemDelegate{
-                        text: model.deviceName
-                        onClicked: device.displayName = model.deviceName
-                    }
-                }
-                Label {
-                    text: qsTr("Select Icon :")
-                }
-                ComboBox{
-                    property string displayName : "Select Icon (MUST)"
-                    id : editIcon
-                    textRole: "iconID"
-                    displayText: displayName
-                    width: parent.width
-                    model: IconModel{
-                        list: iconList
-                    }
-                    delegate: ItemDelegate{
-                        icon.name : model.iconName
-                        text: model.iconName
-                        onClicked: editIcon.displayName = model.iconName
-                    }
-                }
-                Label {
-                    text: qsTr("Select Pin Type :")
-                }
-                ComboBox{
-                    property string displayName : "Select Pin Type (MUST)"
-                    id : pinType
-                    textRole: "pinTypeID"
-                    displayText: displayName
-                    width: parent.width
-                    model: PinTypeModel{
-                        list: pinTypeList
-                    }
-                    delegate: ItemDelegate{
-                        text: model.pinTypeName
-                        onClicked: pinType.displayName = model.pinTypeName
-                    }
-                }
-                Label {
-                    text: qsTr("New Value :")
-                }
-                TextField{
-                    id : value
-                    width: parent.width
-                    text: listViewElement.currentItem.value
-                }
-                Label {
-                    text: qsTr("Options :")
-                }
-                TextField{
-                    id : option
-                    width: parent.width
-                    text: listViewElement.currentItem.option
-                }
-                Label {
-                    text: qsTr("Description :")
-                }
-                TextField{
-                    id : description
-                    width: parent.width
-                    text: listViewElement.currentItem.description
-                }
-            }
-        }
-
-        onAccepted: {
-            //void editPin(QVariant pinID, QVariant UUID, QVariant pinName, QVariant groupID, QVariant deviceID, QVariant iconID, QVariant pinTypeID, QVariant value, QVariant option, QVariant description)
-            pinList.editPin(listViewElement.currentItem.pinID,listViewElement.currentItem.uuid,pinName.text,group.currentText,device.currentText,editIcon.currentText,pinType.currentText,value.text,option.text,description.text)
         }
     }
 
@@ -564,6 +455,7 @@ Page {
         onAccepted: {
             //void deletePin(QVariant UUID);
             pinList.deletePin(listViewElement.currentItem.uuid);
+            pinList.getPinList()
         }
         onRejected: console.log("Cancel clicked")
     }

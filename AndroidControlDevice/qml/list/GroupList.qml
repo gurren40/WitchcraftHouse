@@ -79,76 +79,29 @@ Page {
                     spacing: 10
                     Button {
                         text: "Edit"
-                        onClicked: editGroup.open()
+                        onClicked: {
+                            groupDetails.close()
+                            stackView.push("../edit/editGroup.qml",{
+                                               groupID : listViewElement.currentItem.groupID,
+                                               userID : listViewElement.currentItem.userID,
+                                               userName : listViewElement.currentItem.userName,
+                                               iconID : listViewElement.currentItem.iconID,
+                                               iconName : listViewElement.currentItem.iconName,
+                                               groupName : listViewElement.currentItem.groupName,
+                                               description : listViewElement.currentItem.description
+                                           })
+                        }
                     }
                     Button {
                         text: "Delete"
-                        onClicked: deleteGroup.open()
+                        onClicked: {
+                            groupDetails.close()
+                            deleteGroup.open()
+                        }
                     }
                 }
             }
         }
-    }
-
-    Dialog{
-        id: editGroup
-        modal: true
-        anchors.centerIn: parent
-        title: "Edit Group"
-        width: parent.width * 0.9
-        height: parent.height * 0.9
-        standardButtons: Dialog.Ok | Dialog.Cancel
-        contentItem: ScrollView {
-            clip: true
-            contentWidth: -1
-            Column{
-                spacing: 10
-                width: parent.width
-                Label {
-                    text: "Group ID : " + listViewElement.currentItem.groupID
-                }
-                Label {
-                    text: qsTr("Group Name :")
-                }
-                TextField{
-                    id : groupName
-                    width: parent.width
-                    text: listViewElement.currentItem.groupName
-                }
-                Label {
-                    text: qsTr("Group Description :")
-                }
-                TextField{
-                    id : description
-                    width: parent.width
-                    text: listViewElement.currentItem.description
-                }
-                Label {
-                    text: qsTr("Select Icon :")
-                }
-                ComboBox{
-                    property string displayName : "Must Select New Icon"
-                    id : groupIcon
-                    textRole: "iconID"
-                    displayText: displayName
-                    width: parent.width
-                    model: IconModel{
-                        list: iconList
-                    }
-                    delegate: ItemDelegate{
-                        icon.name : model.iconName
-                        text: model.iconName
-                        onClicked: groupIcon.displayName = model.iconName
-                    }
-                }
-            }
-        }
-        onAccepted: {
-            //void editGroup(QVariant groupID, QVariant groupName, QVariant iconID, QVariant description);
-            groupList.editGroup(listViewElement.currentItem.groupID,groupName.text,groupIcon.currentText,description.text)
-            console.log(listViewElement.currentItem.groupID+" "+groupName.text+" "+groupIcon.currentText+" "+description.text)
-        }
-        onRejected: console.log("Cancel clicked")
     }
 
     Dialog{
@@ -176,6 +129,7 @@ Page {
         onAccepted: {
             //void deleteGroup(QVariant groupID);
             groupList.deleteGroup(listViewElement.currentItem.groupID);
+            groupList.getGroupList()
         }
         onRejected: console.log("Cancel clicked")
     }

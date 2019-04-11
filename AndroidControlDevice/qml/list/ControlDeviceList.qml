@@ -69,7 +69,10 @@ Page {
                     Button {
                         enabled: !listViewElement.currentItem.isControlDeviceOnline
                         text: "Delete"
-                        onClicked: deleteControlDevice.open()
+                        onClicked: {
+                            controlDeviceDetails.close()
+                            deleteControlDevice.open()
+                        }
                     }
                 }
             }

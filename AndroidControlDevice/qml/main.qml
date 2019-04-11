@@ -165,54 +165,54 @@ ApplicationWindow {
             //anchors.top : toolBar.bottom
             anchors.fill : parent
 
-            pushEnter : Transition {
-                PropertyAnimation{
-                    property: "opacity"
-                    from: 0
-                    to: 1
-                    duration: 400
-                }
-            }
-            pushExit : Transition {
-                PropertyAnimation{
-                    property: "opacity"
-                    from: 1
-                    to: 0
-                    duration: 400
-                }
-            }
-            popEnter : Transition {
-                PropertyAnimation{
-                    property: "opacity"
-                    from: 0
-                    to: 1
-                    duration: 400
-                }
-            }
-            popExit : Transition {
-                PropertyAnimation{
-                    property: "opacity"
-                    from: 1
-                    to: 0
-                    duration: 400
-                }
-            }
-            replaceEnter : Transition {
-                PropertyAnimation{
-                    property: "opacity"
-                    from: 0
-                    to: 1
-                    duration: 400
-                }
-            }
-            replaceExit : Transition {
-                PropertyAnimation{
-                    property: "opacity"
-                    from: 1
-                    to: 0
-                    duration: 400
-                }
-            }
+//            pushEnter : Transition {
+//                PropertyAnimation{
+//                    property: "opacity"
+//                    from: 0
+//                    to: 1
+//                    duration: 400
+//                }
+//            }
+//            pushExit : Transition {
+//                PropertyAnimation{
+//                    property: "opacity"
+//                    from: 1
+//                    to: 0
+//                    duration: 400
+//                }
+//            }
+//            popEnter : Transition {
+//                PropertyAnimation{
+//                    property: "opacity"
+//                    from: 0
+//                    to: 1
+//                    duration: 400
+//                }
+//            }
+//            popExit : Transition {
+//                PropertyAnimation{
+//                    property: "opacity"
+//                    from: 1
+//                    to: 0
+//                    duration: 400
+//                }
+//            }
+//            replaceEnter : Transition {
+//                PropertyAnimation{
+//                    property: "opacity"
+//                    from: 0
+//                    to: 1
+//                    duration: 400
+//                }
+//            }
+//            replaceExit : Transition {
+//                PropertyAnimation{
+//                    property: "opacity"
+//                    from: 1
+//                    to: 0
+//                    duration: 400
+//                }
+//            }
         }
     }
     RoundButton {

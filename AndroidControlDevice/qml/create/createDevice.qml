@@ -40,6 +40,7 @@ ScrollView{
                 onClicked: {
                     //deviceList.createNewDevice(QVariant deviceName, QVariant description);
                     deviceList.createNewDevice(newName.text,newDescription.text);
+                    deviceList.getDeviceList()
                     stackView.pop()
                 }
                 enabled: user.isOnline

@@ -10,7 +10,7 @@ import Device 1.0
 import QtQuick.Controls.Material 2.12
 
 ScrollView{
-    property string title: "Create New Schedule"
+    property string title: "Create New Shared"
     property bool canCreate : false
     id : createNewSchedule
     padding: 15
@@ -105,6 +105,7 @@ ScrollView{
                 onClicked: {
                     //void createNewShared(QVariant sharedName, QVariant sharedTo, QVariant sharedType, QVariant groupID, QVariant pinUUID, QVariant description);
                     sharedList.createNewShared(newName.text,newSharedTo.text,newSharedType.checked,newGroup.currentText,newPin.currentText,newDescription.text)
+                    sharedList.getSharedList()
                     stackView.pop()
                 }
                 enabled: user.isOnline

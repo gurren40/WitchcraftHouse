@@ -92,121 +92,32 @@ Page {
                     spacing: 10
                     Button {
                         text: "Edit"
-                        onClicked: editShared.open()
+                        onClicked: {
+                            sharedDetails.close()
+                            stackView.push("../edit/editShared.qml",{
+                                               sharedID : listViewElement.currentItem.sharedID,
+                                               sharedTo : listViewElement.currentItem.sharedTo,
+                                               sharedToName : listViewElement.currentItem.sharedToName,
+                                               sharedType : listViewElement.currentItem.sharedType,
+                                               groupID : listViewElement.currentItem.groupID,
+                                               groupName : listViewElement.currentItem.groupName,
+                                               pinUUID : listViewElement.currentItem.pinUUID,
+                                               pinName : listViewElement.currentItem.pinName,
+                                               sharedName : listViewElement.currentItem.sharedName,
+                                               description : listViewElement.currentItem.description
+                                           })
+                        }
                     }
                     Button {
                         text: "Delete"
-                        onClicked: deleteShared.open()
+                        onClicked: {
+                            sharedDetails.close()
+                            deleteShared.open()
+                        }
                     }
                 }
             }
         }
-    }
-
-    Dialog{
-        id:editShared
-        modal: true
-        anchors.centerIn: parent
-        title: "Edit Shared"
-        width: parent.width * 0.9
-        height: parent.height * 0.9
-        standardButtons: Dialog.Ok | Dialog.Cancel
-        contentItem: ScrollView {
-            clip: true
-            contentWidth: -1
-            Column{
-                spacing: 10
-                width: parent.width
-                Label {
-                    text: "Shared ID : " + listViewElement.currentItem.sharedID
-                }
-                Label {
-                    text: qsTr("Shared Name :")
-                }
-                TextField{
-                    id : editName
-                    width: parent.width
-                    text: listViewElement.currentItem.sharedName
-                }
-                Label {
-                    text: qsTr("Shared To (Email) :")
-                }
-                TextField{
-                    id : editSharedTo
-                    width: parent.width
-                    text : listViewElement.currentItem.sharedTo
-                }
-                Label {
-                    text: qsTr("Select Shared Type :")
-                }
-                Row{
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 15
-                    Label {
-                        anchors.verticalCenter: parent.verticalCenter
-                        text: qsTr("Group")
-                    }
-                    Switch{
-                        anchors.verticalCenter: parent.verticalCenter
-                        id : editSharedType
-                        checked: listViewElement.currentItem.sharedType
-                    }
-                    Label {
-                        anchors.verticalCenter: parent.verticalCenter
-                        text: qsTr("Pin")
-                    }
-                }
-
-                Label {
-                    text: qsTr("Select Group or Pin :")
-                }
-                ComboBox{
-                    enabled: !editSharedType.checked
-                    property string displayName : "Select Group"
-                    id : editGroup
-                    textRole: "groupID"
-                    displayText: displayName
-                    width: parent.width
-                    model: GroupModel{
-                        list: groupList
-                    }
-                    delegate: ItemDelegate{
-                        icon.name : model.iconName
-                        text: model.groupName
-                        onClicked: editGroup.displayName = model.groupName
-                    }
-                }
-                ComboBox{
-                    enabled: editSharedType.checked
-                    property string displayName : "Select Pin"
-                    id : editPin
-                    textRole: "UUID"
-                    displayText: displayName
-                    width: parent.width
-                    model: PinModel{
-                        list: pinList
-                    }
-                    delegate: ItemDelegate{
-                        icon.name : model.iconName
-                        text: model.pinName
-                        onClicked: editPin.displayName = model.pinName
-                    }
-                }
-                Label {
-                    text: qsTr("Description :")
-                }
-                TextField{
-                    id : editDescription
-                    width: parent.width
-                    text : listViewElement.currentItem.description
-                }
-            }
-        }
-        onAccepted: {
-            //void editShared(QVariant sharedID, QVariant sharedName, QVariant sharedTo, QVariant sharedType, QVariant groupID, QVariant pinUUID, QVariant description);
-            sharedList.editShared(listViewElement.currentItem.sharedID,editName.text,editSharedTo.text,editSharedType.checked,editGroup.currentText,editPin.currentText,editDescription.text)
-        }
-        onRejected: console.log("Cancel clicked")
     }
 
     Dialog{
@@ -250,6 +161,7 @@ Page {
         }
         onAccepted: {
             //void deleteShared(QVariant sharedID);
+            sharedList.getSharedList()
             sharedList.deleteShared(listViewElement.currentItem.sharedID)
         }
         onRejected: console.log("Cancel clicked")

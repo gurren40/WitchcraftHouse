@@ -100,125 +100,38 @@ Page {
                         spacing: 10
                         Button {
                             text: "Edit"
-                            onClicked: editSchedule.open()
+                            onClicked: {
+                                scheduleDetails.close()
+                                stackView.push("../edit/editSchedule.qml",{
+                                                   scheduleID : listViewElement.currentItem.scheduleID,
+                                                   scheduleUUID : listViewElement.currentItem.scheduleUUID,
+                                                   userID : listViewElement.currentItem.userID,
+                                                   userName : listViewElement.currentItem.userName,
+                                                   pinID : listViewElement.currentItem.pinID,
+                                                   pinUUID : listViewElement.currentItem.pinUUID,
+                                                   pinName : listViewElement.currentItem.pinName,
+                                                   scheduleName : listViewElement.currentItem.scheduleName,
+                                                   minute : listViewElement.currentItem.minute,
+                                                   hour : listViewElement.currentItem.hour,
+                                                   dayOfMonth : listViewElement.currentItem.dayOfMonth,
+                                                   month : listViewElement.currentItem.month,
+                                                   dayOfWeek : listViewElement.currentItem.dayOfWeek,
+                                                   timeZone : listViewElement.currentItem.timeZone,
+                                                   value : listViewElement.currentItem.value,
+                                                   description : listViewElement.currentItem.description
+                                               })
+                            }
                         }
                         Button {
                             text: "Delete"
-                            onClicked: deleteSchedule.open()
+                            onClicked: {
+                                scheduleDetails.close()
+                                deleteSchedule.open()
+                            }
                         }
                     }
                 }
             }
-        }
-
-        Dialog{
-            id:editSchedule
-            modal: true
-            anchors.centerIn: parent
-            title: "Edit Schedule"
-            width: parent.width * 0.9
-            height: parent.height * 0.9
-            standardButtons: Dialog.Ok | Dialog.Cancel
-            contentItem: ScrollView {
-                clip: true
-                contentWidth: -1
-                Column{
-                    spacing: 10
-                    width: parent.width
-                    Label {
-                        text: "Schedule ID : " + listViewElement.currentItem.scheduleID
-                    }
-                    Label {
-                        text: "Schedule UUID : " + listViewElement.currentItem.scheduleUUID
-                    }
-                    Label {
-                        text: qsTr("Schedule Name :")
-                    }
-                    TextField{
-                        id : editName
-                        width: parent.width
-                        text: listViewElement.currentItem.scheduleName
-                    }
-                    Label {
-                        text: qsTr("Select Pin :")
-                    }
-                    ComboBox{
-                        property string displayName : "Select Pin"
-                        id : editPin
-                        textRole: "UUID"
-                        displayText: displayName
-                        width: parent.width
-                        model: PinModel{
-                            list: pinList
-                        }
-                        delegate: ItemDelegate{
-                            icon.name : model.iconName
-                            text: model.pinName
-                            onClicked: editPin.displayName = model.pinName
-                        }
-                    }
-                    Label {
-                        text: qsTr("Cron Syntax :")
-                    }
-                    Row{
-                        spacing: 15
-                        TextField{
-                            id : editMinute
-                            width: 40
-                            text: listViewElement.currentItem.minute
-                        }
-                        TextField{
-                            id : editHour
-                            width: 40
-                            text: listViewElement.currentItem.hour
-                        }
-                        TextField{
-                            id : editDayOfMonth
-                            width: 40
-                            text: listViewElement.currentItem.dayOfMonth
-                        }
-                        TextField{
-                            id : editMonth
-                            width: 40
-                            text: listViewElement.currentItem.month
-                        }
-                        TextField{
-                            id : editDayOfWeek
-                            width: 40
-                            text: listViewElement.currentItem.dayOfWeek
-                        }
-                    }
-                    Label {
-                        text: qsTr("Time Zone :")
-                    }
-                    TextField{
-                        id : editTimeZone
-                        width: parent.width
-                        text: listViewElement.currentItem.timeZone
-                    }
-                    Label {
-                        text: qsTr("Pin Value :")
-                    }
-                    TextField{
-                        id : editValue
-                        width: parent.width
-                        text: listViewElement.currentItem.value
-                    }
-                    Label {
-                        text: qsTr("Group Description :")
-                    }
-                    TextField{
-                        id : editDescription
-                        width: parent.width
-                        text: listViewElement.currentItem.description
-                    }
-                }
-            }
-            onAccepted: {
-                //void editSchedule(QVariant scheduleID, QVariant scheduleName, QVariant pinUUID, QVariant minute, QVariant hour, QVariant dayOfMonth, QVariant month, QVariant dayOfWeek, QVariant timeZone, QVariant value, QVariant description);
-                scheduleList.editSchedule(listViewElement.currentItem.scheduleID,editName.text,editPin.currentText,editMinute.text,editHour.text,editDayOfMonth.text,editMonth.text,editDayOfWeek.text,editTimeZone.text,editValue.text,editDescription.text)
-            }
-            onRejected: console.log("Cancel clicked")
         }
 
         Dialog{
@@ -261,6 +174,7 @@ Page {
             onAccepted: {
                 //void deleteSchedule(QVariant scheduleID);
                 scheduleList.deleteSchedule(listViewElement.currentItem.scheduleID);
+                scheduleList.getScheduleList()
             }
             onRejected: console.log("Cancel clicked")
         }

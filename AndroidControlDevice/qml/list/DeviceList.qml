@@ -86,61 +86,32 @@ Page {
                     spacing: 10
                     Button {
                         text: "Edit"
-                        onClicked: editDevice.open()
+                        //onClicked: editDevice.open()
+                        onClicked: {
+                            deviceDetails.close()
+                            stackView.push("../edit/editDevice.qml",{
+                                                  deviceName : listViewElement.currentItem.deviceName,
+                                                  deviceID : listViewElement.currentItem.deviceID,
+                                                  deviceUUID : listViewElement.currentItem.deviceUUID,
+                                                  userName : listViewElement.currentItem.userName,
+                                                  deviceToken : listViewElement.currentItem.deviceToken,
+                                                  isDeviceOnline : listViewElement.currentItem.isDeviceOnline,
+                                                  description : listViewElement.currentItem.description
+                                              })
+                        }
                     }
                     Button {
                         text: "Delete"
-                        onClicked: deleteDevice.open()
+                        onClicked: {
+                            deviceDetails.close()
+                            deleteDevice.open()
+                        }
                     }
                 }
             }
         }
     }
 
-    Dialog{
-        id: editDevice
-        modal: true
-        anchors.centerIn: parent
-        title: "Edit Device"
-        width: parent.width * 0.9
-        height: parent.height * 0.9
-        standardButtons: Dialog.Ok | Dialog.Cancel
-        contentItem: ScrollView {
-            clip: true
-            contentWidth: -1
-            Column{
-                spacing: 10
-                width: parent.width
-                Label {
-                    text: "Device ID : " + listViewElement.currentItem.deviceID
-                }
-                Label {
-                    text: "Device UUID : " + listViewElement.currentItem.deviceUUID
-                }
-                Label {
-                    text: qsTr("Device Name :")
-                }
-                TextField{
-                    id : deviceName
-                    width: parent.width
-                    text: listViewElement.currentItem.deviceName
-                }
-                Label {
-                    text: qsTr("Device Description :")
-                }
-                TextField{
-                    id : deviceDescription
-                    width: parent.width
-                    text: listViewElement.currentItem.description
-                }
-            }
-        }
-        onAccepted: {
-            //void editDevice(QVariant deviceID, QVariant deviceUUID, QVariant deviceName, QVariant description);
-            deviceList.editDevice(listViewElement.currentItem.deviceID,listViewElement.currentItem.deviceUUID,deviceName.text,deviceDescription.text);
-        }
-        onRejected: console.log("Cancel clicked")
-    }
     Dialog{
         id: deleteDevice
         modal: true
@@ -167,7 +138,6 @@ Page {
             //void deleteDevice(QVariant deviceID);
             deviceList.deleteDevice(listViewElement.currentItem.deviceID);
             deviceList.getDeviceList()
-            deviceDetails.close()
         }
         onRejected: console.log("Cancel clicked")
     }

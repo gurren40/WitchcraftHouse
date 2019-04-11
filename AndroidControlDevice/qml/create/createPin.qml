@@ -16,7 +16,7 @@ ScrollView{
     padding: 15
     //width: parent.width
     //clip: true
-    //contentWidth: parent.width
+    contentWidth: -1
     Column{
         width: parent.width
         anchors.centerIn: parent
@@ -133,6 +133,7 @@ ScrollView{
                 onClicked: {
                     //void createNewPin(QVariant pinName, QVariant groupID, QVariant deviceID, QVariant iconID, QVariant pinTypeID, QVariant value, QVariant option, QVariant description);
                     pinList.createNewPin(newPinName.text,newGroup.currentText,newDevice.currentText,newIcon.currentText,newPinType.currentText,newValue.text,newOption.text,newDescription.text)
+                    pinList.getPinList()
                     stackView.pop()
                 }
                 enabled: user.isOnline

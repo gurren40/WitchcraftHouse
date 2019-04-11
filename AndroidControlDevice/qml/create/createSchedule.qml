@@ -100,6 +100,7 @@ ScrollView{
                 onClicked: {
                     //void createNewSchedule(QVariant scheduleName, QVariant pinUUID, QVariant minute, QVariant hour, QVariant dayOfMonth, QVariant month, QVariant dayOfWeek, QVariant timeZone, QVariant value, QVariant description);
                     scheduleList.createNewSchedule(newName.text,newPin.currentText,newMinute.text,newHour.text,newDayOfMonth.text,newMonth.text,newDayOfWeek.text,newTimeZone.text,newValue.text,newDescription.text)
+                    scheduleList.getScheduleList()
                     stackView.pop()
                 }
                 enabled: user.isOnline

@@ -60,6 +60,7 @@ ScrollView{
                 onClicked: {
                     //void createNewGroup(QVariant groupName, QVariant iconID, QVariant description);
                     groupList.createNewGroup(newName.text,newIcon.currentText,newDescription.text)
+                    groupList.getGroupList()
                     stackView.pop()
                 }
                 enabled: user.isOnline
