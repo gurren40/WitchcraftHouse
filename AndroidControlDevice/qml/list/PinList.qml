@@ -396,7 +396,7 @@ Page {
                             pinDetails.close()
                             stackView.push("../edit/editPin.qml",{
                                                pinID : listViewElement.currentItem.pinID,
-                                               uuid : listViewElement.currentItem.UUID,
+                                               uuid : listViewElement.currentItem.uuid,
                                                userID : listViewElement.currentItem.userID,
                                                userName : listViewElement.currentItem.userName,
                                                groupID : listViewElement.currentItem.groupID,

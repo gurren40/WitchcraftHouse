@@ -386,6 +386,13 @@ void WebsocketServer::controlProcessTextMessage(QString message)
         QJsonDocument toSend(response);
         pClient->sendTextMessage(toSend.toJson());
     }
+
+    //delete control Device
+    if(jsonObj.contains("deleteControlDevice")){
+        QJsonObject response = UC.deleteControlDevice(jsonObj,userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+    }
 }
 
 void WebsocketServer::controlProcessBinaryMessage(QByteArray message)

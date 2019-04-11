@@ -116,6 +116,7 @@ ApplicationWindow {
             visible: false
 
             ListView{
+                clip: true
                 id : listView
                 anchors.fill: parent
                 currentIndex: 0

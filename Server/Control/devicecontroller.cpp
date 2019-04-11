@@ -274,7 +274,8 @@ QJsonObject DeviceController::editPin(QJsonObject json, int userID)
             QUuid UUID = QUuid::fromString(jsonObject["UUID"].toString());
             QJsonObject error = pin.read("UUID=UuidToBin('"+UUID.toString(QUuid::WithoutBraces)+"')");
             if(pin.mPins.size() == 1){
-                error = pin.update(pin.mPins.at(0).pinID,pin.mPins.at(0).UUID,userID,jsonObject["groupID"].toInt(),jsonObject["deviceID"].toInt(),jsonObject["iconID"].toInt(),jsonObject["pinTypeID"].toInt(),jsonObject["pinName"].toString(),pin.mPins.at(0).value,jsonObject["option"].toString(),jsonObject["description"].toString());
+                //error = pin.update(pin.mPins.at(0).pinID,pin.mPins.at(0).UUID,userID,jsonObject["groupID"].toInt(),jsonObject["deviceID"].toInt(),jsonObject["iconID"].toInt(),jsonObject["pinTypeID"].toInt(),jsonObject["pinName"].toString(),pin.mPins.at(0).value,jsonObject["option"].toString(),jsonObject["description"].toString());
+                error = pin.update(pin.mPins.at(0).pinID,pin.mPins.at(0).UUID,userID,jsonObject["groupID"].toInt(),jsonObject["deviceID"].toInt(),jsonObject["iconID"].toInt(),jsonObject["pinTypeID"].toInt(),jsonObject["pinName"].toString(),jsonObject["value"].toString(),jsonObject["option"].toString(),jsonObject["description"].toString());
             }
             errorArray.append(error);
         }

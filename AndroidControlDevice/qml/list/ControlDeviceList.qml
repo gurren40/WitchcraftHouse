@@ -61,7 +61,7 @@ Page {
                         text: "Control Device Name\t: " + listViewElement.currentItem.controlDeviceName
                     }
                     Label {
-                        text: "Control Device Token\t: " + listViewElement.currentItem.controlDeviceToken
+                        text: "Control Device UUID\t: " + listViewElement.currentItem.controlDeviceID
                     }
                     Label {
                         text: "Owner\t\t: " + listViewElement.currentItem.userName
@@ -95,7 +95,7 @@ Page {
                         text: "Control Device Name\t: " + listViewElement.currentItem.controlDeviceName
                     }
                     Label {
-                        text: "Control Device Token\t: " + listViewElement.currentItem.controlDeviceToken
+                        text: "Control Device UUID\t: " + listViewElement.currentItem.controlDeviceID
                     }
                     Label {
                         text: "Owner\t\t: " + listViewElement.currentItem.userName
@@ -105,6 +105,7 @@ Page {
             onAccepted: {
                 //void deleteControlDevice(QVariant controlDeviceID);
                 controlDeviceList.deleteControlDevice(listViewElement.currentItem.controlDeviceID);
+                controlDeviceList.getControlDeviceList()
             }
             onRejected: console.log("Cancel clicked")
         }

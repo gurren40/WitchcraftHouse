@@ -324,7 +324,7 @@ QJsonObject UserController::getControlDeviceList(int userID)
     ControllDevice control(&db);
     QJsonObject response;
     QJsonArray jsonArray,errorArray,notificationArray;
-    QJsonObject error = control.read("userID='"+QString::number(userID)+"'");
+    QJsonObject error = control.read("ControlDevice.userID='"+QString::number(userID)+"'");
     errorArray.append(error);
     if(control.mControlDevices.size()<1){
         QJsonObject error,notification;
@@ -403,7 +403,7 @@ QJsonObject UserController::deleteControlDevice(QJsonObject json, int userID)
     else {
         for (int i = 0;i<jsonArray.size();i++) {
             QJsonObject jsonObject = jsonArray.at(i).toObject();
-            QJsonObject error = theDevice.read("controlDeviceID=UuidToBin('"+jsonObject["controlDeviceID"].toString()+"')");
+            QJsonObject error = theDevice.read("ControlDevice.controlDeviceID=UuidToBin('"+jsonObject["controlDeviceID"].toString()+"')");
             errorArray.append(error);
             if((theDevice.mControlDevices.size()!=1) || (theDevice.mControlDevices.at(i).userID != userID)){
                 QJsonObject error,notification;
@@ -415,7 +415,7 @@ QJsonObject UserController::deleteControlDevice(QJsonObject json, int userID)
                 notificationArray.append(notification);
             }
             else {
-                QJsonObject error = theDevice.deletes("controlDeviceID=UuidToBin('"+jsonObject["controlDeviceID"].toString()+"')");
+                QJsonObject error = theDevice.deletes("ControlDevice.controlDeviceID=UuidToBin('"+jsonObject["controlDeviceID"].toString()+"')");
                 errorArray.append(error);
                 emit deletedControlDevice(QUuid::fromString(jsonObject["controlDeviceID"].toString()));
             }

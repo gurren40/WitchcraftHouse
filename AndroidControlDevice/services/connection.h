@@ -32,11 +32,15 @@ public slots:
     void connectAuth();
     void connectControl();
     void disconnectWebsocket();
+    void setPongTrue();
+    void connectionKeeper();
 
 private:
     QWebSocket* m_websocket;
     bool m_isOnline;
     QTimer *m_timer;
+    QTimer *m_pingTimer;
+    bool m_pong;
 };
 
 #endif // CONNECTION_H

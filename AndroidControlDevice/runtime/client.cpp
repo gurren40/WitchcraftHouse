@@ -64,6 +64,9 @@ void Client::fromServer(QVariant jvar)
         m_pinList->settedPinValue(json);
         m_sharedPinList->settedPinValue(json);
     }
+    if(json.contains("controlDeviceList")){
+        m_controlDeviceList->setControlDeviceList(json);
+    }
 }
 
 void Client::setIsOnline(bool value)
