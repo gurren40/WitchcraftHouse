@@ -114,26 +114,31 @@ ScrollView{
                 id : editMinute
                 width: 40
                 text: editSchedule.minute
+                enabled : false
             }
             TextField{
                 id : editHour
                 width: 40
                 text: editSchedule.hour
+                enabled : false
             }
             TextField{
                 id : editDayOfMonth
                 width: 40
                 text: editSchedule.dayOfMonth
+                enabled : false
             }
             TextField{
                 id : editMonth
                 width: 40
                 text: editSchedule.month
+                enabled : false
             }
             TextField{
                 id : editDayOfWeek
                 width: 40
                 text: editSchedule.dayOfWeek
+                enabled : false
                 function setDayOfWeek(){
                     var theDayOfWeek = ""
                     var first = true
