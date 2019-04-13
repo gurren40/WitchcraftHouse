@@ -180,7 +180,7 @@ QJsonObject UserController::requestLoginToken(QJsonObject json)
     User user(&db);
     ControllDevice controlDevice(&db);
     QUuid controlDeviceID = QUuid::createUuid();
-    QDateTime today = QDateTime::currentDateTimeUtc();
+    QDateTime today = QDateTime::currentDateTime();
 
     //check kalo di array hanya ada 1 data
     if(jsonArray.size() != 1){
@@ -238,7 +238,7 @@ QJsonObject UserController::requestLoginToken(QJsonObject json)
     // set a default payload
     jwt.appendClaim("iss", "WitchcraftHouse");
         //jwt.appendClaim("iat", QString::number(QDateTime::currentDateTime().toTime_t()));
-    jwt.appendClaim("exp", QString::number(today.addMonths(1).toUTC().currentSecsSinceEpoch()));
+    jwt.appendClaim("exp", QString::number(today.addMonths(1).currentSecsSinceEpoch()));
     jwt.appendClaim("aud", jsonObject["email"].toString());
     jwt.appendClaim("jti", controlDeviceID.toString(QUuid::WithoutBraces));
         //jwt.appendClaim("sub", "hey there");
@@ -248,7 +248,7 @@ QJsonObject UserController::requestLoginToken(QJsonObject json)
     loginToken["token"] = jwt.getToken();
 
     //buat control device
-    QJsonObject createError = controlDevice.create(controlDeviceID,user.mUsers[0].userID,jsonObject["name"].toString(),jwt.getToken(),0,today.addMonths(1).toUTC().date());
+    QJsonObject createError = controlDevice.create(controlDeviceID,user.mUsers[0].userID,jsonObject["name"].toString(),jwt.getToken(),0,today.addMonths(1).date());
 
     response["loginToken"] = loginToken;
     QJsonArray errorArray;

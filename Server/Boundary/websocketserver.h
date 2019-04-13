@@ -30,6 +30,10 @@ public:
     ~WebsocketServer();
 
     void setCronScheduler(CronScheduler *value);
+    void setUC(UserController *UC);
+    void setDC(DeviceController *DC);
+    void setSC(ScheduleController *SC);
+    void setShC(SharedController *ShC);
 
 signals:
     void closed();
@@ -75,6 +79,12 @@ private:
 
     //Cron Scheduler
     CronScheduler *cronScheduler;
+
+    //Controler
+    UserController *m_UC;
+    DeviceController *m_DC;
+    ScheduleController *m_SC;
+    SharedController *m_ShC;
 
     //private function
     QString getPathWithoutQuery(QUrl url);

@@ -35,20 +35,20 @@ QJsonObject ScheduleController::createNewSchedule(QJsonObject json, int userID)
     else {
         for (int i = 0;i<jsonArray.size();i++) {
             QJsonObject jsonObject = jsonArray.at(i).toObject();
-                QUuid UUID = QUuid::fromString(jsonObject["pinUUID"].toString());
-                QUuid scheduleUUID = QUuid::createUuid();
-                int pinID = getPinIDbyUUID(UUID);
-                QString scheduleName = json["scheduleName"].toString();
-                QString minute = json["minute"].toString();
-                QString hour = json["hour"].toString();
-                QString dayOfMonth = json["dayOfMonth"].toString();
-                QString month = json["month"].toString();
-                QString dayOfWeek = json["dayOfWeek"].toString();
-                QString timeZone = json["timeZone"].toString();
-                QString value = json["value"].toString();
-                QString description = json["description"].toString();
+            QUuid UUID = QUuid::fromString(jsonObject["pinUUID"].toString());
+            QUuid scheduleUUID = QUuid::createUuid();
+            int pinID = getPinIDbyUUID(UUID);
+            QString scheduleName = jsonObject["scheduleName"].toString();
+            QString minute = jsonObject["minute"].toString();
+            QString hour = jsonObject["hour"].toString();
+            QString dayOfMonth = jsonObject["dayOfMonth"].toString();
+            QString month = jsonObject["month"].toString();
+            QString dayOfWeek = jsonObject["dayOfWeek"].toString();
+            QString timeZone = jsonObject["timeZone"].toString();
+            QString value = jsonObject["value"].toString();
+            QString description = jsonObject["description"].toString();
             QJsonObject error = newSchedule.create(scheduleUUID,userID,pinID,scheduleName,minute,hour,dayOfMonth,month,dayOfWeek,timeZone,value,description);
-            QString cronSyntax = minute+" "+hour+" "+dayOfMonth+" "+month+" "+dayOfWeek;
+            QString cronSyntax = minute+" "+hour+" "+dayOfMonth+" "+month+" "+dayOfWeek+" *";
             emit createNewCron(scheduleUUID,cronSyntax,UUID,value,userID);
             errorArray.append(error);
         }
@@ -100,7 +100,7 @@ QJsonObject ScheduleController::editSchedule(QJsonObject json, int userID)
                 QString value = jsonObject["value"].toString();
                 QString description = jsonObject["description"].toString();
                 error = schedule.update(scheduleID,userID,pinID,scheduleName,minute,hour,dayOfMonth,month,dayOfWeek,timeZone,value,description);
-                QString cronSyntax = minute+" "+hour+" "+dayOfMonth+" "+month+" "+dayOfWeek;
+                QString cronSyntax = minute+" "+hour+" "+dayOfMonth+" "+month+" "+dayOfWeek+" *";
                 emit editCron(schedule.mSchedules.at(0).scheduleUUID,cronSyntax,UUID,value,userID);
             }
             errorArray.append(error);
@@ -158,7 +158,7 @@ QJsonObject ScheduleController::getScheduleList(int userID)
     QJsonObject response;
     QJsonArray jsonArray,errorArray,notificationArray;
     Schedule schedule(&db);
-    QJsonObject error = schedule.read("userID='"+QString::number(userID)+"'");
+    QJsonObject error = schedule.read("Schedule.userID='"+QString::number(userID)+"'");
     errorArray.append(error);
     if(schedule.mSchedules.size()<1){
         QJsonObject error,notification;
@@ -196,9 +196,10 @@ QJsonObject ScheduleController::getScheduleList(int userID)
 void ScheduleController::initAllCron()
 {
     Schedule theSchedule(&db);
+    theSchedule.read();
     if(theSchedule.mSchedules.size()>0){
         for (int i = 0;i<theSchedule.mSchedules.size();i++) {
-            QString cronSyntax = theSchedule.mSchedules.at(i).minute+" "+theSchedule.mSchedules.at(i).hour+" "+theSchedule.mSchedules.at(i).dayOfMonth+" "+theSchedule.mSchedules.at(i).month+" "+theSchedule.mSchedules.at(i).dayOfWeek;
+            QString cronSyntax = theSchedule.mSchedules.at(i).minute+" "+theSchedule.mSchedules.at(i).hour+" "+theSchedule.mSchedules.at(i).dayOfMonth+" "+theSchedule.mSchedules.at(i).month+" "+theSchedule.mSchedules.at(i).dayOfWeek+" *";
             emit createNewCron(theSchedule.mSchedules.at(i).scheduleUUID,cronSyntax,theSchedule.mSchedules.at(i).pinUUID,theSchedule.mSchedules.at(i).value,theSchedule.mSchedules.at(i).userID);
         }
     }
@@ -207,7 +208,7 @@ void ScheduleController::initAllCron()
 int ScheduleController::getPinIDbyUUID(QUuid UUID)
 {
     Pin pin(&db);
-    pin.read("UUID=UuidToBin('"+UUID.toString(QUuid::WithoutBraces)+"'");
+    pin.read("Pin.UUID=UuidToBin('"+UUID.toString(QUuid::WithoutBraces)+"')");
     if(pin.mPins.size()!=1){
         return 0;
     }

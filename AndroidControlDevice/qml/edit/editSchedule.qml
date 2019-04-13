@@ -33,6 +33,43 @@ ScrollView{
     property string value : "model.value"
     property string description : "model.description"
     //[Item properties]
+
+    Timer{
+        interval: 1000
+        onTriggered: editSchedule.loadDayOfWeek()
+        repeat: true
+        running: true
+    }
+
+    function loadDayOfWeek(){
+        var string = editSchedule.dayOfWeek
+        var res = string.split(",")
+        res.forEach(editSchedule.thatForEach());
+    }
+    function thatForEach(currentValue){
+        if(currentValue === "1"){
+            sunday.checked = true
+        }
+        if(currentValue === "2"){
+            monday.checked = true
+        }
+        if(currentValue === "3"){
+            tuesday.checked = true
+        }
+        if(currentValue === "4"){
+            wednesday.checked = true
+        }
+        if(currentValue === "5"){
+            thursday.checked = true
+        }
+        if(currentValue === "6"){
+            friday.checked = true
+        }
+        if(currentValue === "7"){
+            saturday.checked = true
+        }
+    }
+
     Column{
         spacing: 10
         width: parent.width
@@ -97,6 +134,136 @@ ScrollView{
                 id : editDayOfWeek
                 width: 40
                 text: editSchedule.dayOfWeek
+                function setDayOfWeek(){
+                    var theDayOfWeek = ""
+                    var first = true
+                    if(sunday.checked){
+                        theDayOfWeek = theDayOfWeek + "1"
+                        first = false
+                    }
+                    if(monday.checked){
+                        if(first){
+                            theDayOfWeek = theDayOfWeek + "2"
+                            first = false
+                        }
+                        else{
+                            theDayOfWeek = theDayOfWeek + ",2"
+                        }
+                    }
+                    if(tuesday.checked){
+                        if(first){
+                            theDayOfWeek = theDayOfWeek + "3"
+                            first = false
+                        }
+                        else{
+                            theDayOfWeek = theDayOfWeek + ",3"
+                        }
+                    }
+                    if(wednesday.checked){
+                        if(first){
+                            theDayOfWeek = theDayOfWeek + "4"
+                            first = false
+                        }
+                        else{
+                            theDayOfWeek = theDayOfWeek + ",4"
+                        }
+                    }
+                    if(thursday.checked){
+                        if(first){
+                            theDayOfWeek = theDayOfWeek + "5"
+                            first = false
+                        }
+                        else{
+                            theDayOfWeek = theDayOfWeek + ",5"
+                        }
+                    }
+                    if(friday.checked){
+                        if(first){
+                            theDayOfWeek = theDayOfWeek + "6"
+                            first = false
+                        }
+                        else{
+                            theDayOfWeek = theDayOfWeek + ",6"
+                        }
+                    }
+                    if(saturday.checked){
+                        if(first){
+                            theDayOfWeek = theDayOfWeek + "7"
+                            first = false
+                        }
+                        else{
+                            theDayOfWeek = theDayOfWeek + ",7"
+                        }
+                    }
+                    editDayOfWeek.text = theDayOfWeek
+                }
+            }
+        }
+        Frame{
+            padding: 0
+            anchors.horizontalCenter: parent.horizontalCenter
+            Row{
+                Column{
+                    Tumbler {
+                        id: hoursTumbler
+                        model: 24
+                        currentIndex: editHour.text
+                        onCurrentIndexChanged: editHour.text = currentIndex
+                    }
+                }
+                Label{
+                    text: qsTr(":")
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                Column{
+                    Tumbler {
+                        id: minutesTumbler
+                        model: 60
+                        currentIndex: editMinute.text
+                        onCurrentIndexChanged: editMinute.text = currentIndex
+                    }
+                }
+
+                Column{
+                    CheckBox{
+                        id : sunday
+                        text: qsTr("Sunday")
+                        onClicked: editDayOfWeek.setDayOfWeek()
+                    }
+                    CheckBox{
+                        id : monday
+                        text: qsTr("Monday")
+                        onClicked: editDayOfWeek.setDayOfWeek()
+                    }
+                    CheckBox{
+                        id : tuesday
+                        text: qsTr("Tuesday")
+                        onClicked: editDayOfWeek.setDayOfWeek()
+                    }
+                    CheckBox{
+                        id : wednesday
+                        text: qsTr("Wednesday")
+                        onClicked: editDayOfWeek.setDayOfWeek()
+                    }
+                }
+                Column{
+                    CheckBox{
+                        id : thursday
+                        text: qsTr("Thursday")
+                        onClicked: editDayOfWeek.setDayOfWeek()
+                    }
+                    CheckBox{
+                        id : friday
+                        text: qsTr("Friday")
+                        onClicked: editDayOfWeek.setDayOfWeek()
+                    }
+                    CheckBox{
+                        id : saturday
+                        text: qsTr("Saturday")
+                        onClicked: editDayOfWeek.setDayOfWeek()
+                    }
+                }
             }
         }
         Label {
