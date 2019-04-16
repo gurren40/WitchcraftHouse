@@ -22,8 +22,6 @@ ScrollView{
     property bool sharedType : false//model.sharedType
     property int groupID : 0//model.groupID
     property string groupName : "model.groupName"
-    property string pinUUID : "model.pinUUID"
-    property string pinName : "model.pinName"
     property string sharedName : "model.sharedName"
     property string description : "model.description"
     //[Item properties]
@@ -50,31 +48,9 @@ ScrollView{
             text : editShared.sharedTo
         }
         Label {
-            text: qsTr("Select Shared Type :")
-        }
-        Row{
-            anchors.horizontalCenter: parent.horizontalCenter
-            spacing: 15
-            Label {
-                anchors.verticalCenter: parent.verticalCenter
-                text: qsTr("Group")
-            }
-            Switch{
-                anchors.verticalCenter: parent.verticalCenter
-                id : editSharedType
-                checked: editShared.sharedType
-            }
-            Label {
-                anchors.verticalCenter: parent.verticalCenter
-                text: qsTr("Pin")
-            }
-        }
-
-        Label {
-            text: qsTr("Select Group or Pin :")
+            text: qsTr("Select Group :")
         }
         ComboBox{
-            enabled: !editSharedType.checked
             property string displayName : "Select Group"
             id : editGroup
             textRole: "groupID"
@@ -87,22 +63,6 @@ ScrollView{
                 icon.name : model.iconName
                 text: model.groupName
                 onClicked: editGroup.displayName = model.groupName
-            }
-        }
-        ComboBox{
-            enabled: editSharedType.checked
-            property string displayName : "Select Pin"
-            id : editPin
-            textRole: "UUID"
-            displayText: displayName
-            width: parent.width
-            model: PinModel{
-                list: pinList
-            }
-            delegate: ItemDelegate{
-                icon.name : model.iconName
-                text: model.pinName
-                onClicked: editPin.displayName = model.pinName
             }
         }
         Label {
@@ -121,7 +81,7 @@ ScrollView{
                 text: "Edit"
                 onClicked: {
                     //void editShared(QVariant sharedID, QVariant sharedName, QVariant sharedTo, QVariant sharedType, QVariant groupID, QVariant pinUUID, QVariant description);
-                    sharedList.editShared(editShared.sharedID,editName.text,editSharedTo.text,editSharedType.checked,editGroup.currentText,editPin.currentText,editDescription.text)
+                    sharedList.editShared(editShared.sharedID,editName.text,editSharedTo.text,editGroup.currentText,editDescription.text)
                     sharedList.getSharedList()
                     stackView.pop()
                 }

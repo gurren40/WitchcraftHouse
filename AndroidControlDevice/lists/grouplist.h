@@ -48,7 +48,7 @@ public slots:
     void createNewGroup(QVariant groupName, QVariant iconID, QVariant description);
     void editGroup(QVariant groupID, QVariant groupName, QVariant iconID, QVariant description);
     void deleteGroup(QVariant groupID);
-    //QVariant getGroupIconName(QVariant groupName);
+    QVariant getIconName(QVariant groupName);
 
     //misc
     QVariant jsonToVariant(QJsonObject json);

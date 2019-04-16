@@ -65,6 +65,7 @@ RemoteReplica *User::remote() const
 void User::setRemote(RemoteReplica *remote)
 {
     m_remote = remote;
+    connect(m_remote,&RemoteReplica::pongSig,this,&User::onPong);
 }
 
 QString User::serverDomain()
@@ -198,7 +199,7 @@ void User::logOut()
 {
     QSettings setting;
     setting.remove("email");
-    setting.remove("serverDomain");
+    //setting.remove("serverDomain");
     setting.remove("jwt");
     emit emailSig();
     emit serverDomainSig();
@@ -234,4 +235,51 @@ QJsonObject User::variantToJson(QVariant jvar)
 void User::initActivity()
 {
     m_remote->initActivity();
+}
+
+void User::ping(QVariant payload)
+{
+    m_remote->ping(payload.toString().toUtf8());
+}
+
+void User::onPong(int elapsedTime, QByteArray payload)
+{
+    QString stringPayload = payload;
+    setPong(elapsedTime);
+    setPongPayload(stringPayload);
+}
+
+void User::reconnect()
+{
+    m_remote->reconnect();
+}
+
+QString User::getPongPayload() const
+{
+    return m_pongPayload;
+}
+
+void User::setPongPayload(QString pongPayload)
+{
+    m_pongPayload = pongPayload;
+    emit pongPayloadSig();
+}
+
+void User::restartService()
+{
+    QAndroidJniObject::callStaticMethod<void>("id/web/witchcraft/house/MyService",
+                                                  "startMyService",
+                                                  "(Landroid/content/Context;)V",
+                                                  QtAndroid::androidActivity().object());
+}
+
+int User::getPong() const
+{
+    return m_pong;
+}
+
+void User::setPong(int pong)
+{
+    m_pong = pong;
+    emit pongSig();
 }

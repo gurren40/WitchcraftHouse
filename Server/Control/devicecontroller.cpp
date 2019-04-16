@@ -324,7 +324,7 @@ QJsonObject DeviceController::deleteDevice(QJsonObject json, int userID)
 
                 //delete device
                 //[ERROR]
-                //emit deletedDevice(device.mDevices.at(i).deviceUUID); ERRRORRRR
+                emit deletedDevice(device.mDevices.at(i).deviceUUID);
                 //[ERROR]
                 error1 = device.deletes("deviceID='"+QString::number(device.mDevices.at(0).deviceID)+"'");
             }

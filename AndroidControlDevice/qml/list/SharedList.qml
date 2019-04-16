@@ -2,7 +2,7 @@ import QtQuick 2.9
 import QtQuick.Controls 2.2
 import Shared 1.0
 import Group 1.0
-import Pin 1.0
+//import Pin 1.0
 
 Page {
     property bool canCreate: true
@@ -32,11 +32,8 @@ Page {
             property int sharedID : model.sharedID
             property string sharedTo : model.sharedTo
             property string sharedToName : model.sharedToName
-            property bool sharedType : model.sharedType
             property int groupID : model.groupID
             property string groupName : model.groupName
-            property string pinUUID : model.pinUUID
-            property string pinName : model.pinName
             property string sharedName : model.sharedName
             property string description : model.description
             onClicked: {
@@ -73,15 +70,7 @@ Page {
                     text: "Email\t\t: " + listViewElement.currentItem.sharedTo
                 }
                 Label {
-                    text: listViewElement.currentItem.sharedType ? "Shared Type\t\t: Pin" : "Shared Type\t\t: Group"
-                }
-                Label {
-                    visible: !listViewElement.currentItem.sharedType
-                    text: "Shared Group\t\t: " + listViewElement.currentItem.groupName
-                }
-                Label {
-                    visible: listViewElement.currentItem.sharedType
-                    text: "Shared Pin\t\t: " + listViewElement.currentItem.pinName
+                    text: "Shared Group\t: " + listViewElement.currentItem.groupName
                 }
                 Label {
                     text: "Description\t\t: " + listViewElement.currentItem.description
@@ -98,11 +87,8 @@ Page {
                                                sharedID : listViewElement.currentItem.sharedID,
                                                sharedTo : listViewElement.currentItem.sharedTo,
                                                sharedToName : listViewElement.currentItem.sharedToName,
-                                               sharedType : listViewElement.currentItem.sharedType,
                                                groupID : listViewElement.currentItem.groupID,
                                                groupName : listViewElement.currentItem.groupName,
-                                               pinUUID : listViewElement.currentItem.pinUUID,
-                                               pinName : listViewElement.currentItem.pinName,
                                                sharedName : listViewElement.currentItem.sharedName,
                                                description : listViewElement.currentItem.description
                                            })
@@ -144,15 +130,7 @@ Page {
                     text: "Email\t\t: " + listViewElement.currentItem.sharedTo
                 }
                 Label {
-                    text: listViewElement.currentItem.sharedType ? "Shared Type\t\t: Pin" : "Shared Type\t\t: Group"
-                }
-                Label {
-                    visible: !listViewElement.currentItem.sharedType
-                    text: "Shared Group\t\t: " + listViewElement.currentItem.groupName
-                }
-                Label {
-                    visible: listViewElement.currentItem.sharedType
-                    text: "Shared Pin\t\t: " + listViewElement.currentItem.pinName
+                    text: "Shared Group\t: " + listViewElement.currentItem.groupName
                 }
                 Label {
                     text: "Description\t\t: " + listViewElement.currentItem.description
@@ -161,8 +139,8 @@ Page {
         }
         onAccepted: {
             //void deleteShared(QVariant sharedID);
-            sharedList.getSharedList()
             sharedList.deleteShared(listViewElement.currentItem.sharedID)
+            sharedList.getSharedList()
         }
         onRejected: console.log("Cancel clicked")
     }

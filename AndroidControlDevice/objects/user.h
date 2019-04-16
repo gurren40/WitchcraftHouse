@@ -22,6 +22,8 @@ class User : public QObject
     Q_PROPERTY(QString name READ getName WRITE setName NOTIFY nameSig)
     Q_PROPERTY(QString jwt READ getJwt)
     Q_PROPERTY(bool darkTheme READ darkTheme WRITE setDarkTheme NOTIFY darkThemeSig)
+    Q_PROPERTY(int pong READ getPong NOTIFY pongSig)
+    Q_PROPERTY(QString pongPayload READ getPongPayload NOTIFY pongSig)
 
 public:
     explicit User(QObject *parent = nullptr);
@@ -43,6 +45,15 @@ public:
     bool darkTheme();
     void setDarkTheme(bool value);
 
+    int getPong() const;
+    void setPong(int pong);
+
+    void setPongPayload(QString pongPayload);
+
+    void restartService();
+
+    QString getPongPayload() const;
+
 signals:
     void isOnlineSig();
     void isTokenExpiredSig();
@@ -51,6 +62,8 @@ signals:
     void emailSig();
     void nameSig();
     void darkThemeSig();
+    void pongSig();
+    void pongPayloadSig();
 
 public slots:
     void setIsOnline(bool isOnline);
@@ -73,14 +86,21 @@ public slots:
     //init activity
     void initActivity();
 
+    //ping pong
+    void ping(QVariant payload);
+    void onPong(int elapsedTime, QByteArray payload);
+
+    //reconnect
+    void reconnect();
+
 private:
     bool m_isOnline;
     bool m_isTokenExpired;
     bool m_isLoggedIn;
-//    QString m_serverDomain;
-//    QString m_email;
     RemoteReplica *m_remote;
     QString m_name;
+    int m_pong;
+    QString m_pongPayload;
 };
 
 #endif // USER_H

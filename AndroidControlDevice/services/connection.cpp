@@ -4,19 +4,19 @@
 Connection::Connection(QObject *parent) : QObject(parent)
 {
     m_isOnline = false;
-    m_pong = false;
+    m_pongCount = 0;
     m_websocket = new QWebSocket;
     m_timer = new QTimer(this);
     m_pingTimer = new QTimer(this);
     connect(m_timer,&QTimer::timeout,this,&Connection::connectionLoop);
-    connect(m_pingTimer,&QTimer::timeout,this,&Connection::connectionKeeper);
+    connect(m_pingTimer,SIGNAL(timeout()),this,SLOT(doPing()));
+    connect(m_websocket,&QWebSocket::pong,this,&Connection::onPong);
     connect(m_websocket,&QWebSocket::connected,this,&Connection::onConnected);
     connect(m_websocket,&QWebSocket::disconnected,this,&Connection::onDisconnected);
     connect(m_websocket,&QWebSocket::textMessageReceived, this, &Connection::onTextMessageReceived);
-    connect(m_websocket,&QWebSocket::pong,this,&Connection::setPongTrue);
-    m_timer->setInterval(2000);
+    m_timer->setInterval(500);
     m_timer->setSingleShot(true);
-    m_pingTimer->setInterval(2000);
+    m_pingTimer->setInterval(500);
     m_pingTimer->setSingleShot(false);
     connectionLoop();
 }
@@ -35,8 +35,8 @@ void Connection::connectionLoop()
 void Connection::onConnected()
 {
     emit websocketConnected();
-    m_pong = true;
     m_isOnline = true;
+    m_pongCount = 0;
     m_pingTimer->start();
 }
 
@@ -91,22 +91,21 @@ void Connection::disconnectWebsocket()
     m_websocket->close();
 }
 
-void Connection::connectionKeeper()
+void Connection::doPing(QByteArray payload)
 {
-    if(isOnline()){
-        if(m_pong){
-            m_pong = false;
-            m_websocket->ping(QByteArray(4,'p'));
-        }
-        else {
-            disconnectWebsocket();
-        }
+    if(m_pongCount <= 10){
+        m_websocket->ping(payload);
+    }
+    else if(m_pongCount > 10){
+        disconnectWebsocket();
     }
 }
 
-void Connection::setPongTrue()
+void Connection::onPong(quint64 elapsedTime, QByteArray payload)
 {
-    m_pong = true;
+    int intElapsedTime = QString::number(elapsedTime).toInt();
+    m_pongCount = 0;
+    emit pong(intElapsedTime,payload);
 }
 
 bool Connection::isOnline() const

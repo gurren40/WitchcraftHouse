@@ -11,8 +11,6 @@ class Remote : public RemoteSource
     //Q_OBJECT
 
 public slots:
-    void ping(const QString &msg) override;
-    //Activity
     void sendToServer(QVariant jvar) override;
     //SIGNAL(fromServerSig(QVariant jvar));
     //Service
@@ -36,6 +34,16 @@ public slots:
     //initActivity -> to Service
     //SIGNAL(initActivitySig());
     void initActivity() override;
+
+    //ping and pong
+    //SIGNAL(pingSig(QByteArray payload));
+    void ping(QByteArray payload) override;
+
+    //SIGNAL(pongSig(int elapsedTime, QByteArray payload));
+    void pong(int elapsedTime, QByteArray payload) override;
+
+    //reconnect
+    void reconnect() override;
 
 };
 

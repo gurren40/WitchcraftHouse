@@ -42,31 +42,31 @@ ScrollView{
     }
 
     function loadDayOfWeek(){
-        var string = editSchedule.dayOfWeek
-        var res = string.split(",")
+        var thestring = editSchedule.dayOfWeek
+        var res = thestring.split(",")
         res.forEach(editSchedule.thatForEach());
     }
     function thatForEach(currentValue){
         if(currentValue === "1"){
-            sunday.checked = true
-        }
-        if(currentValue === "2"){
             monday.checked = true
         }
-        if(currentValue === "3"){
+        if(currentValue === "2"){
             tuesday.checked = true
         }
-        if(currentValue === "4"){
+        if(currentValue === "3"){
             wednesday.checked = true
         }
-        if(currentValue === "5"){
+        if(currentValue === "4"){
             thursday.checked = true
         }
-        if(currentValue === "6"){
+        if(currentValue === "5"){
             friday.checked = true
         }
-        if(currentValue === "7"){
+        if(currentValue === "6"){
             saturday.checked = true
+        }
+        if(currentValue === "7"){
+            sunday.checked = true
         }
     }
 
@@ -142,11 +142,11 @@ ScrollView{
                 function setDayOfWeek(){
                     var theDayOfWeek = ""
                     var first = true
-                    if(sunday.checked){
+                    if(monday.checked){
                         theDayOfWeek = theDayOfWeek + "1"
                         first = false
                     }
-                    if(monday.checked){
+                    if(tuesday.checked){
                         if(first){
                             theDayOfWeek = theDayOfWeek + "2"
                             first = false
@@ -155,7 +155,7 @@ ScrollView{
                             theDayOfWeek = theDayOfWeek + ",2"
                         }
                     }
-                    if(tuesday.checked){
+                    if(wednesday.checked){
                         if(first){
                             theDayOfWeek = theDayOfWeek + "3"
                             first = false
@@ -164,7 +164,7 @@ ScrollView{
                             theDayOfWeek = theDayOfWeek + ",3"
                         }
                     }
-                    if(wednesday.checked){
+                    if(thursday.checked){
                         if(first){
                             theDayOfWeek = theDayOfWeek + "4"
                             first = false
@@ -173,7 +173,7 @@ ScrollView{
                             theDayOfWeek = theDayOfWeek + ",4"
                         }
                     }
-                    if(thursday.checked){
+                    if(friday.checked){
                         if(first){
                             theDayOfWeek = theDayOfWeek + "5"
                             first = false
@@ -182,7 +182,7 @@ ScrollView{
                             theDayOfWeek = theDayOfWeek + ",5"
                         }
                     }
-                    if(friday.checked){
+                    if(saturday.checked){
                         if(first){
                             theDayOfWeek = theDayOfWeek + "6"
                             first = false
@@ -191,7 +191,7 @@ ScrollView{
                             theDayOfWeek = theDayOfWeek + ",6"
                         }
                     }
-                    if(saturday.checked){
+                    if(sunday.checked){
                         if(first){
                             theDayOfWeek = theDayOfWeek + "7"
                             first = false
@@ -278,6 +278,7 @@ ScrollView{
             id : editTimeZone
             width: parent.width
             text: editSchedule.timeZone
+            enabled: false
         }
         Label {
             text: qsTr("Pin Value :")

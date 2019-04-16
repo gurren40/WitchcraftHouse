@@ -23,6 +23,15 @@ ApplicationWindow {
             user.getAllData()
         }
     }
+    Timer{
+        id : getAllDataTimer
+        repeat: true
+        interval: 60000
+        running: true
+        onTriggered: {
+            user.getAllData()
+        }
+    }
 
     //! [orientation]
     readonly property bool inPortrait: window.width < window.height
@@ -116,11 +125,35 @@ ApplicationWindow {
             visible: false
 
             ListView{
-                clip: true
                 id : listView
+                clip: true
                 anchors.fill: parent
                 currentIndex: 0
+                header : ItemDelegate{
+                    id : listViewHeader
+                    width: parent.width
+                    height: width * 0.55
+                    Material.foreground: "white"
+                    icon.name: "house"
+                    icon.height: 48
+                    icon.width: 48
+                    icon.color: user.isOnline ? "green" : "red"
+                    text: qsTr("Witchcraft House")
+                    font.bold: true
+                    font.pointSize: 20
+                    background: Image{
+                        width: parent.width
+                        height: parent.height
+                        source: "/images/drawer_header.jpeg"
+                    }
+                    onClicked: {
+                        user.restartService()
+                        initTimer.start()
+                    }
+                }
+
                 delegate: ItemDelegate {
+                    icon.name: model.icon
                     text: model.title
                     width: parent.width
                     highlighted: ListView.isCurrentItem
@@ -142,15 +175,24 @@ ApplicationWindow {
                 }
 
                 model: ListModel{
-                    ListElement { title: "Home"; source: "./list/PinList.qml" }
+                    ListElement { icon : "chevron_right"; title: "Home"; source: "./list/PinList.qml" }
                     //ListElement { title: "Shared Pin"; source: "./list/SharedPinList.qml" }
-                    ListElement { title: "Shared Pin"; source: "./list/PinList.qml" }
-                    ListElement { title: "Device"; source: "./list/DeviceList.qml" }
-                    ListElement { title: "Group"; source: "./list/GroupList.qml" }
-                    ListElement { title: "Schedule"; source: "./list/ScheduleList.qml" }
-                    ListElement { title: "Shared List"; source: "./list/SharedList.qml" }
-                    ListElement { title: "Control Device"; source: "./list/ControlDeviceList.qml" }
-                    ListElement { title: "Settings"; source: "./etc/settings.qml" }
+                    ListElement { icon : "chevron_right"; title: "Shared Pin"; source: "./list/PinList.qml" }
+                    ListElement { icon : "chevron_right"; title: "Device"; source: "./list/DeviceList.qml" }
+                    ListElement { icon : "chevron_right"; title: "Group"; source: "./list/GroupList.qml" }
+                    ListElement { icon : "chevron_right"; title: "Schedule"; source: "./list/ScheduleList.qml" }
+                    ListElement { icon : "chevron_right"; title: "Shared List"; source: "./list/SharedList.qml" }
+                    ListElement { icon : "chevron_right"; title: "Control Device"; source: "./list/ControlDeviceList.qml" }
+                    ListElement { icon : "chevron_right"; title: "Settings"; source: "./etc/settings.qml" }
+                }
+
+                footer: ItemDelegate{
+                    id : exitDelegate
+                    width: parent.width
+                    text: "Exit"
+                    icon.name: "power"
+                    icon.color: "red"
+                    onClicked: Qt.quit()
                 }
                 ScrollBar.vertical: ScrollBar { }
             }

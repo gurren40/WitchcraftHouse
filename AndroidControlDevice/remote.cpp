@@ -1,15 +1,6 @@
 #include "remote.h"
 #include "services/notification.h"
 
-void Remote::ping(const QString &msg){
-    qDebug() << msg;
-    qDebug() << "selamatkah sampai disini?";
-    emit pong(msg + " from server");
-    Notification notify;
-    notify.setJavaClass("id/web/witchcraft/house/MyService");
-    notify.notify(msg);
-}
-
 void Remote::sendToServer(QVariant jvar)
 {
     emit sendToServerSig(jvar);
@@ -43,4 +34,20 @@ void Remote::sendToServerVariant(QVariant jvar)
 void Remote::initActivity()
 {
     emit initActivitySig();
+}
+
+void Remote::ping(QByteArray payload)
+{
+    //ping and pong
+    emit pingSig(payload);
+}
+
+void Remote::pong(int elapsedTime, QByteArray payload)
+{
+    emit pongSig(elapsedTime,payload);
+}
+
+void Remote::reconnect()
+{
+    emit reconnectSig();
 }

@@ -1,8 +1,6 @@
 #include "services/remoterepheader.h"
 
 class Remote {
-    SLOT(void ping(const QString &msg));
-    SIGNAL(pong(const QString &msg));
     //json to and from Activity
     SLOT(void sendToServer(QVariant jvar));
     SIGNAL(fromServerSig(QVariant jvar));
@@ -30,4 +28,15 @@ class Remote {
     //setTokenExpired -> to Activity
     SIGNAL(tokenExpiredSig(bool isTokenExpired));
     SLOT(void tokenExpired(bool isTokenExpired));
+
+    //ping and pong
+    SIGNAL(pingSig(QByteArray payload));
+    SLOT(void ping(QByteArray payload));
+
+    SIGNAL(pongSig(int elapsedTime, QByteArray payload));
+    SLOT(void pong(int elapsedTime, QByteArray payload));
+
+    //re-connect
+    SIGNAL(reconnectSig());
+    SLOT(void reconnect());
 }

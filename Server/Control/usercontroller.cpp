@@ -37,9 +37,12 @@ bool UserController::isJwtValid(QJsonObject jwt, QString path)
         QTextStream(stdout) << "up chech if control device != 1\n";
         //QDateTime dt(cd.mControlDevices.at(0).expireDate);
         //if(dt.toSecsSinceEpoch() > jwt["exp"].toString().toInt()) return false;
-        QTextStream(stdout) << "check toSecssinceepoch\n";
+        //QTextStream(stdout) << "check toSecssinceepoch\n";
         //f-this
-        //if(cd.mControlDevices.at(0).isControlDeviceOnline) return false;
+        if(cd.mControlDevices.at(0).isControlDeviceOnline){
+            toggleControlDeviceOnline(cd.mControlDevices.at(0).controlDeviceID,false);
+            return false;
+        }
         QTextStream(stdout) << "check device is online now\n";
         if(!toggleControlDeviceOnline(cd.mControlDevices.at(0).controlDeviceID,true)) return false;
         QTextStream(stdout) << "check toogle control device\n";

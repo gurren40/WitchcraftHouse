@@ -36,21 +36,12 @@ QVariant SharedModel::data(const QModelIndex &index, int role) const
 //        QString sharedToName;
     case sharedToNameRole:
         return QVariant(item.sharedToName);
-//        bool sharedType;
-    case sharedTypeRole:
-        return QVariant(item.sharedType);
 //        int groupID;
     case groupIDRole:
         return QVariant(item.groupID);
 //        QString groupName;
     case groupNameRole:
         return QVariant(item.groupName);
-//        QString pinUUID;
-    case pinUUIDRole:
-        return QVariant(item.pinUUID);
-//        QString pinName;
-    case pinNameRole:
-        return QVariant(item.pinName);
 //        QString sharedName;
     case sharedNameRole:
         return QVariant(item.sharedName);
@@ -84,20 +75,11 @@ bool SharedModel::setData(const QModelIndex &index, const QVariant &value, int r
     case sharedToNameRole:
         item.sharedToName = value.toString();
         break;
-    case sharedTypeRole:
-        item.sharedType = value.toBool();
-        break;
     case groupIDRole:
         item.groupID = value.toInt();
         break;
     case groupNameRole:
         item.groupName = value.toString();
-        break;
-    case pinUUIDRole:
-        item.pinUUID = value.toString();
-        break;
-    case pinNameRole:
-        item.pinName = value.toString();
         break;
     case sharedNameRole:
         item.sharedName = value.toString();
@@ -133,16 +115,10 @@ QHash<int, QByteArray> SharedModel::roleNames() const
     names[sharedToRole] = "sharedTo";
 //        QString sharedToName;
     names[sharedToNameRole] = "sharedToName";
-//        bool sharedType;
-    names[sharedTypeRole] = "sharedType";
 //        int groupID;
     names[groupIDRole] = "groupID";
 //        QString groupName;
     names[groupNameRole] = "groupName";
-//        QString pinUUID;
-    names[pinUUIDRole] = "pinUUID";
-//        QString pinName;
-    names[pinNameRole] = "pinName";
 //        QString sharedName;
     names[sharedNameRole] = "sharedName";
 //        QString description;

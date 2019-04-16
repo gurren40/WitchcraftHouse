@@ -120,6 +120,19 @@ void GroupList::deleteGroup(QVariant groupID)
     m_remote->sendToServer(jsonToVariant(toSend));
 }
 
+QVariant GroupList::getIconName(QVariant groupName)
+{
+    QVariant groupIcon;
+    GroupItem item;
+    for (int i = 0;i<mItems.size();i++) {
+        if(mItems.at(i).groupName == groupName.toString()){
+            item = mItems.at(i);
+        }
+    }
+    groupIcon = item.iconName;
+    return groupIcon;
+}
+
 QVariant GroupList::jsonToVariant(QJsonObject json)
 {
     QJsonDocument jdoc(json);

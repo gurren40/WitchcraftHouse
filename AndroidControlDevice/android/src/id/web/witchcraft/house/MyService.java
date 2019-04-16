@@ -44,6 +44,27 @@ public class MyService extends QtService{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        //[the notification]
+        if (m_notificationManager == null) {
+            m_notificationManager = (NotificationManager)m_instance.getSystemService(MyService.NOTIFICATION_SERVICE);
+        }
+        Intent notificationIntent = new Intent(m_instance, MyActivity.class);
+        //notificationIntent.setAction(Constants.ACTION.MAIN_ACTION);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(m_instance, 0, notificationIntent, 0);
+
+        m_builder = new Notification.Builder(m_instance);
+        m_builder.setSmallIcon(R.drawable.icon);
+        m_builder.setContentTitle("Witchcraft House");
+        m_builder.setContentText("Witchcraft House Service is On");
+        m_builder.setOngoing(true);
+        m_builder.setContentIntent(pendingIntent);
+        //m_builder.flags |= Notification.FLAG_AUTO_CANCEL;
+        //m_notificationManager.notify(1, m_builder.build());
+        startForeground(1,m_builder.build());
+        //[the notification]
+
         return START_STICKY;
     }
 

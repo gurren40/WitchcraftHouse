@@ -2,17 +2,12 @@
 
 SharedList::SharedList(QObject *parent) : QObject(parent)
 {
-    //mItems.append({ true, QStringLiteral("Wash the car") });
-    //mItems.append({ false, QStringLiteral("Fix the sink") });
     SharedItem item;
     item.sharedID = 1;
     item.sharedTo = "sharedTo";
     item.sharedToName = "sharedToName";
-    item.sharedType = true;
     item.groupID = 2;
     item.groupName = "groupName";
-    item.pinUUID = "pinUUID";
-    item.pinName = "pinName";
     item.sharedName = "sharedName";
     item.description = "description";
 
@@ -52,11 +47,8 @@ void SharedList::setSharedList(QJsonObject json)
         item.sharedID = jsonItem["sharedID"].toInt();
         item.sharedTo = jsonItem["sharedTo"].toString();
         item.sharedToName = jsonItem["sharedToName"].toString();
-        item.sharedType = jsonItem["sharedType"].toBool();
         item.groupID = jsonItem["groupID"].toInt();
         item.groupName = jsonItem["groupName"].toString();
-        item.pinUUID = jsonItem["pinUUID"].toString();
-        item.pinName = jsonItem["pinName"].toString();
         item.sharedName = jsonItem["sharedName"].toString();
         item.description = jsonItem["description"].toString();
         mItems.append(item);
@@ -87,25 +79,12 @@ void SharedList::getSharedList()
     m_remote->sendToServer(jsonToVariant(toSend));
 }
 
-void SharedList::createNewShared(QVariant sharedName, QVariant sharedTo, QVariant sharedType, QVariant groupID, QVariant pinUUID, QVariant description)
+void SharedList::createNewShared(QVariant sharedName, QVariant sharedTo, QVariant groupID, QVariant description)
 {
-//    int sharedBy = userID;
-//    int sharedTo = getSharedToID(jsonObject["sharedTo"].toString());
-//    if (sharedTo > 0){
-//        bool sharedType = jsonObject["sharedType"].toBool();
-//        int groupID = jsonObject["groupID"].toInt(0);
-//        QUuid UUID = QUuid::fromString(jsonObject["pinUUID"].toString());
-//        int pinID = getPinIDbyUUID(UUID);
-//        if(pinID > 0){
-//            QString sharedName = jsonObject["sharedName"].toString();
-//            QString description = jsonObject["description"].toString(" ");
-//            error = shared.create(sharedBy,sharedTo,sharedType,groupID,pinID,sharedName,description);
     QJsonObject jsonObj;
     jsonObj["sharedName"] = sharedName.toString();
     jsonObj["sharedTo"] = sharedTo.toString();
-    jsonObj["sharedType"] = sharedType.toBool();
     jsonObj["groupID"] = groupID.toInt();
-    jsonObj["pinUUID"] = pinUUID.toString();
     jsonObj["description"] = description.toString();
     QJsonArray jsonArray;
     jsonArray.append(jsonObj);
@@ -114,35 +93,13 @@ void SharedList::createNewShared(QVariant sharedName, QVariant sharedTo, QVarian
     m_remote->sendToServer(jsonToVariant(toSend));
 }
 
-void SharedList::editShared(QVariant sharedID, QVariant sharedName, QVariant sharedTo, QVariant sharedType, QVariant groupID, QVariant pinUUID, QVariant description)
+void SharedList::editShared(QVariant sharedID, QVariant sharedName, QVariant sharedTo, QVariant groupID, QVariant description)
 {
-//    int sharedID = jsonObject["sharedID"].toInt();
-//    shared.read("sharedID='"+QString::number(sharedID)+"'");
-//    if(shared.mShareds.size() != 1){
-//        error["error"] = "sharedID "+json["sharedID"].toString()+" is not valid";
-//        error["errorCode"] = "9";
-//        notification["title"]="Error";
-//        notification["description"] = error["error"].toString();
-//    }
-//    else {
-//        int sharedBy = userID;
-//        int sharedTo = getSharedToID(jsonObject["sharedTo"].toString());
-//        if (sharedTo > 0){
-//            bool sharedType = jsonObject["sharedType"].toBool();
-//            int groupID = jsonObject["groupID"].toInt(0);
-//            QUuid UUID = QUuid::fromString(jsonObject["pinUUID"].toString());
-//            int pinID = getPinIDbyUUID(UUID);
-//            if(pinID > 0){
-//                QString sharedName = jsonObject["sharedName"].toString();
-//                QString description = jsonObject["description"].toString(" ");
-//                error = shared.update(sharedID,sharedBy,sharedTo,sharedType,groupID,pinID,sharedName,description);
     QJsonObject jsonObj;
     jsonObj["sharedID"] = sharedID.toInt();
     jsonObj["sharedName"] = sharedName.toString();
     jsonObj["sharedTo"] = sharedTo.toString();
-    jsonObj["sharedType"] = sharedType.toBool();
     jsonObj["groupID"] = groupID.toInt();
-    jsonObj["pinUUID"] = pinUUID.toString();
     jsonObj["description"] = description.toString();
     QJsonArray jsonArray;
     jsonArray.append(jsonObj);

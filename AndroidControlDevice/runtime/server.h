@@ -37,12 +37,18 @@ public slots:
     //when activity is created
     void initActivity();
 
+    //pong
+    void onPong(int elapsedTime, QByteArray payload);
+    void onPing(QByteArray payload);
+    void onReconnect();
+
 private:
     RemoteReplica *m_remote;
     Connection *m_connection;
     Notification *m_notification;
     QJsonArray m_pinList;
     bool m_isOnline;
+    QVector<QJsonObject> *m_messageQueue;
 };
 
 #endif // SERVER_H

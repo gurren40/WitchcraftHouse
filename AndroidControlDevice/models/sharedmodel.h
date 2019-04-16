@@ -22,16 +22,10 @@ public:
         sharedToRole,
 //        QString sharedToName;
         sharedToNameRole,
-//        bool sharedType;
-        sharedTypeRole,
 //        int groupID;
         groupIDRole,
 //        QString groupName;
         groupNameRole,
-//        QString pinUUID;
-        pinUUIDRole,
-//        QString pinName;
-        pinNameRole,
 //        QString sharedName;
         sharedNameRole,
 //        QString description;

@@ -2,6 +2,7 @@
 
 Server::Server(QObject *parent) : QObject(parent)
 {
+    m_messageQueue = new QVector<QJsonObject>;
     m_isOnline = false;
     m_connection = new Connection(this);
     m_notification = new Notification(this);
@@ -9,6 +10,7 @@ Server::Server(QObject *parent) : QObject(parent)
     connect(m_connection,&Connection::messageReceived,this,&Server::onMessageReceived);
     connect(m_connection,&Connection::websocketConnected,this,&Server::isOnline);
     connect(m_connection,&Connection::websocketDisconnected,this,&Server::isOffline);
+    connect(m_connection,&Connection::pong,this,&Server::onPong);
 }
 
 RemoteReplica *Server::remote() const
@@ -33,15 +35,22 @@ void Server::setRemote(RemoteReplica *remote)
 
     //init activity
     connect(m_remote,&RemoteReplica::initActivitySig,this,&Server::initActivity);
+
+    //ping
+    connect(m_remote,&RemoteReplica::pingSig,this,&Server::onPing);
+
+    //reconnect
+    connect(m_remote,&RemoteReplica::reconnectSig,this,&Server::onReconnect);
 }
 
 void Server::sentToServer(QVariant jvar)
 {
     QJsonObject json = variantToJson(jvar);
-    bool isValid = m_connection->sendMessage(json);
-    if(!isValid){
-        m_remote->setIsOnline(false);
-    }
+//    bool isValid = m_connection->sendMessage(json);
+//    if(!isValid){
+//        m_remote->setIsOnline(false);
+//    }
+    m_messageQueue->append(json);
 }
 
 void Server::onMessageReceived(QJsonObject json)
@@ -58,9 +67,13 @@ void Server::onMessageReceived(QJsonObject json)
             setting.setValue("notificationID",notificationID + 1);
         }
         QJsonArray jsonArray = json["notification"].toArray();
-        for (int i = 0;i<jsonArray.size();i++) {
-            QJsonObject jsonObj = jsonArray.at(i).toObject();
-            m_notification->sendNotification(notificationID,jsonObj.value("title").toString(),jsonObj.value("description").toString());
+        if(!jsonArray.isEmpty()){
+            for (int i = 0;i<jsonArray.size();i++) {
+                QJsonObject jsonObj = jsonArray.at(i).toObject();
+                if(jsonObj.contains("title")){
+                    m_notification->sendNotification(notificationID,jsonObj.value("title").toString(),jsonObj.value("description").toString());
+                }
+            }
         }
     }
     if(json.contains("error")){
@@ -144,4 +157,25 @@ void Server::isOffline()
 void Server::initActivity()
 {
     m_remote->setIsOnline(m_isOnline);
+}
+
+void Server::onPong(int elapsedTime, QByteArray payload)
+{
+    m_remote->pong(elapsedTime,payload);
+    if(m_messageQueue->size()>0){
+        for (int i = 0;i<m_messageQueue->size();i++) {
+            m_connection->sendMessage(m_messageQueue->at(i));
+        }
+        m_messageQueue->clear();
+    }
+}
+
+void Server::onPing(QByteArray payload)
+{
+    m_connection->doPing(payload);
+}
+
+void Server::onReconnect()
+{
+    m_connection->disconnectWebsocket();
 }

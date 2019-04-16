@@ -31,6 +31,11 @@ ScrollView {
             spacing: 15
             visible: false
             ItemDelegate{
+                id : pingPong
+                width: parent.width
+                text: "Last Ping Speed : " + user.pong + " ms"
+            }
+            ItemDelegate{
                 id : deviceModel
                 width: parent.width
                 text: "Device Model : " + user.thisDeviceModel

@@ -429,7 +429,9 @@ void WebsocketServer::deviceProcessTextMessage(QString message)
 
 void WebsocketServer::deletedDevice(QUuid deviceUUID)
 {
-    m_device.value(deviceUUID.toString(QUuid::WithoutBraces))->close();
+    if(m_device.contains(deviceUUID.toString(QUuid::WithoutBraces))){
+        m_device.value(deviceUUID.toString(QUuid::WithoutBraces))->close();
+    }
 }
 
 void WebsocketServer::setPinValueFromCron(QJsonObject json, int userID)

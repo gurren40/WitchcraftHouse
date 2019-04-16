@@ -23,6 +23,7 @@ signals:
     void messageReceived(QJsonObject json);
     void websocketConnected();
     void websocketDisconnected();
+    void pong(int elapsedTime, QByteArray payload);
 
 public slots:
     void connectionLoop();
@@ -32,15 +33,16 @@ public slots:
     void connectAuth();
     void connectControl();
     void disconnectWebsocket();
-    void setPongTrue();
-    void connectionKeeper();
+    void doPing(QByteArray payload = "witchcraft");
+    void onPong(quint64 elapsedTime, QByteArray payload);
 
 private:
     QWebSocket* m_websocket;
     bool m_isOnline;
     QTimer *m_timer;
     QTimer *m_pingTimer;
-    bool m_pong;
+    int m_pongElapsedTime;
+    int m_pongCount;
 };
 
 #endif // CONNECTION_H

@@ -15,11 +15,8 @@ struct SharedItem
     int sharedID;
     QString sharedTo;
     QString sharedToName;
-    bool sharedType;
     int groupID;
     QString groupName;
-    QString pinUUID;
-    QString pinName;
     QString sharedName;
     QString description;
 };
@@ -48,8 +45,8 @@ signals:
 public slots:
     void setSharedList(QJsonObject json);
     void getSharedList();
-    void createNewShared(QVariant sharedName, QVariant sharedTo, QVariant sharedType, QVariant groupID, QVariant pinUUID, QVariant description);
-    void editShared(QVariant sharedID, QVariant sharedName, QVariant sharedTo, QVariant sharedType, QVariant groupID, QVariant pinUUID, QVariant description);
+    void createNewShared(QVariant sharedName, QVariant sharedTo, QVariant groupID, QVariant description);
+    void editShared(QVariant sharedID, QVariant sharedName, QVariant sharedTo, QVariant groupID, QVariant description);
     void deleteShared(QVariant sharedID);
 
     //misc

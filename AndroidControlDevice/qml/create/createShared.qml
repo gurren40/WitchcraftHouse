@@ -33,30 +33,9 @@ ScrollView{
             width: parent.width
         }
         Label {
-            text: qsTr("Select Shared Type :")
-        }
-        Row{
-            anchors.horizontalCenter: parent.horizontalCenter
-            spacing: 15
-            Label {
-                anchors.verticalCenter: parent.verticalCenter
-                text: qsTr("Group")
-            }
-            Switch{
-                anchors.verticalCenter: parent.verticalCenter
-                id : newSharedType
-            }
-            Label {
-                anchors.verticalCenter: parent.verticalCenter
-                text: qsTr("Pin")
-            }
-        }
-
-        Label {
-            text: qsTr("Select Group or Pin :")
+            text: qsTr("Select Group :")
         }
         ComboBox{
-            enabled: !newSharedType.checked
             property string displayName : "Select Group"
             id : newGroup
             textRole: "groupID"
@@ -70,23 +49,6 @@ ScrollView{
                 icon.name : model.iconName
                 text: model.groupName
                 onClicked: newGroup.displayName = model.groupName
-            }
-        }
-        ComboBox{
-            enabled: newSharedType.checked
-            property string displayName : "Select Pin"
-            id : newPin
-            textRole: "UUID"
-            displayText: displayName
-            width: parent.width
-            model: PinModel{
-                list: pinList
-            }
-            delegate: ItemDelegate{
-                width: parent.width
-                icon.name : model.iconName
-                text: model.pinName
-                onClicked: newPin.displayName = model.pinName
             }
         }
         Label {
@@ -104,7 +66,7 @@ ScrollView{
                 text: "Create"
                 onClicked: {
                     //void createNewShared(QVariant sharedName, QVariant sharedTo, QVariant sharedType, QVariant groupID, QVariant pinUUID, QVariant description);
-                    sharedList.createNewShared(newName.text,newSharedTo.text,newSharedType.checked,newGroup.currentText,newPin.currentText,newDescription.text)
+                    sharedList.createNewShared(newName.text,newSharedTo.text,newGroup.currentText,newDescription.text)
                     sharedList.getSharedList()
                     stackView.pop()
                 }

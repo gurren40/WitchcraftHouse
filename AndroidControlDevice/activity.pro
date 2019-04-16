@@ -59,7 +59,8 @@ SOURCES += activity.cpp \
     lists/pintypelist.cpp
 
 RESOURCES += qml.qrc \
-    icons.qrc
+    icons.qrc \
+    images.qrc
 
 QML_IMPORT_PATH =
 

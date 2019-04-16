@@ -79,11 +79,11 @@ ScrollView{
                 function setDayOfWeek(){
                     var theDayOfWeek = ""
                     var first = true
-                    if(sunday.checked){
+                    if(monday.checked){
                         theDayOfWeek = theDayOfWeek + "1"
                         first = false
                     }
-                    if(monday.checked){
+                    if(tuesday.checked){
                         if(first){
                             theDayOfWeek = theDayOfWeek + "2"
                             first = false
@@ -92,7 +92,7 @@ ScrollView{
                             theDayOfWeek = theDayOfWeek + ",2"
                         }
                     }
-                    if(tuesday.checked){
+                    if(wednesday.checked){
                         if(first){
                             theDayOfWeek = theDayOfWeek + "3"
                             first = false
@@ -101,7 +101,7 @@ ScrollView{
                             theDayOfWeek = theDayOfWeek + ",3"
                         }
                     }
-                    if(wednesday.checked){
+                    if(thursday.checked){
                         if(first){
                             theDayOfWeek = theDayOfWeek + "4"
                             first = false
@@ -110,7 +110,7 @@ ScrollView{
                             theDayOfWeek = theDayOfWeek + ",4"
                         }
                     }
-                    if(thursday.checked){
+                    if(friday.checked){
                         if(first){
                             theDayOfWeek = theDayOfWeek + "5"
                             first = false
@@ -119,7 +119,7 @@ ScrollView{
                             theDayOfWeek = theDayOfWeek + ",5"
                         }
                     }
-                    if(friday.checked){
+                    if(saturday.checked){
                         if(first){
                             theDayOfWeek = theDayOfWeek + "6"
                             first = false
@@ -128,7 +128,7 @@ ScrollView{
                             theDayOfWeek = theDayOfWeek + ",6"
                         }
                     }
-                    if(saturday.checked){
+                    if(sunday.checked){
                         if(first){
                             theDayOfWeek = theDayOfWeek + "7"
                             first = false
@@ -215,6 +215,8 @@ ScrollView{
         TextField{
             id : newTimeZone
             width: parent.width
+            text: "utc"
+            enabled: false
         }
         Label {
             text: qsTr("Pin Value :")

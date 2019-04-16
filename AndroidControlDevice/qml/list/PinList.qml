@@ -300,14 +300,30 @@ Page {
 
             section.property: "groupName"
             section.delegate: ItemDelegate {
-                icon.name : "expand_more"
-                text: section + " group"
+                Material.foreground: "white"
+                text: section
                 width: parent.width
-                font.pointSize: 18
-                font.bold: true
-                font.italic: true
+                height: 48
+                contentItem: Frame{
+                    anchors.centerIn: parent
+                    padding: 0
+                    background: Image{
+                        anchors.centerIn: parent
+                        clip: true
+                        asynchronous: true
+                        width: parent.width
+                        height: parent.height
+                        source: "/images/drawer_header.jpeg"
+                        fillMode: Image.PreserveAspectCrop
+                    }
+                    Label{
+                        anchors.centerIn: parent
+                        text: section
+                        font.pointSize: 18
+                        font.bold: true
+                    }
+                }
             }
-
             delegate: Loader {
                 id: delegateLoader
                 width: listViewElement.width
@@ -361,7 +377,7 @@ Page {
                     text: "Pin UUID\t\t: " + listViewElement.currentItem.uuid
                 }
                 Label {
-                    text: "User Email\t\t: " + listViewElement.currentItem.userName
+                    text: "Owner Name\t: " + listViewElement.currentItem.userName
                 }
                 Label {
                     text: "Group Name\t\t: " + listViewElement.currentItem.groupName
@@ -421,6 +437,7 @@ Page {
                             deletePin.open()
                         }
                         enabled: !isShared
+                        visible: !isShared
                     }
                 }
             }
