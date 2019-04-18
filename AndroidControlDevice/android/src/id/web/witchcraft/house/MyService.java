@@ -21,6 +21,7 @@ public class MyService extends QtService{
 
     public static void startMyService(Context ctx) {
         ctx.startService(new Intent(ctx, MyService.class));
+        MyUtility.scheduleJob(ctx);
     }
 
     public static void notify(int id,String title,String body) {

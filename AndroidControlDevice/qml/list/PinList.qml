@@ -245,9 +245,11 @@ Page {
                     anchors.verticalCenter : parent.verticalCenter
                     anchors.right: parent.right
                     onClicked: {
-                        webviewDialog.title = pinName
-                        webviewDialog.url = value
-                        webviewDialog.open()
+                        //webviewDialog.title = pinName
+                        //webviewDialog.url = value
+                        //webviewDialog.open()
+                        //stackView.replace(model.source,{isShared : false})
+                        stackView.push("../etc/webview.qml",{url : value})
                     }
                 }
             }
@@ -260,22 +262,22 @@ Page {
         }
     }
 
-    Dialog{
-        property string url: ""
-        title: ""
-        id : webviewDialog
-        width: parent.width * 0.9
-        height: parent.height * 0.9
-        standardButtons: Dialog.Close
-        anchors.centerIn: parent
-        modal: true
-        contentItem: WebView{
-            anchors.centerIn: parent
-            width: parent.width
-            height: parent.height
-            url : webviewDialog.url
-        }
-    }
+//    Dialog{
+//        property string url: ""
+//        title: ""
+//        id : webviewDialog
+//        width: parent.width * 0.9
+//        height: parent.height * 0.9
+//        standardButtons: Dialog.Close
+//        anchors.centerIn: parent
+//        modal: true
+//        contentItem: WebView{
+//            anchors.centerIn: parent
+//            width: parent.width
+//            height: parent.height
+//            url : webviewDialog.url
+//        }
+//    }
 
     ColumnLayout {
         id: column

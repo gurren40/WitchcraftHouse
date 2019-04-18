@@ -108,5 +108,6 @@
         <file>icons/witchcraft/index.theme</file>
         <file>icons/witchcraft/24x24S/plus.svg</file>
         <file>icons/witchcraft/navigation/plus.svg</file>
+        <file>icons/witchcraft/24x24S/witchcraft.svg</file>
     </qresource>
 </RCC>

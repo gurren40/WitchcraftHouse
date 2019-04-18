@@ -58,9 +58,10 @@ SOURCES += activity.cpp \
     models/pintypemodel.cpp \
     lists/pintypelist.cpp
 
-RESOURCES += qml.qrc \
+RESOURCES += \
     icons.qrc \
-    images.qrc
+    images.qrc \
+    qml.qrc
 
 QML_IMPORT_PATH =
 
@@ -76,7 +77,15 @@ DISTFILES += \
     android/gradlew.bat \
     android/src/id/web/witchcraft/house/MyActivity.java \
     android/src/id/web/witchcraft/house/MyService.java \
-    android/src/id/web/witchcraft/house/MyBroadcastReceiver.java
+    android/src/id/web/witchcraft/house/MyBroadcastReceiver.java \
+    android/src/id/web/witchcraft/house/MyJobScheduler.java \
+    android/src/id/web/witchcraft/house/MyUtility.java \
+    android/res/drawable/splash.xml \
+    android/res/values/apptheme.xml \
+    android/res/drawable/splashlogo.png \
+    android/res/drawable-hdpi/icon.png \
+    android/res/drawable-ldpi/icon.png \
+    android/res/drawable-mdpi/icon.png
 
 ANDROID_PACKAGE_SOURCE_DIR = \
     $$PWD/android

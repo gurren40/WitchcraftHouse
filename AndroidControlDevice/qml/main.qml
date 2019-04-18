@@ -55,7 +55,7 @@ ApplicationWindow {
         onActivated: {
             if(stackView.depth > 1){
                 stackView.pop()
-                listView.currentIndex = -1
+                //listView.currentIndex = -1
             }
             else{
                 exitDialog.open()
@@ -131,9 +131,9 @@ ApplicationWindow {
                 currentIndex: 0
                 header : ItemDelegate{
                     id : listViewHeader
+                    clip : true
                     width: parent.width
                     height: width * 0.55
-                    Material.foreground: "white"
                     icon.name: "house"
                     icon.height: 48
                     icon.width: 48
@@ -141,6 +141,32 @@ ApplicationWindow {
                     text: qsTr("Witchcraft House")
                     font.bold: true
                     font.pointSize: 20
+                    contentItem : Column{
+                        clip: true
+                        width: parent.width
+                        height: parent.height
+                        RoundButton{
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            width: parent.height * 0.618
+                            height: parent.height * 0.618
+                            icon.name: "witchcraft"
+                            icon.color: "white"
+                            icon.height: height * 0.8
+                            icon.width: width * 0.8
+                            onClicked: user.reconnect()
+                            Material.background: user.isOnline ? Material.Green : Material.Red
+                        }
+                        Text {
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            id: headerText
+                            text: qsTr("Witchcraft House")
+                            font.family: "URW Gothic"
+                            font.pointSize: 20
+                            font.bold: true
+                            color: "white"
+                        }
+                    }
+
                     background: Image{
                         width: parent.width
                         height: parent.height
@@ -158,7 +184,8 @@ ApplicationWindow {
                     width: parent.width
                     highlighted: ListView.isCurrentItem
                     onClicked: {
-                        inPortrait ? drawer.close() : undefined
+                        //inPortrait ? drawer.close() : undefined
+                        drawer.close()
                         if(listView.currentIndex != index){
                             listView.currentIndex = index
                             if(model.title === "Home"){

@@ -22,5 +22,6 @@
         <file>qml/list/SharedPinList.qml</file>
         <file>qml/etc/settings.qml</file>
         <file>qml/etc/authentication.qml</file>
+        <file>qml/etc/webview.qml</file>
     </qresource>
 </RCC>
