@@ -2,7 +2,7 @@
 
 Server::Server(QObject *parent) : QObject(parent)
 {
-    m_messageQueue = new QVector<QJsonObject>;
+    //m_messageQueue = new QVector<QJsonObject>;
     m_isOnline = false;
     m_connection = new Connection(this);
     m_notification = new Notification(this);
@@ -46,11 +46,11 @@ void Server::setRemote(RemoteReplica *remote)
 void Server::sentToServer(QVariant jvar)
 {
     QJsonObject json = variantToJson(jvar);
-//    bool isValid = m_connection->sendMessage(json);
-//    if(!isValid){
-//        m_remote->setIsOnline(false);
-//    }
-    m_messageQueue->append(json);
+    bool isValid = m_connection->sendMessage(json);
+    if(!isValid){
+        m_remote->setIsOnline(false);
+    }
+//    m_messageQueue->append(json);
 }
 
 void Server::onMessageReceived(QJsonObject json)
@@ -162,12 +162,12 @@ void Server::initActivity()
 void Server::onPong(int elapsedTime, QByteArray payload)
 {
     m_remote->pong(elapsedTime,payload);
-    if(m_messageQueue->size()>0){
-        for (int i = 0;i<m_messageQueue->size();i++) {
-            m_connection->sendMessage(m_messageQueue->at(i));
-        }
-        m_messageQueue->clear();
-    }
+//    if(m_messageQueue->size()>0){
+//        for (int i = 0;i<m_messageQueue->size();i++) {
+//            m_connection->sendMessage(m_messageQueue->at(i));
+//        }
+//        m_messageQueue->clear();
+//    }
 }
 
 void Server::onPing(QByteArray payload)

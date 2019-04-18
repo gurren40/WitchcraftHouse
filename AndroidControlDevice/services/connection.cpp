@@ -16,7 +16,7 @@ Connection::Connection(QObject *parent) : QObject(parent)
     connect(m_websocket,&QWebSocket::textMessageReceived, this, &Connection::onTextMessageReceived);
     m_timer->setInterval(500);
     m_timer->setSingleShot(true);
-    m_pingTimer->setInterval(500);
+    m_pingTimer->setInterval(5000);
     m_pingTimer->setSingleShot(false);
     connectionLoop();
 }

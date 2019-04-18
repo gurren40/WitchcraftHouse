@@ -37,7 +37,8 @@ ApplicationWindow {
     readonly property bool inPortrait: window.width < window.height
     //! [orientation]
     Material.theme: user.darkTheme ? Material.Dark : Material.Light
-    Material.primary: user.darkTheme ? Material.background : Material.Orange
+    Material.primary: Material.background //user.darkTheme ? Material.background : Material.Orange
+    Material.accent: Material.foreground
     Dialog{
         id: exitDialog
         modal: true
@@ -63,7 +64,7 @@ ApplicationWindow {
     }
 
     header: ToolBar {
-        Material.foreground: "white"
+        //Material.foreground: "white"
         id : toolBar
         contentHeight: toolButton.implicitHeight
 
@@ -114,8 +115,7 @@ ApplicationWindow {
 
         Drawer{
             id : drawer
-            //width: (inPortrait) ? parent.width * 0.66 : parent.width * 0.25
-            width: parent.width * 0.8
+            width: (inPortrait) ? parent.width * 0.8 : parent.width * 0.618
             height: parent.height - toolBar.contentHeight
             y : toolBar.contentHeight
             //modal: inPortrait
@@ -264,6 +264,7 @@ ApplicationWindow {
         icon.name: "plus"
         icon.height: 36
         icon.width: 36
+        icon.color: Material.background
         highlighted: true
         anchors.margins: 10
         anchors.right: parent.right

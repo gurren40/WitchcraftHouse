@@ -48,7 +48,7 @@ private:
     Notification *m_notification;
     QJsonArray m_pinList;
     bool m_isOnline;
-    QVector<QJsonObject> *m_messageQueue;
+    //QVector<QJsonObject> *m_messageQueue;
 };
 
 #endif // SERVER_H
