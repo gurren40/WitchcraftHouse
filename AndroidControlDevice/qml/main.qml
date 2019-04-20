@@ -38,7 +38,7 @@ ApplicationWindow {
     //! [orientation]
     Material.theme: user.darkTheme ? Material.Dark : Material.Light
     Material.primary: Material.background //user.darkTheme ? Material.background : Material.Orange
-    Material.accent: Material.foreground
+    Material.accent: Material.Orange //user.darkTheme ? Material.Grey :
     Dialog{
         id: exitDialog
         modal: true
@@ -88,13 +88,15 @@ ApplicationWindow {
                         }
                     }
                 }
-                anchors.left: parent.left
+                //anchors.left: parent.left
+                Layout.alignment: Qt.AlignLeft
             }
 
             Label {
                 text: stackView.currentItem.title
                 font.bold: true
-                anchors.centerIn: parent
+                //anchors.centerIn: parent
+                Layout.alignment: Qt.AlignHCenter
             }
 
             ToolButton {
@@ -102,7 +104,8 @@ ApplicationWindow {
                 icon.name: "refresh"
                 icon.color: user.isOnline ? "green" : "red"
                 font.pixelSize: Qt.application.font.pixelSize * 1.6
-                anchors.right: parent.right
+                //anchors.right: parent.right
+                Layout.alignment: Qt.AlignRight
                 onClicked: {
                     user.getAllData()
                 }

@@ -27,18 +27,24 @@ Page {
         "textout": textoutDelegateComponent,
         "tempc": tempcDelegateComponent,
         "textfield": textfieldDelegateComponent,
-        "webview" : webviewDelegateComponent
-//        "tempf": tempfDelegateComponent,
+        "textarea" : textAreaDelegateComponent,
+        "tumbler" : tumblerDelegateComponent,
+        "spinbox" : spinboxDelegateComponent,
+        "combobox" : comboboxDelegateComponent,
+        "webview" : webviewDelegateComponent,
+        "slider" : sliderDelegateComponent
 
-//        mItems.append({ 0, QStringLiteral("default") });
-//        mItems.append({ 1, QStringLiteral("switch") });
-//        mItems.append({ 2, QStringLiteral("textout") });
-//        mItems.append({ 3, QStringLiteral("tempc") });
-//        mItems.append({ 5, QStringLiteral("textfield") });
-//        mItems.append({ 6, QStringLiteral("spinbox") });
-//        mItems.append({ 7, QStringLiteral("textarea") });
-//        mItems.append({ 8, QStringLiteral("tubler") });
-//        mItems.append({ 9, QStringLiteral("combobox") });
+//    mItems.append({ 0, QStringLiteral("default") });
+//    mItems.append({ 1, QStringLiteral("switch") });
+//    mItems.append({ 2, QStringLiteral("textout") });
+//    mItems.append({ 3, QStringLiteral("tempc") });
+//    mItems.append({ 4, QStringLiteral("textfield") });
+//    mItems.append({ 5, QStringLiteral("textarea") });
+//    mItems.append({ 6, QStringLiteral("tumbler") });
+//    mItems.append({ 7, QStringLiteral("spinbox") });
+//    mItems.append({ 8, QStringLiteral("combobox") });
+//    mItems.append({ 9, QStringLiteral("webview") });
+//    mItems.append({ 10,QStringLiteral("slider")});
     }
 
     Component{
@@ -59,7 +65,13 @@ Page {
     Component{
         id: switchDelegateComponent
         ItemDelegate{
-            contentItem : Label{
+            onClicked: {
+                if(listViewElement.currentIndex != thisIndex){
+                    listViewElement.currentIndex = thisIndex
+                }
+                pinDetails.open()
+            }
+            contentItem : Item{
                 width: parent.width
                 //color: transparent
                 ItemDelegate{
@@ -67,13 +79,13 @@ Page {
                     padding: 0
                     anchors.verticalCenter : parent.verticalCenter
                     icon.name: iconName
-                }
-                Label{
-                    id:switchLabel
-                    leftPadding: 15
-                    anchors.left: switchIcon.right
                     text: pinName
-                    anchors.verticalCenter : parent.verticalCenter
+                    onClicked: {
+                        if(listViewElement.currentIndex != thisIndex){
+                            listViewElement.currentIndex = thisIndex
+                        }
+                        pinDetails.open()
+                    }
                 }
                 Switch{
                     id:actualSwitch
@@ -101,33 +113,33 @@ Page {
                     }
                 }
             }
-            onClicked: {
-                if(listViewElement.currentIndex != thisIndex){
-                    listViewElement.currentIndex = thisIndex
-                }
-                pinDetails.open()
-            }
         }
     }
 
     Component{
         id : textoutDelegateComponent
         ItemDelegate{
-            contentItem: Label{
+            onClicked: {
+                if(listViewElement.currentIndex != thisIndex){
+                    listViewElement.currentIndex = thisIndex
+                }
+                pinDetails.open()
+            }
+            contentItem: Item{
                 width: parent.width
-                color: transparent
+                //color: transparent
                 ItemDelegate{
                     id:textIcon
                     padding: 0
                     anchors.verticalCenter : parent.verticalCenter
                     icon.name: iconName
-                }
-                Label{
-                    id:textLabel
-                    leftPadding: 15
-                    anchors.left: textIcon.right
                     text: pinName
-                    anchors.verticalCenter : parent.verticalCenter
+                    onClicked: {
+                        if(listViewElement.currentIndex != thisIndex){
+                            listViewElement.currentIndex = thisIndex
+                        }
+                        pinDetails.open()
+                    }
                 }
                 Label{
                     id:actualLabel
@@ -136,48 +148,40 @@ Page {
                     text: value
                 }
             }
-
-            onClicked: {
-                if(listViewElement.currentIndex != thisIndex){
-                    listViewElement.currentIndex = thisIndex
-                }
-                pinDetails.open()
-            }
         }
     }
 
     Component{
         id : tempcDelegateComponent
         ItemDelegate{
-            contentItem: Label{
-                width: parent.width
-                color: transparent
-                ItemDelegate{
-                    id:tempIcon
-                    padding: 0
-                    anchors.verticalCenter : parent.verticalCenter
-                    icon.name: iconName
-                }
-                Label{
-                    id:tempLabel
-                    leftPadding: 15
-                    anchors.left: tempIcon.right
-                    text: pinName
-                    anchors.verticalCenter : parent.verticalCenter
-                }
-                Label{
-                    id:actualTempLabel
-                    anchors.right: parent.right
-                    anchors.verticalCenter : parent.verticalCenter
-                    text: value + " " +"\u2103"
-                }
-            }
-
             onClicked: {
                 if(listViewElement.currentIndex != thisIndex){
                     listViewElement.currentIndex = thisIndex
                 }
                 pinDetails.open()
+            }
+            contentItem: Item{
+                width: parent.width
+                //color: transparent
+                ItemDelegate{
+                    id:tempIcon
+                    padding: 0
+                    anchors.verticalCenter : parent.verticalCenter
+                    icon.name: iconName
+                    text: pinName
+                    onClicked: {
+                        if(listViewElement.currentIndex != thisIndex){
+                            listViewElement.currentIndex = thisIndex
+                        }
+                        pinDetails.open()
+                    }
+                }
+                Label{
+                    id:actualTempLabel
+                    anchors.right: parent.right
+                    anchors.verticalCenter : parent.verticalCenter
+                    text: value + "\u2103"
+                }
             }
         }
     }
@@ -185,36 +189,234 @@ Page {
     Component{
         id : textfieldDelegateComponent
         ItemDelegate{
-            contentItem: Label{
+            contentItem: Frame{
                 width: parent.width
-                color: transparent
-                ItemDelegate{
-                    id:textFieldIcon
-                    padding: 0
-                    anchors.verticalCenter : parent.verticalCenter
-                    icon.name: iconName
-                }
-                Label{
-                    id:textFieldLabel
-                    leftPadding: 15
-                    anchors.left: textFieldIcon.right
-                    text: pinName
-                    anchors.verticalCenter : parent.verticalCenter
-                }
-                TextField {
-                    id:actualTextfield
-                    anchors.right: parent.right
-                    anchors.verticalCenter : parent.verticalCenter
-                    text: value
-                    width: parent.width * 0.4
+                ColumnLayout{
+                    width: parent.width
+                    ItemDelegate{
+                        id : textFieldLabel
+                        leftPadding: 0
+                        bottomPadding: 0
+                        topPadding: 0
+                        Layout.fillWidth: true
+                        icon.name: iconName
+                        text: pinName
+                        onClicked: {
+                            if(listViewElement.currentIndex != thisIndex){
+                                listViewElement.currentIndex = thisIndex
+                            }
+                            pinDetails.open()
+                        }
+                    }
+                    TextField {
+                        id: actualTextField
+                        Layout.fillWidth: true
+                        text: value
+                        width: parent.width * 0.4
+                        font.pointSize: 12
+                        onEditingFinished: pinList.setPinValue(uuid,text)
+                    }
                 }
             }
+        }
+    }
 
+    Component{
+        id : textAreaDelegateComponent
+        ItemDelegate{
+            contentItem: Frame{
+                width: parent.width
+                ColumnLayout{
+                    width: parent.width
+                    ItemDelegate{
+                        id : textAreaLabel
+                        leftPadding: 0
+                        bottomPadding: 0
+                        topPadding: 0
+                        Layout.fillWidth: true
+                        icon.name: iconName
+                        text: pinName
+                        onClicked: {
+                            if(listViewElement.currentIndex != thisIndex){
+                                listViewElement.currentIndex = thisIndex
+                            }
+                            pinDetails.open()
+                        }
+                    }
+                    TextArea {
+                        id: actualTextArea
+                        Layout.fillWidth: true
+                        text: value
+                        width: parent.width * 0.4
+                        font.pointSize: 12
+                        onEditingFinished: pinList.setPinValue(uuid,text)
+                    }
+                }
+            }
+        }
+    }
+
+    Component{
+        id : tumblerDelegateComponent
+        ItemDelegate{
+            contentItem: Frame{
+                width: parent.width
+                ColumnLayout{
+                    width: parent.width
+                    ItemDelegate{
+                        id : tumblerLabel
+                        leftPadding: 0
+                        bottomPadding: 0
+                        topPadding: 0
+                        Layout.fillWidth: true
+                        icon.name: iconName
+                        text: pinName
+                        onClicked: {
+                            if(listViewElement.currentIndex != thisIndex){
+                                listViewElement.currentIndex = thisIndex
+                            }
+                            pinDetails.open()
+                        }
+                    }
+                    Row{
+                        Layout.alignment: Qt.AlignHCenter
+                        spacing: 20
+                        //Layout.fillWidth: true
+                        //anchors.horizontalCenter: parent.horizontalCenter
+                        Frame{
+                            padding: 0
+                            Tumbler {
+                                id: actualTumbler
+                                anchors.centerIn: parent
+                                //Layout.fillWidth: true
+                                width: parent.width * 0.4
+                                font.pointSize: 12
+                                model: option
+                                currentIndex: value
+                                //pinList.setPinValue(uuid,text)
+                            }
+                        }
+                        Button{
+                            anchors.verticalCenter: parent.verticalCenter
+                            text: "Set"
+                            onClicked: pinList.setPinValue(uuid,actualTumbler.currentIndex)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    Component{
+        id : spinboxDelegateComponent
+        ItemDelegate{
+            id : spinboxDelegate
+            property int spinboxValue: value
             onClicked: {
                 if(listViewElement.currentIndex != thisIndex){
                     listViewElement.currentIndex = thisIndex
                 }
                 pinDetails.open()
+            }
+            contentItem: Item{
+                width: parent.width
+                //color: transparent
+                ItemDelegate{
+                    padding: 0
+                    anchors.verticalCenter : parent.verticalCenter
+                    icon.name: iconName
+                    text: pinName
+                    onClicked: {
+                        if(listViewElement.currentIndex != thisIndex){
+                            listViewElement.currentIndex = thisIndex
+                        }
+                        pinDetails.open()
+                    }
+                }
+                SpinBox{
+                    id:actualLabel
+                    width: 120
+                    anchors.right: parent.right
+                    anchors.verticalCenter : parent.verticalCenter
+                    stepSize: 1
+                    from: fromAndTo(option,true)
+                    to : fromAndTo(option,false)
+                    value: spinboxDelegate.spinboxValue
+                    function fromAndTo(options,from){
+                        var thevalue = options.split(",");
+                        if(from){
+                            return thevalue[0];
+                        }
+                        else{
+                            return thevalue[1];
+                        }
+                    }
+                    onValueModified: pinList.setPinValue(uuid,value)
+                }
+            }
+        }
+    }
+
+    Component{
+        id : comboboxDelegateComponent
+        ItemDelegate{
+            contentItem: Frame{
+                width: parent.width
+                ColumnLayout{
+                    width: parent.width
+                    ItemDelegate{
+                        id : comboBoxLabel
+                        leftPadding: 0
+                        bottomPadding: 0
+                        topPadding: 0
+                        Layout.fillWidth: true
+                        icon.name: iconName
+                        text: pinName
+                        onClicked: {
+                            if(listViewElement.currentIndex != thisIndex){
+                                listViewElement.currentIndex = thisIndex
+                            }
+                            pinDetails.open()
+                        }
+                    }
+                    Row{
+                        spacing: 20
+                        //Layout.fillWidth: true
+                        Layout.alignment: Qt.AlignHCenter
+                        //anchors.horizontalCenter: parent.horizontalCenter
+                        ComboBox{
+                            id : actualComboBox
+                            clip: true
+                            textRole: "value"
+                            ListModel{
+                                id : theModel
+                            }
+                            function comboItems(options){
+                                var theValue = options.split(",");
+                                theValue.forEach(function(theValue){
+                                    theModel.append({"value":theValue});
+                                });
+                                return theModel;
+                            }
+                            model: comboItems(option)
+                            currentIndex: getIndex(option,value)
+                            function getIndex(options,values){
+                                var theValue = options.split(",");
+                                var theIndex = 0;
+                                for(var i = 0; i<theValue.length; i++){
+                                    if(theValue[i] == values){
+                                        theIndex = i;
+                                    }
+                                }
+                                return theIndex;
+                            }
+                        }
+                        Button{
+                            text: "Set"
+                            onClicked: pinList.setPinValue(uuid,actualComboBox.currentText)
+                        }
+                    }
+                }
             }
         }
     }
@@ -224,21 +426,15 @@ Page {
         ItemDelegate{
             text: pinName
             icon.name: iconName
-            contentItem: Label{
+            contentItem: Item{
                 width: parent.width
                 //color: transparent
                 ItemDelegate{
                     id:webviewIcon
                     padding: 0
-                    anchors.verticalCenter : parent.verticalCenter
-                    icon.name: iconName
-                }
-                Label{
-                    id:webviewLabel
-                    leftPadding: 15
-                    anchors.left: webviewIcon.right
                     text: pinName
                     anchors.verticalCenter : parent.verticalCenter
+                    icon.name: iconName
                 }
                 Button{
                     text: "View"
@@ -258,6 +454,79 @@ Page {
                     listViewElement.currentIndex = thisIndex
                 }
                 pinDetails.open()
+            }
+        }
+    }
+
+    Component{
+        id: sliderDelegateComponent
+        ItemDelegate{
+            id : sliderDelegate
+            property int sliderValue: value
+            onClicked: {
+                if(listViewElement.currentIndex != thisIndex){
+                    listViewElement.currentIndex = thisIndex
+                }
+                pinDetails.open()
+            }
+            contentItem: Frame{
+                //color: transparent
+                ColumnLayout{
+                    width: parent.width
+                    ItemDelegate{
+                        padding: 0
+                        Layout.fillWidth: true
+                        //anchors.verticalCenter : parent.verticalCenter
+                        icon.name: iconName
+                        text: pinName
+                        onClicked: {
+                            if(listViewElement.currentIndex != thisIndex){
+                                listViewElement.currentIndex = thisIndex
+                            }
+                            pinDetails.open()
+                        }
+                    }
+                    Row{
+                        Layout.fillWidth: true
+                        //Layout.alignment: Qt.AlignHCenter
+                        spacing: 5
+                        Label{
+                            id : fromLabel
+                            text: actualSlider.fromAndTo(option,true)
+                            anchors.verticalCenter : parent.verticalCenter
+                        }
+                        Slider{
+                            id:actualSlider
+                            //Layout.fillWidth: true
+                            //width: 120
+                            //anchors.right: parent.right
+                            anchors.verticalCenter : parent.verticalCenter
+                            width: parent.width - (10 + fromLabel.width + toLabel.width)
+                            stepSize: 1
+                            from: fromAndTo(option,true)
+                            to : fromAndTo(option,false)
+                            value: sliderDelegate.sliderValue
+                            orientation: Qt.Horizontal
+                            snapMode: Slider.SnapOnRelease
+                            function fromAndTo(options,from){
+                                var thevalue = options.split(",");
+                                if(from){
+                                    return thevalue[0];
+                                }
+                                else{
+                                    return thevalue[1];
+                                }
+                            }
+                            //onValueModified: pinList.setPinValue(uuid,value)
+                            onMoved: pinList.setPinValue(uuid,value)
+                        }
+                        Label{
+                            id : toLabel
+                            text: actualSlider.fromAndTo(option,false)
+                            anchors.verticalCenter : parent.verticalCenter
+                        }
+                    }
+                }
             }
         }
     }

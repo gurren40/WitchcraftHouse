@@ -1,48 +1,83 @@
 #include "pinlist.h"
 
+PinItem setPin(QString pinName, QString userName, QString groupName, QString iconName, QString pinTypeName, QString value, QString option){
+    PinItem item;
+    item.UUID = "UUID";
+    item.pinID = 1;
+    item.value = value;
+    item.iconID = 2;
+    item.option = option;
+    item.userID = 3;
+    item.groupID = 4;
+    item.pinName = pinName;
+    item.deviceID = 5;
+    item.iconName = iconName;
+    item.userName = userName;
+    item.groupName = groupName;
+    item.pinTypeID = 6;
+    item.deviceName = "deviceName";
+    item.description = "description";
+    item.pinTypeName = pinTypeName;
+    return item;
+}
+
 PinList::PinList(QObject *parent) : QObject(parent)
 {
     //mItems.append({ true, QStringLiteral("Wash the car") });
     //mItems.append({ false, QStringLiteral("Fix the sink") });
-    PinItem item;
-    item.UUID = "UUID";
-    item.pinID = 1;
-    item.value = "value";
-    item.iconID = 2;
-    item.option = "option";
-    item.userID = 3;
-    item.groupID = 4;
-    item.pinName = "pinName";
-    item.deviceID = 5;
-    item.iconName = "fire";
-    item.userName = "userName";
-    item.groupName = "Lol";
-    item.pinTypeID = 6;
-    item.deviceName = "deviceName";
-    item.description = "description";
-    item.pinTypeName = "switch";
-    PinItem item2;
-    item2 = item;
-    item2.pinTypeName = "default";
-    item2.groupName = "lil";
-    PinItem item3 = item;
-    item3.pinName = "Ruang Tengah";
-    item3.groupName = "CCTV";
-    item3.pinTypeName = "webview";
-    item3.iconName = "cctv";
-    item3.value = "http://192.168.0.4:8081/";
-    PinItem item4 = item3;
-    item4.pinName = "ArchLinux.org";
-    item4.groupName = "Website";
-    item4.pinTypeName = "webview";
-    item4.value = "https://www.archlinux.org/";
-    item4.iconName = "fan";
-    mItems.append(item);
+    PinItem item0 = setPin("default Example","User","Group 1","default","default","0","no");
+    mItems.append(item0);
+    PinItem item1 = setPin("switch Example","User","Group 1","switch","switch","1","0,1");
+    mItems.append(item1);
+    PinItem item2 = setPin("textout Example","User","Group 1","AC","textout","Suatu Keterangan","");
     mItems.append(item2);
-    mItems.append(item2);
-    mItems.append(item);
+    PinItem item3 = setPin("tempc Example","User","Group 1","thermometer","tempc","24","100");
     mItems.append(item3);
+    PinItem item4 = setPin("textfield Example","User","Group 2","thermostat","textfield","Text yang bisa diedit","");
     mItems.append(item4);
+    PinItem item5 = setPin("textarea Example","User","Group 2","bell","textarea","Text yang bisa diedit,\ndengan jangkauan yang lebih luas","");
+    mItems.append(item5);
+    PinItem item6 = setPin("tumbler Example","User","Group 2","sun","tumbler","6","11");
+    mItems.append(item6);
+    PinItem item7 = setPin("spinbox Example","User","Group 3","water","spinbox","7","0,12");
+    mItems.append(item7);
+    PinItem item8 = setPin("combobox Example","User","Group 3","lock","combobox","Green","Red,Green,Blue");
+    mItems.append(item8);
+    PinItem item9 = setPin("webview Example","User","Group 3","cctv","webview","https://www.archlinux.org","ArchLinuxForefah");
+    mItems.append(item9);
+    PinItem item10 = setPin("slider Example","User","Group 3","leaf","slider","2","0,10");
+    mItems.append(item10);
+//    mItems.append({ 0, QStringLiteral("default") });
+//    mItems.append({ 1, QStringLiteral("switch") });
+//    mItems.append({ 2, QStringLiteral("textout") });
+//    mItems.append({ 3, QStringLiteral("tempc") });
+//    mItems.append({ 4, QStringLiteral("textfield") });
+//    mItems.append({ 5, QStringLiteral("textarea") });
+//    mItems.append({ 6, QStringLiteral("tumbler") });
+//    mItems.append({ 7, QStringLiteral("spinbox") });
+//    mItems.append({ 8, QStringLiteral("combobox") });
+//    mItems.append({ 9, QStringLiteral("webview") });
+    //icon
+//    mItems.append({ 0, QStringLiteral("default") });
+//    mItems.append({ 1, QStringLiteral("house") });
+//    mItems.append({ 2, QStringLiteral("lamp") });
+//    mItems.append({ 3, QStringLiteral("switch") });
+//    mItems.append({ 4, QStringLiteral("outlet") });
+//    mItems.append({ 5, QStringLiteral("fan") });
+//    mItems.append({ 6, QStringLiteral("thermometer") });
+//    mItems.append({ 7, QStringLiteral("lock") });
+//    mItems.append({ 8, QStringLiteral("key") });
+//    mItems.append({ 9, QStringLiteral("fire") });
+//    mItems.append({ 10, QStringLiteral("AC") });
+//    mItems.append({ 11, QStringLiteral("cctv") });
+//    mItems.append({ 12, QStringLiteral("bell") });
+//    mItems.append({ 13, QStringLiteral("sun") });
+//    mItems.append({ 14, QStringLiteral("moon") });
+//    mItems.append({ 15, QStringLiteral("thermostat") });
+//    mItems.append({ 16, QStringLiteral("power") });
+//    mItems.append({ 17, QStringLiteral("door") });
+//    mItems.append({ 18, QStringLiteral("water") });
+//    mItems.append({ 19, QStringLiteral("leaf") });
 }
 
 QVector<PinItem> PinList::items() const

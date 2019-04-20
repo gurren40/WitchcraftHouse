@@ -36,37 +36,36 @@ ScrollView{
 
     Timer{
         interval: 1000
-        onTriggered: editSchedule.loadDayOfWeek()
+        onTriggered: editSchedule.loadDayOfWeek(editSchedule.dayOfWeek)
         repeat: true
         running: true
     }
 
-    function loadDayOfWeek(){
-        var thestring = editSchedule.dayOfWeek
+    function loadDayOfWeek(thestring){
         var res = thestring.split(",")
-        res.forEach(editSchedule.thatForEach());
+        res.forEach(editSchedule.thatForEach(currentValue));
     }
     function thatForEach(currentValue){
-        if(currentValue === "1"){
-            monday.checked = true
+        if(currentValue == "1"){
+            monday.checked = true;
         }
-        if(currentValue === "2"){
-            tuesday.checked = true
+        if(currentValue == "2"){
+            tuesday.checked = true;
         }
-        if(currentValue === "3"){
-            wednesday.checked = true
+        if(currentValue == "3"){
+            wednesday.checked = true;
         }
-        if(currentValue === "4"){
-            thursday.checked = true
+        if(currentValue == "4"){
+            thursday.checked = true;
         }
-        if(currentValue === "5"){
-            friday.checked = true
+        if(currentValue == "5"){
+            friday.checked = true;
         }
-        if(currentValue === "6"){
-            saturday.checked = true
+        if(currentValue == "6"){
+            saturday.checked = true;
         }
-        if(currentValue === "7"){
-            sunday.checked = true
+        if(currentValue == "7"){
+            sunday.checked = true;
         }
     }
 

@@ -12,6 +12,7 @@ PinTypeList::PinTypeList(QObject *parent) : QObject(parent)
     mItems.append({ 7, QStringLiteral("spinbox") });
     mItems.append({ 8, QStringLiteral("combobox") });
     mItems.append({ 9, QStringLiteral("webview") });
+    mItems.append({ 10,QStringLiteral("slider")});
 }
 
 QVector<PinTypeItem> PinTypeList::items() const

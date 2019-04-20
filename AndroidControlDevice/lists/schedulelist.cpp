@@ -17,7 +17,7 @@ ScheduleList::ScheduleList(QObject *parent) : QObject(parent)
     item.hour = "*";
     item.dayOfMonth = "*";
     item.month = "*";
-    item.dayOfWeek = "*";
+    item.dayOfWeek = "1,2,3";
     item.timeZone = "UTC";
     item.value = "value";
     item.description = "description";

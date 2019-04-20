@@ -73,12 +73,14 @@ public class MyService extends QtService{
     public void onDestroy() {
         super.onDestroy();
         sendBroadcast(new Intent("WitchcraftServiceNeedRestart"));
+        //MyUtility.scheduleJob(getApplicationContext());
     }
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
         super.onDestroy();
         sendBroadcast(new Intent("WitchcraftServiceNeedRestart"));
+        //MyUtility.scheduleJob(getApplicationContext());
     }
 
 }
