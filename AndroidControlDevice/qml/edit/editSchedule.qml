@@ -35,38 +35,40 @@ ScrollView{
     //[Item properties]
 
     Timer{
-        interval: 1000
+        interval: 100
         onTriggered: editSchedule.loadDayOfWeek(editSchedule.dayOfWeek)
-        repeat: true
+        repeat: false
         running: true
     }
 
     function loadDayOfWeek(thestring){
         var res = thestring.split(",")
-        res.forEach(editSchedule.thatForEach(currentValue));
-    }
-    function thatForEach(currentValue){
-        if(currentValue == "1"){
-            monday.checked = true;
-        }
-        if(currentValue == "2"){
-            tuesday.checked = true;
-        }
-        if(currentValue == "3"){
-            wednesday.checked = true;
-        }
-        if(currentValue == "4"){
-            thursday.checked = true;
-        }
-        if(currentValue == "5"){
-            friday.checked = true;
-        }
-        if(currentValue == "6"){
-            saturday.checked = true;
-        }
-        if(currentValue == "7"){
-            sunday.checked = true;
-        }
+        res.forEach(function(res){
+            if(res == "1"){
+                monday.checked = true;
+            }
+            if(res == "2"){
+                tuesday.checked = true;
+            }
+            if(res == "3"){
+                wednesday.checked = true;
+            }
+            if(res == "4"){
+                thursday.checked = true;
+            }
+            if(res == "5"){
+                friday.checked = true;
+            }
+            if(res == "6"){
+                saturday.checked = true;
+            }
+            if(res == "7"){
+                sunday.checked = true;
+            }
+            if(res == "*"){
+                loadDayOfWeek("1,2,3,4,5,6,7");
+            }
+        });
     }
 
     Column{
@@ -90,10 +92,11 @@ ScrollView{
             text: qsTr("Select Pin :")
         }
         ComboBox{
-            property string displayName : "Select Pin"
+            property string displayName : pinList.getItemName(editSchedule.pinID)
             id : editPin
             textRole: "UUID"
             displayText: displayName
+            currentIndex: pinList.getItemIndex(editSchedule.pinID)
             width: parent.width
             model: PinModel{
                 list: pinList

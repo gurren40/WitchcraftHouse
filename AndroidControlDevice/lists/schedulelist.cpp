@@ -13,11 +13,11 @@ ScheduleList::ScheduleList(QObject *parent) : QObject(parent)
     item.pinUUID = "pinUUID";
     item.pinName = "pinName";
     item.scheduleName = "scheduleName";
-    item.minute = "*";
-    item.hour = "*";
+    item.minute = "12";
+    item.hour = "21";
     item.dayOfMonth = "*";
     item.month = "*";
-    item.dayOfWeek = "1,2,3";
+    item.dayOfWeek = "*";
     item.timeZone = "UTC";
     item.value = "value";
     item.description = "description";

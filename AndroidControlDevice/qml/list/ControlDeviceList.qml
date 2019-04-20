@@ -32,6 +32,8 @@ Page {
             property date expireDate : model.expireDate
             width: parent.width
             text: model.controlDeviceName
+            icon.name: "default"
+            icon.color: isControlDeviceOnline ? "green" : "red"
             onClicked: {
                 if(listViewElement.currentIndex != index){
                     listViewElement.currentIndex = index

@@ -50,12 +50,15 @@ ScrollView{
             text: qsTr("Select Icon :")
         }
         ComboBox{
-            property string displayName : "Must Select New Icon"
+            property string displayName : editGroup.iconName
             id : groupIcon
             textRole: "iconID"
             displayText: displayName
             width: parent.width
+            currentIndex : editGroup.iconID
+
             model: IconModel{
+                id : iconModel
                 list: iconList
             }
             delegate: ItemDelegate{

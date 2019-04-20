@@ -15,6 +15,7 @@ DeviceList::DeviceList(QObject *parent) : QObject(parent)
     item.description = "description";
     DeviceItem item2;
     item2 = item;
+    item2.deviceID = 2;
     item2.deviceName = "deviceName2";
     item2.description = "the description here is an example\nyes an example.";
     mItems.append(item);
@@ -135,5 +136,27 @@ QJsonObject DeviceList::variantToJson(QVariant jvar)
     QJsonDocument jdoc = QJsonDocument::fromJson(jvar.toByteArray());
     QJsonObject json = jdoc.object();
     return json;
+}
+
+int DeviceList::getItemIndex(int id)
+{
+    int j = 0;
+    for (int i = 0;i<mItems.size();i++) {
+        if(mItems.at(i).deviceID == id){
+            j = i;
+        }
+    }
+    return j;
+}
+
+QString DeviceList::getItemName(int id)
+{
+    QString j = "none";
+    for (int i = 0;i<mItems.size();i++) {
+        if(mItems.at(i).deviceID == id){
+            j = mItems.at(i).deviceName;
+        }
+    }
+    return j;
 }
 

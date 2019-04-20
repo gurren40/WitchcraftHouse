@@ -36,6 +36,20 @@ Page {
             property string groupName : model.groupName
             property string sharedName : model.sharedName
             property string description : model.description
+            contentItem: Column{
+                width: parent.width
+                spacing: 2
+                Label{
+                    text: model.sharedName
+                    font.bold: true
+                }
+                Label{
+                    font.bold: false
+                    font.pointSize: 10
+                    text : model.sharedTo
+                    enabled: false
+                }
+            }
             onClicked: {
                 if(listViewElement.currentIndex != index){
                     listViewElement.currentIndex = index

@@ -53,6 +53,9 @@ public slots:
     //misc
     QVariant jsonToVariant(QJsonObject json);
     QJsonObject variantToJson(QVariant jvar);
+    int getItemIndex(int id);
+    QString getItemName(int id);
+    QString getIconName(QString groupName);
 
 private:
     QVector<GroupItem> mItems;

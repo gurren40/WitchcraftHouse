@@ -3,14 +3,14 @@
 PinItem setPin(QString pinName, QString userName, QString groupName, QString iconName, QString pinTypeName, QString value, QString option){
     PinItem item;
     item.UUID = "UUID";
-    item.pinID = 1;
+    item.pinID = 3;
     item.value = value;
     item.iconID = 2;
     item.option = option;
     item.userID = 3;
-    item.groupID = 4;
+    item.groupID = 2;
     item.pinName = pinName;
-    item.deviceID = 5;
+    item.deviceID = 2;
     item.iconName = iconName;
     item.userName = userName;
     item.groupName = groupName;
@@ -33,9 +33,9 @@ PinList::PinList(QObject *parent) : QObject(parent)
     mItems.append(item2);
     PinItem item3 = setPin("tempc Example","User","Group 1","thermometer","tempc","24","100");
     mItems.append(item3);
-    PinItem item4 = setPin("textfield Example","User","Group 2","thermostat","textfield","Text yang bisa diedit","");
+    PinItem item4 = setPin("textfield Example","User","Group 2","thermostat","textfield","Text yang bisa diedit","1");
     mItems.append(item4);
-    PinItem item5 = setPin("textarea Example","User","Group 2","bell","textarea","Text yang bisa diedit,\ndengan jangkauan yang lebih luas","");
+    PinItem item5 = setPin("textarea Example","User","Group 2","bell","textarea","Text yang bisa diedit,\ndengan jangkauan yang lebih luas","1");
     mItems.append(item5);
     PinItem item6 = setPin("tumbler Example","User","Group 2","sun","tumbler","6","11");
     mItems.append(item6);
@@ -45,8 +45,12 @@ PinList::PinList(QObject *parent) : QObject(parent)
     mItems.append(item8);
     PinItem item9 = setPin("webview Example","User","Group 3","cctv","webview","https://www.archlinux.org","ArchLinuxForefah");
     mItems.append(item9);
-    PinItem item10 = setPin("slider Example","User","Group 3","leaf","slider","2","0,10");
+    PinItem item10 = setPin("rangeslider Example","User","Group 4","leaf","rangeslider","2,5","0,10");
     mItems.append(item10);
+    PinItem item11 = setPin("colordialog Example","User","Group 4","moon","colordialog","#000000","#000000");
+    mItems.append(item11);
+    PinItem item12 = setPin("slider Example","User","Group 4","lamp","slider","100","0,255");
+    mItems.append(item12);
 //    mItems.append({ 0, QStringLiteral("default") });
 //    mItems.append({ 1, QStringLiteral("switch") });
 //    mItems.append({ 2, QStringLiteral("textout") });
@@ -261,4 +265,26 @@ QJsonObject PinList::variantToJson(QVariant jvar)
     QJsonDocument jdoc = QJsonDocument::fromJson(jvar.toByteArray());
     QJsonObject json = jdoc.object();
     return json;
+}
+
+int PinList::getItemIndex(int id)
+{
+    int j = 0;
+    for (int i = 0;i<mItems.size();i++) {
+        if(mItems.at(i).pinID == id){
+            j = i;
+        }
+    }
+    return j;
+}
+
+QString PinList::getItemName(int id)
+{
+    QString j = "none";
+    for (int i = 0;i<mItems.size();i++) {
+        if(mItems.at(i).pinID == id){
+            j = mItems.at(i).pinName;
+        }
+    }
+    return j;
 }

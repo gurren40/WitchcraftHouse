@@ -44,7 +44,22 @@ Page {
             property string description : model.description
 
             width: parent.width
-            text : model.scheduleName + " ("+model.minute+" "+model.hour+" "+model.dayOfMonth+" "+model.month+" "+model.dayOfWeek+") : "+model.value
+            //text : model.scheduleName + " ("+model.minute+" "+model.hour+" "+model.dayOfMonth+" "+model.month+" "+model.dayOfWeek+") : "+model.value
+            contentItem: Column{
+                width: parent.width
+                spacing: 2
+                Label{
+                    text: model.scheduleName
+                    font.bold: true
+                }
+                Label{
+                    font.bold: false
+                    font.pointSize: 10
+                    text : " ("+model.minute+" "+model.hour+" "+model.dayOfMonth+" "+model.month+" "+model.dayOfWeek+")"
+                    enabled: false
+                }
+            }
+
             onClicked: {
                 if(listViewElement.currentIndex != index){
                     listViewElement.currentIndex = index

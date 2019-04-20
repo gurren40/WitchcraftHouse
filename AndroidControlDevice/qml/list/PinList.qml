@@ -1,4 +1,5 @@
 import QtQuick 2.9
+import QtQuick.Dialogs 1.2
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import QtWebView 1.1
@@ -32,19 +33,23 @@ Page {
         "spinbox" : spinboxDelegateComponent,
         "combobox" : comboboxDelegateComponent,
         "webview" : webviewDelegateComponent,
+        "rangeslider" : rangesliderDelegateComponent,
+        "colordialog" : colordialogDelegateComponent,
         "slider" : sliderDelegateComponent
 
-//    mItems.append({ 0, QStringLiteral("default") });
-//    mItems.append({ 1, QStringLiteral("switch") });
-//    mItems.append({ 2, QStringLiteral("textout") });
-//    mItems.append({ 3, QStringLiteral("tempc") });
-//    mItems.append({ 4, QStringLiteral("textfield") });
-//    mItems.append({ 5, QStringLiteral("textarea") });
-//    mItems.append({ 6, QStringLiteral("tumbler") });
-//    mItems.append({ 7, QStringLiteral("spinbox") });
-//    mItems.append({ 8, QStringLiteral("combobox") });
-//    mItems.append({ 9, QStringLiteral("webview") });
-//    mItems.append({ 10,QStringLiteral("slider")});
+//        mItems.append({ 0, QStringLiteral("default") });
+//        mItems.append({ 1, QStringLiteral("switch") });
+//        mItems.append({ 2, QStringLiteral("textout") });
+//        mItems.append({ 3, QStringLiteral("tempc") });
+//        mItems.append({ 4, QStringLiteral("textfield") });
+//        mItems.append({ 5, QStringLiteral("textarea") });
+//        mItems.append({ 6, QStringLiteral("tumbler") });
+//        mItems.append({ 7, QStringLiteral("spinbox") });
+//        mItems.append({ 8, QStringLiteral("combobox") });
+//        mItems.append({ 9, QStringLiteral("webview") });
+//        mItems.append({ 10,QStringLiteral("rangeslider")});
+//        mItems.append({ 11,QStringLiteral("colordialog")});
+//        mItems.append({ 12,QStringLiteral("slider")});
     }
 
     Component{
@@ -106,9 +111,11 @@ Page {
                         if(checked){
                             //void setPinValue(QVariant UUID, QVariant value);
                             pinList.setPinValue(uuid,"1")
+                            console.log("1")
                         }
                         else if(!checked){
                             pinList.setPinValue(uuid,"0")
+                            console.log("0")
                         }
                     }
                 }
@@ -214,7 +221,19 @@ Page {
                         text: value
                         width: parent.width * 0.4
                         font.pointSize: 12
-                        onEditingFinished: pinList.setPinValue(uuid,text)
+                        enabled: isEnabled()
+                        function isEnabled(){
+                            if(option == "0"){
+                                return false;
+                            }
+                            else{
+                                return true;
+                            }
+                        }
+                        onEditingFinished: {
+                            console.log(text)
+                            pinList.setPinValue(uuid,text)
+                        }
                     }
                 }
             }
@@ -249,7 +268,19 @@ Page {
                         text: value
                         width: parent.width * 0.4
                         font.pointSize: 12
-                        onEditingFinished: pinList.setPinValue(uuid,text)
+                        enabled: isEnabled()
+                        function isEnabled(){
+                            if(option == "0"){
+                                return false;
+                            }
+                            else{
+                                return true;
+                            }
+                        }
+                        onEditingFinished: {
+                            console.log(text)
+                            pinList.setPinValue(uuid,text)
+                        }
                     }
                 }
             }
@@ -299,7 +330,10 @@ Page {
                         Button{
                             anchors.verticalCenter: parent.verticalCenter
                             text: "Set"
-                            onClicked: pinList.setPinValue(uuid,actualTumbler.currentIndex)
+                            onClicked: {
+                                console.log(actualTumbler.currentIndex)
+                                pinList.setPinValue(uuid,actualTumbler.currentIndex)
+                            }
                         }
                     }
                 }
@@ -334,7 +368,7 @@ Page {
                     }
                 }
                 SpinBox{
-                    id:actualLabel
+                    id:actualSpinbox
                     width: 120
                     anchors.right: parent.right
                     anchors.verticalCenter : parent.verticalCenter
@@ -351,7 +385,19 @@ Page {
                             return thevalue[1];
                         }
                     }
-                    onValueModified: pinList.setPinValue(uuid,value)
+                    onValueModified: {
+                        spinBoxTimer.running = true
+                    }
+                    Timer{
+                        id : spinBoxTimer
+                        interval: 500
+                        running: false
+                        repeat: false
+                        onTriggered: {
+                            console.log(actualSpinbox.value)
+                            pinList.setPinValue(uuid,actualSpinbox.value)
+                        }
+                    }
                 }
             }
         }
@@ -413,7 +459,10 @@ Page {
                         }
                         Button{
                             text: "Set"
-                            onClicked: pinList.setPinValue(uuid,actualComboBox.currentText)
+                            onClicked: {
+                                console.log(actualComboBox.currentText)
+                                pinList.setPinValue(uuid,actualComboBox.currentText)
+                            }
                         }
                     }
                 }
@@ -459,10 +508,10 @@ Page {
     }
 
     Component{
-        id: sliderDelegateComponent
+        id: rangesliderDelegateComponent
         ItemDelegate{
-            id : sliderDelegate
-            property int sliderValue: value
+            id : rangesliderDelegate
+            //property int sliderValue: value
             onClicked: {
                 if(listViewElement.currentIndex != thisIndex){
                     listViewElement.currentIndex = thisIndex
@@ -492,6 +541,158 @@ Page {
                         spacing: 5
                         Label{
                             id : fromLabel
+                            text: actualRangeSlider.fromAndTo(option,true)
+                            anchors.verticalCenter : parent.verticalCenter
+                        }
+                        RangeSlider{
+                            id:actualRangeSlider
+                            //Layout.fillWidth: true
+                            //width: 120
+                            //anchors.right: parent.right
+                            anchors.verticalCenter : parent.verticalCenter
+                            width: parent.width - (10 + fromLabel.width + toLabel.width)
+                            stepSize: 1
+                            from: fromAndTo(option,true)
+                            to : fromAndTo(option,false)
+                            //value: sliderDelegate.sliderValue
+                            first.value: fromAndTo(value,true)
+                            second.value: fromAndTo(value,false)
+                            orientation: Qt.Horizontal
+                            snapMode: RangeSlider.SnapAlways
+                            function fromAndTo(options,from){
+                                var thevalue = options.split(",");
+                                if(from){
+                                    return thevalue[0];
+                                }
+                                else{
+                                    return thevalue[1];
+                                }
+                            }
+                            function setValue(){
+//                                var thisValue = first.value.toString() + "," + second.value.toString();
+//                                pinList.setPinValue(uuid,thisValue);
+//                                console.log(thisValue)
+                                rangeSliderTimer.running = true
+                            }
+
+                            //onValueModified: pinList.setPinValue(uuid,value)
+                            //onMoved: pinList.setPinValue(uuid,value)
+                            first.onMoved: setValue()
+                            second.onMoved: setValue()
+                            Timer{
+                                id : rangeSliderTimer
+                                running: false
+                                repeat: false
+                                interval: 500
+                                onTriggered: {
+                                    var thisValue = actualRangeSlider.first.value.toString() + "," + actualRangeSlider.second.value.toString();
+                                    console.log(thisValue)
+                                    pinList.setPinValue(uuid,thisValue)
+                                }
+                            }
+                        }
+                        Label{
+                            id : toLabel
+                            text: actualRangeSlider.fromAndTo(option,false)
+                            anchors.verticalCenter : parent.verticalCenter
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    Component{
+        id : colordialogDelegateComponent
+        ItemDelegate{
+            text: pinName
+            icon.name: iconName
+            contentItem: Item{
+                width: parent.width
+                //color: transparent
+                ItemDelegate{
+                    id:webviewIcon
+                    padding: 0
+                    text: pinName
+                    anchors.verticalCenter : parent.verticalCenter
+                    icon.name: iconName
+                }
+                ItemDelegate{
+                    id : colorIndicator
+                    topPadding: 0
+                    leftPadding: 0
+                    bottomPadding: 0
+                    anchors.verticalCenter : parent.verticalCenter
+                    anchors.right: chooseButton.left
+                    icon.name: "default"
+                    icon.color: value
+                }
+
+                Button{
+                    id : chooseButton
+                    text: "Choose"
+                    anchors.verticalCenter : parent.verticalCenter
+                    anchors.right: parent.right
+                    onClicked: {
+                        colorDialog.open()
+                    }
+                }
+                ColorDialog {
+                    id: colorDialog
+                    title: "Please choose a color"
+                    visible: false
+                    onAccepted: {
+                        console.log("You chose: " + colorDialog.color)
+                        colorIndicator.icon.color = colorDialog.color
+                        pinList.setPinValue(uuid,colorDialog.color);
+                    }
+                    onRejected: {
+                        console.log("Canceled")
+                    }
+                }
+            }
+            onClicked: {
+                if(listViewElement.currentIndex != thisIndex){
+                    listViewElement.currentIndex = thisIndex
+                }
+                pinDetails.open()
+            }
+        }
+    }
+
+    Component{
+        id : sliderDelegateComponent
+        ItemDelegate{
+            id : sliderDelegate
+            property int sliderValue: value
+            onClicked: {
+                if(listViewElement.currentIndex != thisIndex){
+                    listViewElement.currentIndex = thisIndex
+                }
+                pinDetails.open()
+            }
+            contentItem: Frame{
+                //color: transparent
+                ColumnLayout{
+                    width: parent.width
+                    ItemDelegate{
+                        padding: 0
+                        Layout.fillWidth: true
+                        //anchors.verticalCenter : parent.verticalCenter
+                        icon.name: iconName
+                        text: pinName
+                        onClicked: {
+                            if(listViewElement.currentIndex != thisIndex){
+                                listViewElement.currentIndex = thisIndex
+                            }
+                            pinDetails.open()
+                        }
+                    }
+                    Row{
+                        Layout.fillWidth: true
+                        spacing: 5
+                        Label{
+                            id : fromLabel
                             text: actualSlider.fromAndTo(option,true)
                             anchors.verticalCenter : parent.verticalCenter
                         }
@@ -506,8 +707,10 @@ Page {
                             from: fromAndTo(option,true)
                             to : fromAndTo(option,false)
                             value: sliderDelegate.sliderValue
+                            //first.value: fromAndTo(value,true)
+                            //second.value: fromAndTo(value,false)
                             orientation: Qt.Horizontal
-                            snapMode: Slider.SnapOnRelease
+                            snapMode: Slider.SnapAlways
                             function fromAndTo(options,from){
                                 var thevalue = options.split(",");
                                 if(from){
@@ -517,8 +720,30 @@ Page {
                                     return thevalue[1];
                                 }
                             }
+//                            function setValue(){
+//                                var thisValue = first.value.toString() + "," + second.value.toString();
+//                                pinList.setPinValue(uuid,thisValue);
+//                                console.log(thisValue)
+//                            }
+
                             //onValueModified: pinList.setPinValue(uuid,value)
-                            onMoved: pinList.setPinValue(uuid,value)
+                            onMoved: {
+                                //pinList.setPinValue(uuid,value)
+                                sliderTimer.running = true
+                            }
+                            Timer{
+                                id : sliderTimer
+                                running: false
+                                repeat: false
+                                interval: 500
+                                onTriggered: {
+                                    console.log(actualSlider.value)
+                                    pinList.setPinValue(uuid,actualSlider.value)
+                                }
+                            }
+
+                            //first.onMoved: setValue()
+                            //second.onMoved: setValue()
                         }
                         Label{
                             id : toLabel
@@ -587,11 +812,25 @@ Page {
                         source: "/images/drawer_header.jpeg"
                         fillMode: Image.PreserveAspectCrop
                     }
+                    ItemDelegate{
+                        id : rightIcon
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        icon.name: groupList.getIconName(sectionLabel.text)
+                    }
+
                     Label{
+                        id : sectionLabel
                         anchors.centerIn: parent
                         text: section
                         font.pointSize: 18
                         font.bold: true
+                    }
+
+                    ItemDelegate{
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        icon.name: rightIcon.icon.name
                     }
                 }
             }

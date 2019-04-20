@@ -51,10 +51,11 @@ ScrollView{
             text: qsTr("Select Group :")
         }
         ComboBox{
-            property string displayName : "Select Group"
+            property string displayName : groupList.getItemName(editShared.groupID)
             id : editGroup
             textRole: "groupID"
             displayText: displayName
+            currentIndex: groupList.getItemIndex(editShared.groupID)
             width: parent.width
             model: GroupModel{
                 list: groupList

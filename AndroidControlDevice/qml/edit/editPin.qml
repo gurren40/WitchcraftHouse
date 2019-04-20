@@ -57,10 +57,11 @@ ScrollView{
             text: qsTr("Select Group :")
         }
         ComboBox{
-            property string displayName: "Select Icon (MUST)"
+            property string displayName: groupList.getItemName(editPin.groupID)
             id : group
             textRole: "groupID"
             displayText: displayName
+            currentIndex: groupList.getItemIndex(editPin.groupID)
             width: parent.width
             model: GroupModel{
                 list: groupList
@@ -76,11 +77,12 @@ ScrollView{
             text: qsTr("Select Device :")
         }
         ComboBox{
-            property string displayName : "Select Device (MUST)"
+            property string displayName : deviceList.getItemName(editPin.deviceID)
             id : device
             textRole: "deviceID"
             displayText: displayName
             width: parent.width
+            currentIndex : deviceList.getItemIndex(editPin.deviceID)
             model: DeviceModel{
                 list: deviceList
             }
@@ -94,10 +96,11 @@ ScrollView{
             text: qsTr("Select Icon :")
         }
         ComboBox{
-            property string displayName : "Select Icon (MUST)"
+            property string displayName : editPin.iconName
             id : editIcon
             textRole: "iconID"
             displayText: displayName
+            currentIndex: editPin.iconID
             width: parent.width
             model: IconModel{
                 list: iconList
@@ -113,10 +116,11 @@ ScrollView{
             text: qsTr("Select Pin Type :")
         }
         ComboBox{
-            property string displayName : "Select Pin Type (MUST)"
+            property string displayName : editPin.pinTypeName
             id : pinType
             textRole: "pinTypeID"
             displayText: displayName
+            currentIndex: editPin.pinTypeID
             width: parent.width
             model: PinTypeModel{
                 list: pinTypeList

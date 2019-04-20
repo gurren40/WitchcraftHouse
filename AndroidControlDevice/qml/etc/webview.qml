@@ -21,6 +21,7 @@ ScrollView{
             width: parent.width
             text: webViewPage.url
             onEditingFinished: webView.url = text
+            enabled: true
         }
         ItemDelegate{
             width: parent.width

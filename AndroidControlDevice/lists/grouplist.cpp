@@ -8,16 +8,29 @@ GroupList::GroupList(QObject *parent) : QObject(parent)
     item.groupID = 1;
     item.userID = 2;
     item.userName ="userName";
-    item.groupName = "groupName";
+    item.groupName = "Group 1";
     item.iconID = 3;
     item.iconName = "house";
     item.description = "description";
     GroupItem item2;
     item2 = item;
+    item2.groupID = 2;
+    item2.groupName = "Group 2";
+    item2.iconName = "fire";
+    GroupItem item3;
+    item3 = item;
+    item3.groupID = 3;
+    item3.groupName = "Group 3";
+    item3.iconName = "cctv";
+    GroupItem item4;
+    item4 = item;
+    item4.groupID = 4;
+    item4.groupName = "Group 4";
+    item4.iconName = "door";
     mItems.append(item);
     mItems.append(item2);
-    mItems.append(item);
-    mItems.append(item2);
+    mItems.append(item3);
+    mItems.append(item4);
 }
 
 QVector<GroupItem> GroupList::items() const
@@ -145,4 +158,37 @@ QJsonObject GroupList::variantToJson(QVariant jvar)
     QJsonDocument jdoc = QJsonDocument::fromJson(jvar.toByteArray());
     QJsonObject json = jdoc.object();
     return json;
+}
+
+int GroupList::getItemIndex(int id)
+{
+    int j = 0;
+    for (int i = 0;i<mItems.size();i++) {
+        if(mItems.at(i).groupID == id){
+            j = i;
+        }
+    }
+    return j;
+}
+
+QString GroupList::getItemName(int id)
+{
+    QString j = "none";
+    for (int i = 0;i<mItems.size();i++) {
+        if(mItems.at(i).groupID == id){
+            j = mItems.at(i).groupName;
+        }
+    }
+    return j;
+}
+
+QString GroupList::getIconName(QString groupName)
+{
+    QString j = "none";
+    for (int i = 0;i<mItems.size();i++) {
+        if(mItems.at(i).groupName == groupName){
+            j = mItems.at(i).iconName;
+        }
+    }
+    return j;
 }
