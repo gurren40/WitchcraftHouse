@@ -8,6 +8,7 @@
 #include <QWebSocket>
 #include <QWebSocketServer>
 #include <QUrl>
+#include <QUrlQuery>
 #include <QNetworkRequest>
 
 //library

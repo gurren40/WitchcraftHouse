@@ -67,11 +67,23 @@ void WebsocketServer::onNewConnection()
     }
     else if(url.path() == "/device"){
         QString header = "jwt";
-        if(!request.hasRawHeader(header.toUtf8())){
+        QUrlQuery qurl(url);
+        QTextStream(stdout) << qurl.hasQueryItem("id") << "\n";
+        if((!request.hasRawHeader(header.toUtf8())) && (!qurl.hasQueryItem("id"))){
             forceDisconnect(pSocket);
         }
         else {
-            QString token = QString::fromUtf8(request.rawHeader(header.toUtf8()));
+            QString token;
+            if(request.hasRawHeader(header.toUtf8())){
+                token = QString::fromUtf8(request.rawHeader(header.toUtf8()));
+            }
+            else if (qurl.hasQueryItem("id")) {
+                token = qurl.queryItemValue("id");
+                //jwt = QJsonWebToken::fromTokenAndSecret(token,secret).getPayloadJDoc().object();
+            }
+            else {
+                forceDisconnect(pSocket);
+            }
             if(!m_DC->isJwtValid(jwt,url.path())){
                 QJsonObject response;
                 QJsonArray errorArray;
@@ -151,6 +163,8 @@ void WebsocketServer::authSocketDisconnected()
 void WebsocketServer::broadcastToAllUserControlDevice(int userID, QJsonObject json)
 {
     //inisialisasi list control device
+    QTextStream(stdout) <<"\nbroadcast to all user control device\n";
+
     QJsonObject cdList = m_UC->selectAllControlDevice(userID);
     QJsonArray array = cdList["controlDevice"].toArray();
     QJsonDocument doc(json);
@@ -395,6 +409,12 @@ void WebsocketServer::controlSocketDisconnected()
 void WebsocketServer::broadcastToDevice(QUuid deviceUUID, QJsonObject json)
 {
     QJsonDocument jsonDoc(json);
+    QTextStream(stdout) << "broadcast to device \n" <<jsonDoc.toJson() << "\n" << deviceUUID.toString(QUuid::WithoutBraces) << "\n";
+    QTextStream(stdout) << m_device.size() << "\n";
+    QList<QString> stringList = m_device.keys();
+    for (int i = 0;i<stringList.size();i++) {
+        QTextStream(stdout) << "\nKeys : \n" << stringList.at(i) << "\n";
+    }
     m_device.value(deviceUUID.toString(QUuid::WithoutBraces))->sendTextMessage(jsonDoc.toJson());
 }
 
@@ -442,7 +462,16 @@ void WebsocketServer::setPinValueFromCron(QJsonObject json, int userID)
 QJsonObject WebsocketServer::getJwtPayload(QNetworkRequest request)
 {
     QString header = "jwt";
-    QString token = QString::fromUtf8(request.rawHeader(header.toUtf8()));
+    QString token;
+    QUrlQuery qurl(request.url());
+    if(request.hasRawHeader(header.toUtf8())){
+        token = QString::fromUtf8(request.rawHeader(header.toUtf8()));
+    }
+    else if (qurl.hasQueryItem("id")) {
+        token = qurl.queryItemValue("id");
+        //jwt = QJsonWebToken::fromTokenAndSecret(token,secret).getPayloadJDoc().object();
+    }
+    //QString token = QString::fromUtf8(request.rawHeader(header.toUtf8()));
     QJsonWebToken jwt = QJsonWebToken::fromTokenAndSecret(token,secret);
     QJsonObject jsonObj = jwt.getPayloadJDoc().object();
     return  jsonObj;

@@ -102,19 +102,19 @@ void Server::onMessageReceived(QJsonObject json)
             QJsonObject jsonObj = jsonArray.at(i).toObject();
             QString title = "Pin State Changed";
             QString body;
-            if(!setting.contains("notificationID")){
-                setting.setValue("notificationID",1);
-                notificationID = 0;
-            }
-            else {
-                notificationID = setting.value("notificationID").toInt();
-                setting.setValue("notificationID",notificationID + 1);
-            }
+//            if(!setting.contains("notificationID")){
+//                setting.setValue("notificationID",1);
+//                notificationID = 0;
+//            }
+//            else {
+//                notificationID = setting.value("notificationID").toInt();
+//                setting.setValue("notificationID",notificationID + 1);
+//            }
             for (int j=0;j<m_pinList.size();j++) {
                 QJsonObject jsonPinList = m_pinList.at(j).toObject();
                 if(jsonPinList.value("UUID").toString() == jsonObj.value("UUID").toString()){
                     body = "Pin "+jsonPinList.value("pinName").toString()+" is set to "+jsonObj["value"].toString();
-                    m_notification->sendNotification(notificationID,title,body);
+                    m_notification->sendNotification(jsonPinList.value("pinID").toInt(),title,body);
                 }
             }
         }

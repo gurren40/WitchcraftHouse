@@ -1,0 +1,81 @@
+<html>
+  <head>
+    <title>Device 01</title>
+    <meta content="">
+    <style></style>
+  </head>
+  <body>
+    <script>
+        var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhZGl0aXlhc2lkYWJ1dGFyQHlhbmRleC5jb20iLCJpc3MiOiJXaXRjaGNyYWZ0SG91c2UiLCJqdGkiOiJkNjM3M2NmZi01NWI2LTRmOTAtYTA2YS00Yzk4MzJiMGE1N2UifQ==.lbInE9obA3GB4HPErdkIEv9pSzX7mLcwRAXeo20GSeM=";
+        var theUUID = "25179bea-bac5-4ce1-af5e-1ff84cc0e0bc";
+        var theSocket = new WebSocket("ws://localhost:9000/device?id="+token);
+        theSocket.onopen = function(event){
+            theSocket.send("device  is connected\n");
+        };
+        
+        theSocket.onmessage = function(event){
+            var msg = JSON.parse(event.data);
+            document.getElementById("jsonValue").innerHTML = JSON.stringify(msg.setPinValue[0]);
+            var replymsg1 = {
+                settedPinValue: [
+                    {
+                        UUID: theUUID,
+                        value: "1"
+                    }
+                ]
+            }
+            var replymsg0 = {
+                settedPinValue: [
+                    {
+                        UUID: theUUID,
+                        value: "0"
+                    }
+                ]
+            }
+
+            //theSocket.send(JSON.stringify(replymsg));
+            var msgArray = msg.setPinValue[0];
+            if(msgArray["UUID"] == theUUID){
+                if(msgArray["value"] == "1"){
+                    document.getElementById("value").innerHTML = "Pintu Terkunci";
+                    theSocket.send(JSON.stringify(replymsg1));
+                } else if(msgArray["value"] == "0"){
+                    document.getElementById("value").innerHTML = "Pintu Terbuka";
+                    theSocket.send(JSON.stringify(replymsg0));
+                }
+            }
+        }
+        function kunci(){
+            var replymsg11 = {
+                settedPinValue: [
+                    {
+                        UUID: theUUID,
+                        value: "1"
+                    }
+                ]
+            }
+            theSocket.send(JSON.stringify(replymsg11));
+            document.getElementById("value").innerHTML = "Pintu Terkunci";
+        };
+        
+        function buka(){
+            var replymsg01 = {
+                settedPinValue: [
+                    {
+                        UUID: theUUID,
+                        value: "0"
+                    }
+                ]
+            }
+            theSocket.send(JSON.stringify(replymsg01));
+            document.getElementById("value").innerHTML = "Pintu Terbuka";
+        };
+    </script>
+    <h1 id="value">Status Pintu</h1>
+    <br>
+    <input type="button" onclick="kunci()" value="kunci">
+    <input type="button" onclick="buka()" value="buka">
+    <br>
+    <p id="jsonValue">JSON HERE</p>
+  </body>
+</html>

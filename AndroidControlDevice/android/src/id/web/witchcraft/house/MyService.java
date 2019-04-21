@@ -63,7 +63,7 @@ public class MyService extends QtService{
         m_builder.setContentIntent(pendingIntent);
         //m_builder.flags |= Notification.FLAG_AUTO_CANCEL;
         //m_notificationManager.notify(1, m_builder.build());
-        startForeground(1,m_builder.build());
+        startForeground(92861,m_builder.build());
         //[the notification]
 
         return START_STICKY;

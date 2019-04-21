@@ -73,7 +73,7 @@ QJsonObject UserController::selectAllControlDevice(int userID)
     QJsonObject response;
     QJsonArray responseArray;
     ControllDevice cdv(&db);
-    cdv.read("userID='"+QString::number(userID)+"'");
+    cdv.read("ControlDevice.userID='"+QString::number(userID)+"'");
 
     //kalau ga ada device dengan userID yang sesuai
     if(cdv.mControlDevices.size()<1){

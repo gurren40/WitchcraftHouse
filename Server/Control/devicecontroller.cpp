@@ -13,7 +13,7 @@ DeviceController::DeviceController(QSqlDatabase *database, QObject *parent) : QO
 int DeviceController::getUserIDByDeviceID(QUuid deviceUUID)
 {
     Device device(&db);
-    device.read("deviceUUID=UuidToBin('"+deviceUUID.toString(QUuid::WithoutBraces)+"')");
+    device.read("Device.deviceUUID=UuidToBin('"+deviceUUID.toString(QUuid::WithoutBraces)+"')");
     if(device.mDevices.size()!=1){
         return 0;
     }
@@ -35,17 +35,23 @@ void DeviceController::setSecret(QString secr)
 bool DeviceController::isJwtValid(QJsonObject jwt, QString path)
 {
     if(path == "/device"){
+        QTextStream(stdout) << "start" << "\n";
         if(jwt["iss"].toString() != "WitchcraftHouse") return false;
+        QTextStream(stdout) << "iss validation" << "\n";
         User user(&db);
         user.read("email='"+jwt["aud"].toString()+"'");
         if(user.mUsers.size() != 1) return false;
+        QTextStream(stdout) << "if user size != 1" << "\n";
         Device dd(&db);
-        dd.read("deviceUUID=UuidToBin('"+jwt["jti"].toString()+"')");
+        dd.read("Device.deviceUUID=UuidToBin('"+jwt["jti"].toString()+"')");
         if(dd.mDevices.size() != 1) return  false;
+        QTextStream(stdout) << "if device size != 1" << "\n";
         //QDateTime dt(dd.mDevices.at(0).expireDate);
         //if(dt.toSecsSinceEpoch() > jwt["exp"].toString().toInt()) return false;
         if(dd.mDevices.at(0).isDeviceOnline) return false;
+        QTextStream(stdout) << "is device online" << "\n";
         if(!toggleDeviceOnline(dd.mDevices.at(0).deviceUUID,true)) return false;
+        QTextStream(stdout) << "toogle device" << "\n";
     }
     else {
         return false;
@@ -56,7 +62,7 @@ bool DeviceController::isJwtValid(QJsonObject jwt, QString path)
 bool DeviceController::toggleDeviceOnline(QUuid deviceUUID, bool toggle)
 {
     Device devices(&db);
-    devices.read("deviceUUID=UuidToBin('"+deviceUUID.toString(QUuid::WithoutBraces)+"')");
+    devices.read("Device.deviceUUID=UuidToBin('"+deviceUUID.toString(QUuid::WithoutBraces)+"')");
     if(devices.mDevices.size() != 1){
         return false;
     }
@@ -553,25 +559,30 @@ QJsonObject DeviceController::setPinValue(QJsonObject json, int userID)
             QJsonObject pinObject = jsonArray.at(i).toObject();
             QUuid UUID = QUuid::fromString(pinObject["UUID"].toString());
             QJsonObject error2;
-            QJsonObject error1 = pin.read("UUID=UuidToBin('"+UUID.toString(QUuid::WithoutBraces)+"'");
+            QJsonObject error1 = pin.read("Pin.UUID=UuidToBin('"+UUID.toString(QUuid::WithoutBraces)+"')");
 
             //check kalau pin ada, lalu dapatkan device id
             if(pin.mPins.size()==1){
-                error2 = device.read("deviceID='"+QString::number(pin.mPins.at(0).deviceID)+"'");
+                error2 = device.read("Device.deviceID='"+QString::number(pin.mPins.at(0).deviceID)+"'");
                 //check kalau device ada, lalu dapatkan UUIDnya
-                if((device.mDevices.size()==1) && (device.mDevices.at(0).userID == userID)){
-                    //kalau sudah di hash
-                    if (sortedPinToDevice.contains(device.mDevices.at(0).deviceUUID)){
+                if(device.mDevices.size()==1){
+                    if (sortedPinToDevice.isEmpty()){
+                        //kalau belum di hash
+                        QJsonArray toHashArray;
+                        toHashArray.append(pinObject);
+                        sortedPinToDevice.insert(device.mDevices.at(0).deviceUUID,toHashArray);
+                    }
+                    else if (sortedPinToDevice.contains(device.mDevices.at(0).deviceUUID)){
+                        //kalau sudah di hash
                         QJsonArray toHashArray = sortedPinToDevice.value(device.mDevices.at(0).deviceUUID);
                         toHashArray.append(pinObject);
                         sortedPinToDevice.remove(device.mDevices.at(0).deviceUUID);
                         sortedPinToDevice.insert(device.mDevices.at(0).deviceUUID,toHashArray);
                     }
-                    //kalau belum di hash
                     else {
-                        QJsonArray toHashArray;// = sortedPinToDevice.value(device.mDevices.at(0).deviceUUID);
+                        //kalau belum di hash
+                        QJsonArray toHashArray;
                         toHashArray.append(pinObject);
-                        //sortedPinToDevice.remove(device.mDevices.at(0).deviceUUID);
                         sortedPinToDevice.insert(device.mDevices.at(0).deviceUUID,toHashArray);
                     }
                 }
@@ -579,11 +590,22 @@ QJsonObject DeviceController::setPinValue(QJsonObject json, int userID)
             errorArray.append(error1);
             errorArray.append(error2);
         }
-        QHash<QUuid,QJsonArray>::iterator j;
-        for (j = sortedPinToDevice.begin(); j != sortedPinToDevice.end(); ++j){
+//        QHash<QUuid,QJsonArray>::iterator j;
+//        for (j = sortedPinToDevice.begin(); j != sortedPinToDevice.end(); ++j){
+//            QJsonObject toSend;
+//            toSend["setPinValue"] = j.value();
+//            emit broadcastToDevice(j.key(),toSend);
+//        }
+        QList<QUuid> theKeys;
+        theKeys = sortedPinToDevice.keys();
+        for (int j = 0; j < theKeys.size();j++) {
+            QTextStream(stdout) << theKeys.at(j).toString() << "\n";
+            QJsonArray theArray;
+            QUuid theKey =theKeys.value(j);
+            theArray = sortedPinToDevice.value(theKey);
             QJsonObject toSend;
-            toSend["setPinValue"] = j.value();
-            emit broadcastToDevice(j.key(),toSend);
+            toSend["setPinValue"] = theArray;
+            emit broadcastToDevice(theKey,toSend);
         }
     }
     response["error"] = errorArray;
@@ -612,10 +634,16 @@ QJsonObject DeviceController::settedPinValue(QJsonObject json, int userID)
         for (int i = 0;i<jsonArray.size();i++) {
             QJsonObject pinObject = jsonArray.at(i).toObject();
             QUuid UUID = QUuid::fromString(pinObject["UUID"].toString());
-            QJsonObject error1 = pin.read("UUID=UuidToBin('"+UUID.toString(QUuid::WithoutBraces)+"'");
+            QJsonObject error1 = pin.read("Pin.UUID=UuidToBin('"+UUID.toString(QUuid::WithoutBraces)+"')");
             //check kalau pin ada, lalu dapatkan device id
-            if((pin.mPins.size()==1) && (pin.mPins.at(0).userID == userID)){
-                if (sortedPinByUser.contains(pin.mPins.at(0).userID)){
+            if(pin.mPins.size()==1){
+                if(sortedPinByUser.isEmpty()){
+                    QJsonArray toHashArray;// = sortedPinToDevice.value(device.mDevices.at(0).deviceUUID);
+                    toHashArray.append(pinObject);
+                    //sortedPinToDevice.remove(device.mDevices.at(0).deviceUUID);
+                    sortedPinByUser.insert(pin.mPins.at(0).userID,toHashArray);
+                }
+                else if (sortedPinByUser.contains(pin.mPins.at(0).userID)){
                     QJsonArray toHashArray = sortedPinByUser.value(pin.mPins.at(0).userID);
                     toHashArray.append(pinObject);
                     sortedPinByUser.remove(pin.mPins.at(0).userID);
@@ -628,17 +656,27 @@ QJsonObject DeviceController::settedPinValue(QJsonObject json, int userID)
                     //sortedPinToDevice.remove(device.mDevices.at(0).deviceUUID);
                     sortedPinByUser.insert(pin.mPins.at(0).userID,toHashArray);
                 }
+                QJsonObject error2 = pin.update(pin.mPins.at(0).pinID,pin.mPins.at(0).UUID,pin.mPins.at(0).userID,pin.mPins.at(0).groupID,pin.mPins.at(0).deviceID,pin.mPins.at(0).iconID,pin.mPins.at(0).pinTypeID,pin.mPins.at(0).pinName,pinObject["value"].toString(),pin.mPins.at(0).option,pin.mPins.at(0).description);
+                emit broadcastToShared(UUID,userID);
+                errorArray.append(error1);
+                errorArray.append(error2);
             }
-            QJsonObject error2 = pin.update(pin.mPins.at(0).pinID,pin.mPins.at(0).UUID,pin.mPins.at(0).userID,pin.mPins.at(0).groupID,pin.mPins.at(0).deviceID,pin.mPins.at(0).iconID,pin.mPins.at(0).pinTypeID,pin.mPins.at(0).pinName,pinObject["value"].toString(),pin.mPins.at(0).option,pin.mPins.at(0).description);
-            emit broadcastToShared(UUID,userID);
-            errorArray.append(error1);
-            errorArray.append(error2);
         }
-        QHash<int,QJsonArray>::iterator j;
-        for (j = sortedPinByUser.begin(); j != sortedPinByUser.end(); ++j){
+//        QHash<int,QJsonArray>::iterator j;
+//        for (j = sortedPinByUser.begin(); j != sortedPinByUser.end(); ++j){
+//            QJsonObject toSend;
+//            toSend["settedPinValue"] = j.value();
+//            emit broadcastToAllUserControlDevice(j.key(),toSend);
+//        }
+        QList<int> theKeys;
+        theKeys = sortedPinByUser.keys();
+        for (int j = 0; j < theKeys.size();j++) {
+            QJsonArray theArray;
+            int theKey =theKeys.value(j);
+            theArray = sortedPinByUser.value(theKey);
             QJsonObject toSend;
-            toSend["settedPinValue"] = j.value();
-            emit broadcastToAllUserControlDevice(j.key(),toSend);
+            toSend["settedPinValue"] = theArray;
+            emit broadcastToAllUserControlDevice(theKey,toSend);
         }
     }
     response["error"] = errorArray;

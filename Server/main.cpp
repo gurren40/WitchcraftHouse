@@ -32,6 +32,112 @@
 #include "Control/schedulecontroller.h"
 #include "Control/sharedcontroller.h"
 
+bool insertIconData(QSqlDatabase *db){
+    /*mItems.append({ 0, QStringLiteral("default") });
+    mItems.append({ 1, QStringLiteral("house") });
+    mItems.append({ 2, QStringLiteral("lamp") });
+    mItems.append({ 3, QStringLiteral("switch") });
+    mItems.append({ 4, QStringLiteral("outlet") });
+    mItems.append({ 5, QStringLiteral("fan") });
+    mItems.append({ 6, QStringLiteral("thermometer") });
+    mItems.append({ 7, QStringLiteral("lock") });
+    mItems.append({ 8, QStringLiteral("key") });
+    mItems.append({ 9, QStringLiteral("fire") });
+    mItems.append({ 10, QStringLiteral("AC") });
+    mItems.append({ 11, QStringLiteral("cctv") });
+    mItems.append({ 12, QStringLiteral("bell") });
+    mItems.append({ 13, QStringLiteral("sun") });
+    mItems.append({ 14, QStringLiteral("moon") });
+    mItems.append({ 15, QStringLiteral("thermostat") });
+    mItems.append({ 16, QStringLiteral("power") });
+    mItems.append({ 17, QStringLiteral("door") });
+    mItems.append({ 18, QStringLiteral("water") });
+    mItems.append({ 19, QStringLiteral("leaf") });*/
+
+    QString textQuery = "INSERT INTO `Icon`(`iconID`, `iconName`) VALUES \
+                        ('0','default'),\
+                        ('1','house'),\
+                        ('2','lamp'),\
+                        ('3','switch'),\
+                        ('4','outlet'),\
+                        ('5','fan'),\
+                        ('6','thermometer'),\
+                        ('7','lock'),\
+                        ('8','key'),\
+                        ('9','fire'),\
+                        ('10','AC'),\
+                        ('11','cctv'),\
+                        ('12','bell'),\
+                        ('13','sun'),\
+                        ('14','moon'),\
+                        ('15','thermostat'),\
+                        ('16','power'),\
+                        ('17','door'),\
+                        ('18','water'),\
+                        ('19','leaf')\
+                        ;";
+    QSqlQuery query;
+    bool ok = false;
+
+    if(db->open()){
+        QTextStream(stdout) << textQuery << "\n\n";
+        ok = query.exec(textQuery);
+        if(ok){
+            QTextStream(stdout) << "no error when creating icon\n";
+        }
+        else {
+            QTextStream(stdout) << "Error Query Icon : " << query.lastError().text() << "\n";
+        }
+    }
+    return ok;
+}
+
+bool insertPinTypeData(QSqlDatabase *db){
+    /*mItems.append({ 0, QStringLiteral("default") });
+    mItems.append({ 1, QStringLiteral("switch") });
+    mItems.append({ 2, QStringLiteral("textout") });
+    mItems.append({ 3, QStringLiteral("tempc") });
+    mItems.append({ 4, QStringLiteral("textfield") });
+    mItems.append({ 5, QStringLiteral("textarea") });
+    mItems.append({ 6, QStringLiteral("tumbler") });
+    mItems.append({ 7, QStringLiteral("spinbox") });
+    mItems.append({ 8, QStringLiteral("combobox") });
+    mItems.append({ 9, QStringLiteral("webview") });
+    mItems.append({ 10,QStringLiteral("rangeslider")});
+    mItems.append({ 11,QStringLiteral("colordialog")});
+    mItems.append({ 12,QStringLiteral("slider")});*/
+
+    QString textQuery = "INSERT INTO `PinType`(`pinTypeID`, `pinTypeName`) VALUES \
+                        ('0','default'),\
+                        ('1','switch'),\
+                        ('2','textout'),\
+                        ('3','tempc'),\
+                        ('4','textfield'),\
+                        ('5','textarea'),\
+                        ('6','tumbler'),\
+                        ('7','spinbox'),\
+                        ('8','combobox'),\
+                        ('9','webview'),\
+                        ('10','rangeslider'),\
+                        ('11','colordialog'),\
+                        ('12','slider')\
+                        ;";
+    QSqlQuery query;
+    bool ok = false;
+
+    if(db->open()){
+        QTextStream(stdout) << textQuery << "\n\n";
+        ok = query.exec(textQuery);
+        if(ok){
+            QTextStream(stdout) << "no error when creating pinType\n";
+        }
+        else {
+            QTextStream(stdout) << "Error Query pinType : " << query.lastError().text() << "\n";
+        }
+    }
+    return ok;
+}
+
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
@@ -67,8 +173,8 @@ int main(int argc, char *argv[])
         db.setDatabaseName(settings.value("database/databasename").toString());
     }
     else{
-        settings.setValue("database/databasename","witchcraft");
-        db.setDatabaseName("witchcraft");
+        settings.setValue("database/databasename","witchcrafthouse");
+        db.setDatabaseName("witchcrafthouse");
     }
     //username
     if (settings.contains("database/username")) {
@@ -99,6 +205,21 @@ int main(int argc, char *argv[])
         QTextStream(stdout) << "ERROR: "+ db.lastError().text() + "\n";
     }
     //[INIT DATABASE]
+
+    //[INIT ICON AND PIN TYPE IF NEEDED]
+    if (settings.contains("init")) {
+        if(settings.value("init").toBool()){
+            insertIconData(&db);
+            insertPinTypeData(&db);
+            settings.setValue("init",false);
+        }
+    }
+    else{
+        insertIconData(&db);
+        insertPinTypeData(&db);
+        settings.setValue("init",false);
+    }
+    //[INIT ICON AND PIN TYPE IF NEEDED]
 
     //[WEBSOCKET SERVER AND SCHEDULER]
     quint16 serverport;
@@ -167,7 +288,7 @@ int main(int argc, char *argv[])
     //QObject::connect(DC,SIGNAL(deletedPin(QUuid,int)),ShC,SLOT(deletedPin(QUuid,int)));
     QObject::connect(DC,SIGNAL(deletedGroup(int,int)),ShC,SLOT(deletedGroup(int,int)));
     QObject::connect(DC,SIGNAL(broadcastToAllUserControlDevice(int,QJsonObject)),server,SLOT(broadcastToAllUserControlDevice(int,QJsonObject)));
-    QObject::connect(DC,SIGNAL(broadcastToDevice(QUuid,QJsonObject)),server,SLOT(broadcastToDevice(QUuid,QJsonObject)));
+    //QObject::connect(DC,SIGNAL(broadcastToDevice(QUuid,QJsonObject)),server,SLOT(broadcastToDevice(QUuid,QJsonObject)));
     //[QOBJECT CONNECTION]
 
     return a.exec();
