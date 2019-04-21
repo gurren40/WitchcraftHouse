@@ -1,5 +1,5 @@
 import QtQuick 2.9
-import QtQuick.Dialogs 1.2
+import Qt.labs.platform 1.1
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import QtWebView 1.1
@@ -94,6 +94,7 @@ Page {
                 }
                 Switch{
                     id:actualSwitch
+                    rightPadding: 0
                     anchors.right: parent.right
                     anchors.verticalCenter : parent.verticalCenter
                     function thefunc(){
@@ -622,10 +623,13 @@ Page {
                     topPadding: 0
                     leftPadding: 0
                     bottomPadding: 0
+                    rightPadding: chooseButton.visible ? 15 : 0
                     anchors.verticalCenter : parent.verticalCenter
-                    anchors.right: chooseButton.left
+                    anchors.right: chooseButton.visible ? chooseButton.left : parent.right
                     icon.name: "default"
                     icon.color: value
+                    icon.height: 30
+                    icon.width: 30
                 }
 
                 Button{
@@ -636,11 +640,21 @@ Page {
                     onClicked: {
                         colorDialog.open()
                     }
+                    visible: isVisible()
+                    function isVisible(){
+                        if(option == "0"){
+                            return false;
+                        }
+                        else{
+                            return true;
+                        }
+                    }
                 }
                 ColorDialog {
                     id: colorDialog
                     title: "Please choose a color"
                     visible: false
+                    color: value
                     onAccepted: {
                         console.log("You chose: " + colorDialog.color)
                         colorIndicator.icon.color = colorDialog.color
@@ -859,6 +873,7 @@ Page {
                 property string option : model.option
                 property string description : model.description
             }
+            //ScrollBar.vertical: ScrollBar { }
         }
     }
 

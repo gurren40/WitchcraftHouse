@@ -5,6 +5,7 @@ QT += androidextras
 QT += remoteobjects
 QT += websockets
 QT += svg
+QT += widgets
 
 CONFIG += c++11
 

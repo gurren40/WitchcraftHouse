@@ -47,7 +47,7 @@ PinList::PinList(QObject *parent) : QObject(parent)
     mItems.append(item9);
     PinItem item10 = setPin("rangeslider Example","User","Group 4","leaf","rangeslider","2,5","0,10");
     mItems.append(item10);
-    PinItem item11 = setPin("colordialog Example","User","Group 4","moon","colordialog","#000000","#000000");
+    PinItem item11 = setPin("colordialog Example","User","Group 4","moon","colordialog","#f0f0f0","1");
     mItems.append(item11);
     PinItem item12 = setPin("slider Example","User","Group 4","lamp","slider","100","0,255");
     mItems.append(item12);

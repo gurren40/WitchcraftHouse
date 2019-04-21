@@ -224,7 +224,6 @@ ApplicationWindow {
                     icon.color: "red"
                     onClicked: Qt.quit()
                 }
-                ScrollBar.vertical: ScrollBar { }
             }
         }
 

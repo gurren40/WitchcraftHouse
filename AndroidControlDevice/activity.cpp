@@ -37,11 +37,11 @@
 int main(int argc, char *argv[])
 {
     //inisialisasi GUI & Environment
-    QGuiApplication::setApplicationName("Witchcraft House");
+    QApplication::setApplicationName("Witchcraft House");
     QAndroidService::setOrganizationDomain("house.witchcraft.web.id");
-    QGuiApplication::setOrganizationName("Witchcraft");
-    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QGuiApplication app(argc, argv);
+    QApplication::setOrganizationName("Witchcraft");
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QApplication app(argc, argv);
 
     QIcon::setThemeName("witchcraft");
 
