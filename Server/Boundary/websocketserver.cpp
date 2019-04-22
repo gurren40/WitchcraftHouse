@@ -174,7 +174,9 @@ void WebsocketServer::broadcastToAllUserControlDevice(int userID, QJsonObject js
     for (int i = 0;i<cdList.size();i++) {
         QJsonObject cDevice = array[i].toObject();
         if(cDevice["isControlDeviceOnline"].toBool()){
-            m_controlDevice.value(cDevice["controlDeviceID"].toString())->sendTextMessage(doc.toJson());
+            if(m_controlDevice.contains(cDevice["controlDeviceID"].toString())){
+                m_controlDevice.value(cDevice["controlDeviceID"].toString())->sendTextMessage(doc.toJson());
+            }
         }
     }
 }
@@ -420,7 +422,9 @@ void WebsocketServer::broadcastToDevice(QUuid deviceUUID, QJsonObject json)
     for (int i = 0;i<stringList.size();i++) {
         QTextStream(stdout) << "\nKeys : \n" << stringList.at(i) << "\n";
     }
-    m_device.value(deviceUUID.toString(QUuid::WithoutBraces))->sendTextMessage(jsonDoc.toJson());
+    if(m_device.contains(deviceUUID.toString(QUuid::WithoutBraces))){
+        m_device.value(deviceUUID.toString(QUuid::WithoutBraces))->sendTextMessage(jsonDoc.toJson());
+    }
 }
 
 void WebsocketServer::deviceProcessTextMessage(QString message)
