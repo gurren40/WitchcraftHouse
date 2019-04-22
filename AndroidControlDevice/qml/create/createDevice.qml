@@ -9,46 +9,55 @@ import PinType 1.0
 import Device 1.0
 import QtQuick.Controls.Material 2.12
 
-ScrollView{
-    property string title: "Create New Device"
+Page{
+    title: "Create New Device"
     property bool canCreate : false
     id : createNewDevice
-    padding: 15
-    Column{
-        spacing: 10
-        width: parent.width
-        Label {
-            text: qsTr("Device Name :")
-        }
-        TextField{
-            id : newName
-            width: parent.width
-        }
-        Label {
-            text: qsTr("Device Description :")
-        }
-        TextField{
-            id : newDescription
-            width: parent.width
-        }
-        Row{
-            anchors.horizontalCenter: parent.horizontalCenter
-            spacing: 20
-            Button{
-                id : createButton
-                text: "Create"
-                onClicked: {
-                    //deviceList.createNewDevice(QVariant deviceName, QVariant description);
-                    deviceList.createNewDevice(newName.text,newDescription.text);
-                    deviceList.getDeviceList()
-                    stackView.pop()
+    padding: 20
+    ColumnLayout{
+        anchors.fill: parent
+        spacing: 40
+        ScrollView{
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            contentWidth: width
+            Column{
+                spacing: 10
+                width: parent.width
+                Label {
+                    text: qsTr("Device Name :")
                 }
-                enabled: user.isOnline
-            }
-            Button{
-                id : cancelButton
-                text: "Cancel"
-                onClicked: stackView.pop()
+                TextField{
+                    id : newName
+                    width: parent.width
+                }
+                Label {
+                    text: qsTr("Device Description :")
+                }
+                TextField{
+                    id : newDescription
+                    width: parent.width
+                }
+                Row{
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 20
+                    Button{
+                        id : createButton
+                        text: "Create"
+                        onClicked: {
+                            //deviceList.createNewDevice(QVariant deviceName, QVariant description);
+                            deviceList.createNewDevice(newName.text,newDescription.text);
+                            deviceList.getDeviceList()
+                            stackView.pop()
+                        }
+                        enabled: user.isOnline
+                    }
+                    Button{
+                        id : cancelButton
+                        text: "Cancel"
+                        onClicked: stackView.pop()
+                    }
+                }
             }
         }
     }

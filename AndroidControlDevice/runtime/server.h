@@ -18,6 +18,8 @@ public:
     RemoteReplica *remote() const;
     void setRemote(RemoteReplica *remote);
 
+    void setNotification(Notification *notification);
+
 signals:
     //void tokenExpired();
     //void setIsOnline(); directly connected from m_connection

@@ -1,6 +1,3 @@
-#include <QGuiApplication>
-//#include <QtAndroidExtras>
-//#include <QAndroidJniObject>
 #include <QQuickStyle>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
@@ -36,7 +33,7 @@
 #include "lists/pintypelist.h"
 
 //platform specificfunctions
-#include "androidFunctions/externalfunctions.h"
+#include "linuxFunctions/externalfunctions.h"
 
 int main(int argc, char *argv[])
 {
@@ -54,10 +51,6 @@ int main(int argc, char *argv[])
     //panggil service
     ExternalFunctions *externalFunction = new ExternalFunctions;
     externalFunction->callAndroidService();
-//    QAndroidJniObject::callStaticMethod<void>("id/web/witchcraft/house/MyService",
-//                                                  "startMyService",
-//                                                  "(Landroid/content/Context;)V",
-//                                                  QtAndroid::androidActivity().object());
 
     //Register model & list
     qmlRegisterType<PinModel>("Pin", 1, 0, "PinModel");
@@ -150,14 +143,6 @@ int main(int argc, char *argv[])
     //set device model
     user.setThisDeviceModel(externalFunction->getDeviceModel());
 
-//    QTimer *timer = new QTimer;
-//    timer->setInterval(5000);
-//    timer->setSingleShot(false);
-//    QSignalMapper *signalMapper = new QSignalMapper;
-//    QObject::connect(timer,SIGNAL(timeout()),signalMapper,SLOT(map()));
-//    signalMapper->setMapping(timer,"Azerbajian");
-//    QObject::connect(signalMapper,SIGNAL(mapped(QString)),rep.data(),SLOT(ping(QString)));
-//    timer->start();
     return app.exec();
 }
 

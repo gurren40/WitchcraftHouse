@@ -9,12 +9,11 @@ import PinType 1.0
 import Device 1.0
 import QtQuick.Controls.Material 2.12
 
-ScrollView{
-    property string title: "Edit Device"
+Page{
+    title: "Edit Device"
     property bool canCreate : false
     id : editDevice
-    padding: 15
-    contentWidth: -1
+    padding: 20
 
     //[Item properties]
     property string deviceName: "model.deviceName"
@@ -25,49 +24,59 @@ ScrollView{
     property bool isDeviceOnline : false//model.isDeviceOnline
     property string description : "model.description"
     //[Item properties]
-    Column{
-        spacing: 10
-        width: parent.width
-        Label {
-            text: "Device ID : " + editDevice.deviceID
-        }
-        Label {
-            text: "Device UUID : " + editDevice.deviceUUID
-        }
-        Label {
-            text: qsTr("Device Name :")
-        }
-        TextField{
-            id : deviceName
-            width: parent.width
-            text: editDevice.deviceName
-        }
-        Label {
-            text: qsTr("Device Description :")
-        }
-        TextField{
-            id : deviceDescription
-            width: parent.width
-            text: editDevice.description
-        }
-        Row{
-            anchors.horizontalCenter: parent.horizontalCenter
-            spacing: 20
-            Button{
-                id : createButton
-                text: "Edit"
-                onClicked: {
-                    //void editDevice(QVariant deviceID, QVariant deviceUUID, QVariant deviceName, QVariant description);
-                    deviceList.editDevice(editDevice.deviceID,editDevice.deviceUUID,deviceName.text,deviceDescription.text);
-                    deviceList.getDeviceList()
-                    stackView.pop()
+
+    ColumnLayout{
+        anchors.fill: parent
+        spacing: 40
+        ScrollView{
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            contentWidth: width
+            Column{
+                spacing: 10
+                width: parent.width
+                Label {
+                    text: "Device ID : " + editDevice.deviceID
                 }
-                enabled: user.isOnline
-            }
-            Button{
-                id : cancelButton
-                text: "Cancel"
-                onClicked: stackView.pop()
+                Label {
+                    text: "Device UUID : " + editDevice.deviceUUID
+                }
+                Label {
+                    text: qsTr("Device Name :")
+                }
+                TextField{
+                    id : deviceName
+                    width: parent.width
+                    text: editDevice.deviceName
+                }
+                Label {
+                    text: qsTr("Device Description :")
+                }
+                TextField{
+                    id : deviceDescription
+                    width: parent.width
+                    text: editDevice.description
+                }
+                Row{
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 20
+                    Button{
+                        id : createButton
+                        text: "Edit"
+                        onClicked: {
+                            //void editDevice(QVariant deviceID, QVariant deviceUUID, QVariant deviceName, QVariant description);
+                            deviceList.editDevice(editDevice.deviceID,editDevice.deviceUUID,deviceName.text,deviceDescription.text);
+                            deviceList.getDeviceList()
+                            stackView.pop()
+                        }
+                        enabled: user.isOnline
+                    }
+                    Button{
+                        id : cancelButton
+                        text: "Cancel"
+                        onClicked: stackView.pop()
+                    }
+                }
             }
         }
     }

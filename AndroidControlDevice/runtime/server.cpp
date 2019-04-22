@@ -5,8 +5,8 @@ Server::Server(QObject *parent) : QObject(parent)
     //m_messageQueue = new QVector<QJsonObject>;
     m_isOnline = false;
     m_connection = new Connection(this);
-    m_notification = new Notification(this);
-    m_notification->setJavaClass("id/web/witchcraft/house/MyService");
+    //m_notification = new Notification(this);
+    //m_notification->setJavaClass("id/web/witchcraft/house/MyService");
     connect(m_connection,&Connection::messageReceived,this,&Server::onMessageReceived);
     connect(m_connection,&Connection::websocketConnected,this,&Server::isOnline);
     connect(m_connection,&Connection::websocketDisconnected,this,&Server::isOffline);
@@ -178,4 +178,9 @@ void Server::onPing(QByteArray payload)
 void Server::onReconnect()
 {
     m_connection->disconnectWebsocket();
+}
+
+void Server::setNotification(Notification *notification)
+{
+    m_notification = notification;
 }

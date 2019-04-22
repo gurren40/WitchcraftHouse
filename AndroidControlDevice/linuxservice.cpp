@@ -1,9 +1,8 @@
-#include <QtAndroid>
-#include <QtAndroidExtras>
+#include <QCoreApplication>
 #include <QRemoteObjectHost>
 #include <QSignalMapper>
 #include <QSettings>
-#include "androidFunctions/externalfunctions.h"
+#include "linuxFunctions/externalfunctions.h"
 #include "remote.h"
 #include "runtime/server.h"
 #include "rep_remote_replica.h"
@@ -20,10 +19,10 @@ void checkSettingsValue(QSettings *settings){
 
 int main(int argc, char *argv[])
 {
-    QAndroidService::setApplicationName("Witchcraft House");
-    QAndroidService::setOrganizationDomain("house.witchcraft.web.id");
-    QAndroidService::setOrganizationName("Witchcraft");
-    QAndroidService a(argc,argv);
+    QCoreApplication::setApplicationName("Witchcraft House");
+    QCoreApplication::setOrganizationDomain("house.witchcraft.web.id");
+    QCoreApplication::setOrganizationName("Witchcraft");
+    QCoreApplication a(argc,argv);
 
     QSettings settings;
     checkSettingsValue(&settings);

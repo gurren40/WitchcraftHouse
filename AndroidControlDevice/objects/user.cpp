@@ -2,7 +2,7 @@
 
 User::User(QObject *parent) : QObject(parent)
 {
-
+    m_deviceModel = "unknown";
 }
 
 bool User::isOnline() const
@@ -88,8 +88,9 @@ void User::setServerDomain(const QString &serverDomain)
 
 QString User::thisDeviceModel()
 {
-    QAndroidJniObject jstringValue = QAndroidJniObject::callStaticObjectMethod<jstring>("id/web/witchcraft/house/MyActivity","getDeviceModel");
-    return jstringValue.toString();
+//    QAndroidJniObject jstringValue = QAndroidJniObject::callStaticObjectMethod<jstring>("id/web/witchcraft/house/MyActivity","getDeviceModel");
+//    return jstringValue.toString();
+    return m_deviceModel;
 }
 
 QString User::getJwt()
@@ -163,6 +164,11 @@ void User::setUserInfo(QJsonObject json)
         m_name = jsonObj.value("name").toString();
         emit nameSig();
     }
+}
+
+void User::setThisDeviceModel(QString deviceModel)
+{
+    m_deviceModel = deviceModel;
 }
 
 QString User::getName() const
@@ -254,6 +260,27 @@ void User::reconnect()
     m_remote->reconnect();
 }
 
+bool User::getIsFullScreen()
+{
+    QSettings setting;
+    if(setting.contains("isFullScreen")){
+        m_isFullScreen = setting.value("isFullScreen").toBool();
+    }
+    else {
+        setting.setValue("isFullScreen",false);
+        m_isFullScreen = false;
+    }
+    return m_isFullScreen;
+}
+
+void User::setIsFullScreen(bool value)
+{
+    QSettings setting;
+    setting.setValue("isFullScreen",value);
+    m_isFullScreen = value;
+    emit setFullScreenSig();
+}
+
 QString User::getPongPayload() const
 {
     return m_pongPayload;
@@ -267,10 +294,11 @@ void User::setPongPayload(QString pongPayload)
 
 void User::restartService()
 {
-    QAndroidJniObject::callStaticMethod<void>("id/web/witchcraft/house/MyService",
-                                                  "startMyService",
-                                                  "(Landroid/content/Context;)V",
-                                                  QtAndroid::androidActivity().object());
+//    QAndroidJniObject::callStaticMethod<void>("id/web/witchcraft/house/MyService",
+//                                                  "startMyService",
+//                                                  "(Landroid/content/Context;)V",
+//                                                  QtAndroid::androidActivity().object());
+    emit restartServiceSig();
 }
 
 int User::getPong() const

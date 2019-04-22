@@ -3,8 +3,8 @@
 
 #include <QObject>
 #include <QSettings>
-#include <QAndroidJniObject>
-#include <QtAndroidExtras>
+//#include <QAndroidJniObject>
+//#include <QtAndroidExtras>
 #include <QSettings>
 #include <QJsonObject>
 #include <QJsonArray>
@@ -24,6 +24,7 @@ class User : public QObject
     Q_PROPERTY(bool darkTheme READ darkTheme WRITE setDarkTheme NOTIFY darkThemeSig)
     Q_PROPERTY(int pong READ getPong NOTIFY pongSig)
     Q_PROPERTY(QString pongPayload READ getPongPayload NOTIFY pongSig)
+    Q_PROPERTY(bool isFullScreen READ getIsFullScreen WRITE setIsFullScreen NOTIFY setFullScreenSig)
 
 public:
     explicit User(QObject *parent = nullptr);
@@ -54,6 +55,9 @@ public:
 
     QString getPongPayload() const;
 
+    bool getIsFullScreen();
+    void setIsFullScreen(bool value);
+
 signals:
     void isOnlineSig();
     void isTokenExpiredSig();
@@ -64,6 +68,8 @@ signals:
     void darkThemeSig();
     void pongSig();
     void pongPayloadSig();
+    void restartServiceSig();
+    void setFullScreenSig();
 
 public slots:
     void setIsOnline(bool isOnline);
@@ -76,6 +82,7 @@ public slots:
     void createNewUser(QVariant email, QVariant name, QVariant password);
     void editUser(QVariant email, QVariant name, QVariant password);
     void setUserInfo(QJsonObject json);
+    void setThisDeviceModel(QString deviceModel);
 
     //misc
     void logOut();
@@ -101,6 +108,8 @@ private:
     QString m_name;
     int m_pong;
     QString m_pongPayload;
+    QString m_deviceModel;
+    bool m_isFullScreen;
 };
 
 #endif // USER_H

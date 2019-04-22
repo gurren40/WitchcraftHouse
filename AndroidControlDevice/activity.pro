@@ -32,7 +32,8 @@ HEADERS += \
     models/iconmodel.h \
     lists/iconlist.h \
     models/pintypemodel.h \
-    lists/pintypelist.h
+    lists/pintypelist.h \
+    androidFunctions/externalfunctions.h
 
 SOURCES += activity.cpp \
     runtime/client.cpp \
@@ -57,7 +58,8 @@ SOURCES += activity.cpp \
     models/iconmodel.cpp \
     lists/iconlist.cpp \
     models/pintypemodel.cpp \
-    lists/pintypelist.cpp
+    lists/pintypelist.cpp \
+    androidFunctions/externalfunctions.cpp
 
 RESOURCES += \
     icons.qrc \
