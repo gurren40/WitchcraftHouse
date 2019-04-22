@@ -71,7 +71,7 @@ QJsonObject Pin::read(QString wherequery)
                 pinObject.userName = query.value("User.name").toString();
                 pinObject.groupID = query.value("Pin.groupID").toInt();
                 pinObject.groupName = query.value("Groups.groupName").toString();
-                pinObject.deviceID = query.value("Pin.groupID").toInt();
+                pinObject.deviceID = query.value("Pin.deviceID").toInt();
                 pinObject.deviceName = query.value("Device.deviceName").toString();
                 pinObject.iconID = query.value("Pin.iconID").toInt();
                 pinObject.iconName = query.value("Icon.iconName").toString();

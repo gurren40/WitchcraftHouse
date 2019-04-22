@@ -6,12 +6,12 @@
   </head>
   <body>
     <script>
-        //var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhZGl0aXlhc2lkYWJ1dGFyQHlhbmRleC5jb20iLCJpc3MiOiJXaXRjaGNyYWZ0SG91c2UiLCJqdGkiOiJkNjM3M2NmZi01NWI2LTRmOTAtYTA2YS00Yzk4MzJiMGE1N2UifQ==.lbInE9obA3GB4HPErdkIEv9pSzX7mLcwRAXeo20GSeM=";
-        //var theUUID = "25179bea-bac5-4ce1-af5e-1ff84cc0e0bc";
-        //var theSocket = new WebSocket("ws://localhost:9000/device?id="+token);
-        var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzaWRhYnV0YXIubm90LmVuZEBnbWFpbC5jb20iLCJpc3MiOiJXaXRjaGNyYWZ0SG91c2UiLCJqdGkiOiJhMDI2YmQwZC0wMGNhLTQ2OGQtOTkzMC0zYzU3N2RkZTNlMjkifQ==.A0cdvz/A0CxVkguym6QoSaxs3Li5DX2xWk3T3uBlhGc=";
-        var theUUID = "eec311cb-5446-4e4a-bec8-4b28c1049d6f";
-        var theSocket = new WebSocket("ws://192.168.0.3:9000/device?id="+token);
+        var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhZGl0aXlhc2lkYWJ1dGFyQHlhbmRleC5jb20iLCJpc3MiOiJXaXRjaGNyYWZ0SG91c2UiLCJqdGkiOiJkNjM3M2NmZi01NWI2LTRmOTAtYTA2YS00Yzk4MzJiMGE1N2UifQ==.lbInE9obA3GB4HPErdkIEv9pSzX7mLcwRAXeo20GSeM=";
+        var theUUID = "25179bea-bac5-4ce1-af5e-1ff84cc0e0bc";
+        var theSocket = new WebSocket("ws://localhost:9000/device?id="+token);
+        //var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzaWRhYnV0YXIubm90LmVuZEBnbWFpbC5jb20iLCJpc3MiOiJXaXRjaGNyYWZ0SG91c2UiLCJqdGkiOiJhMDI2YmQwZC0wMGNhLTQ2OGQtOTkzMC0zYzU3N2RkZTNlMjkifQ==.A0cdvz/A0CxVkguym6QoSaxs3Li5DX2xWk3T3uBlhGc=";
+        //var theUUID = "eec311cb-5446-4e4a-bec8-4b28c1049d6f";
+        //var theSocket = new WebSocket("ws://192.168.0.3:9000/device?id="+token);
         theSocket.onopen = function(event){
             theSocket.send("device  is connected\n");
         };
