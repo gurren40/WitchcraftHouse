@@ -280,15 +280,14 @@ int main(int argc, char *argv[])
     //[QOBJECT CONNECTION]
     QObject::connect(server, &WebsocketServer::closed, &a, &QCoreApplication::quit);
     QObject::connect(UC,SIGNAL(sendMail(QString,QString,QString)),smtp,SLOT(sendMail(QString,QString,QString)));
-    //QObject::connect(UC,SIGNAL(sendMail(QString,QString,QString)),server,SIGNAL(sendMail(QString,QString,QString)));
+    QObject::connect(UC,&UserController::disconnectControlDevice,server,&WebsocketServer::disconnectControlDevice);
     QObject::connect(DC,SIGNAL(sendMail(QString,QString,QString)),server,SIGNAL(sendMail(QString,QString,QString)));
     QObject::connect(DC,SIGNAL(broadcastToDevice(QUuid,QJsonObject)),server,SLOT(broadcastToDevice(QUuid,QJsonObject)));
     QObject::connect(DC,SIGNAL(deletedDevice(QUuid)),server,SLOT(deletedDevice(QUuid)));
     QObject::connect(DC,SIGNAL(deletedPin(QUuid,int)),SC,SLOT(deletedPin(QUuid,int)));
-    //QObject::connect(DC,SIGNAL(deletedPin(QUuid,int)),ShC,SLOT(deletedPin(QUuid,int)));
     QObject::connect(DC,SIGNAL(deletedGroup(int,int)),ShC,SLOT(deletedGroup(int,int)));
     QObject::connect(DC,SIGNAL(broadcastToAllUserControlDevice(int,QJsonObject)),server,SLOT(broadcastToAllUserControlDevice(int,QJsonObject)));
-    //QObject::connect(DC,SIGNAL(broadcastToDevice(QUuid,QJsonObject)),server,SLOT(broadcastToDevice(QUuid,QJsonObject)));
+    QObject::connect(DC,&DeviceController::disconnectDevice,server,&WebsocketServer::disconnectDevice);
     //[QOBJECT CONNECTION]
 
     return a.exec();

@@ -26,6 +26,7 @@ public:
 signals:
     void sendMail(QString sendTo, QString title, QString body);
     void deletedControlDevice(QUuid controlDeviceID);
+    void disconnectControlDevice(QString stringUUID);
 
 public slots:
     void setDatabase(QSqlDatabase *database);

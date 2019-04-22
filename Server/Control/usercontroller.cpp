@@ -41,6 +41,7 @@ bool UserController::isJwtValid(QJsonObject jwt, QString path)
         //f-this
         if(cd.mControlDevices.at(0).isControlDeviceOnline){
             toggleControlDeviceOnline(cd.mControlDevices.at(0).controlDeviceID,false);
+            emit disconnectControlDevice(jwt["jti"].toString());
             return false;
         }
         QTextStream(stdout) << "check device is online now\n";

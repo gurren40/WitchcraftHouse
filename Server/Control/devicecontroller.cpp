@@ -48,7 +48,11 @@ bool DeviceController::isJwtValid(QJsonObject jwt, QString path)
         QTextStream(stdout) << "if device size != 1" << "\n";
         //QDateTime dt(dd.mDevices.at(0).expireDate);
         //if(dt.toSecsSinceEpoch() > jwt["exp"].toString().toInt()) return false;
-        if(dd.mDevices.at(0).isDeviceOnline) return false;
+        if(dd.mDevices.at(0).isDeviceOnline) {
+            toggleDeviceOnline(dd.mDevices.at(0).deviceUUID,false);
+            emit disconnectDevice(jwt["jti"].toString());
+            return false;
+        }
         QTextStream(stdout) << "is device online" << "\n";
         if(!toggleDeviceOnline(dd.mDevices.at(0).deviceUUID,true)) return false;
         QTextStream(stdout) << "toogle device" << "\n";

@@ -56,14 +56,16 @@ public slots:
     void controlProcessTextMessage(QString message);
     void controlProcessBinaryMessage(QByteArray message);
     void controlSocketDisconnected();
+    void disconnectControlDevice(QString stringUUID);
 
     //for device
     void broadcastToDevice(QUuid deviceUUID, QJsonObject json);
     void deviceProcessTextMessage(QString message);
-    //void deviceProcessBinaryMessage(QByteArray message);
-    //void deviceSocketDisconnected();
+    void deviceProcessBinaryMessage(QByteArray message);
+    void deviceSocketDisconnected();
     void deletedDevice(QUuid deviceUUID);
     void setPinValueFromCron(QJsonObject json, int userID);
+    void disconnectDevice(QString stringUUID);
 
     //misc
     QJsonObject getJwtPayload(QNetworkRequest request);

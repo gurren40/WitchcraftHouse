@@ -30,6 +30,7 @@ signals:
     void broadcastToDevice(QUuid deviceUUID, QJsonObject json);
     void broadcastToAllUserControlDevice(int userID, QJsonObject json);
     void broadcastToShared(QUuid UUID, int userID);
+    void disconnectDevice(QString stringUUID);
 
 public slots:
     void setDatabase(QSqlDatabase *database);

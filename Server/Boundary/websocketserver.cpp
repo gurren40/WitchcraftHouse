@@ -100,8 +100,8 @@ void WebsocketServer::onNewConnection()
                 m_device.insert(jwt["jti"].toString(),pSocket);
                 QTextStream(stdout) << "a device is connected : " << pSocket << "\n";
                 connect(pSocket, &QWebSocket::textMessageReceived, this, &WebsocketServer::deviceProcessTextMessage);
-                //connect(pSocket, &QWebSocket::binaryMessageReceived, this, &WebsocketServer::deviceProcessBinaryMessage);
-                //connect(pSocket, &QWebSocket::disconnected, this, &WebsocketServer::deviceSocketDisconnected);
+                connect(pSocket, &QWebSocket::binaryMessageReceived, this, &WebsocketServer::deviceProcessBinaryMessage);
+                connect(pSocket, &QWebSocket::disconnected, this, &WebsocketServer::deviceSocketDisconnected);
             }
         }
     }
@@ -396,14 +396,19 @@ void WebsocketServer::controlProcessBinaryMessage(QByteArray message)
 
 void WebsocketServer::controlSocketDisconnected()
 {
-    UserController UC;
     QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
     QTextStream(stdout) << "socketDisconnected:" << pClient;
     QJsonObject jwtPayload = getJwtPayload(pClient->request());
     m_UC->toggleControlDeviceOnline(QUuid::fromString(jwtPayload["jti"].toString()),false);
-    m_UC->toggleControlDeviceOnline(QUuid::fromString(jwtPayload["jti"].toString()),false);
     m_controlDevice.remove(jwtPayload["jti"].toString());
     pClient->deleteLater();
+}
+
+void WebsocketServer::disconnectControlDevice(QString stringUUID)
+{
+    if(m_controlDevice.contains(stringUUID)){
+        m_controlDevice.value(stringUUID)->close();
+    }
 }
 
 void WebsocketServer::broadcastToDevice(QUuid deviceUUID, QJsonObject json)
@@ -447,6 +452,22 @@ void WebsocketServer::deviceProcessTextMessage(QString message)
     }
 }
 
+void WebsocketServer::deviceProcessBinaryMessage(QByteArray message)
+{
+    QTextStream(stdout) << message;
+}
+
+void WebsocketServer::deviceSocketDisconnected()
+{
+    QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
+    QTextStream(stdout) << "socketDisconnected:" << pClient;
+    QJsonObject jwtPayload = getJwtPayload(pClient->request());
+    m_DC->toggleDeviceOnline(QUuid::fromString(jwtPayload["jti"].toString()),false);
+    //m_UC->toggleControlDeviceOnline(QUuid::fromString(jwtPayload["jti"].toString()),false);
+    m_device.remove(jwtPayload["jti"].toString());
+    pClient->deleteLater();
+}
+
 void WebsocketServer::deletedDevice(QUuid deviceUUID)
 {
     if(m_device.contains(deviceUUID.toString(QUuid::WithoutBraces))){
@@ -457,6 +478,13 @@ void WebsocketServer::deletedDevice(QUuid deviceUUID)
 void WebsocketServer::setPinValueFromCron(QJsonObject json, int userID)
 {
     m_DC->setPinValue(json,userID);
+}
+
+void WebsocketServer::disconnectDevice(QString stringUUID)
+{
+    if(m_device.contains(stringUUID)){
+        m_device.value(stringUUID)->close();
+    }
 }
 
 QJsonObject WebsocketServer::getJwtPayload(QNetworkRequest request)
@@ -479,7 +507,9 @@ QJsonObject WebsocketServer::getJwtPayload(QNetworkRequest request)
 
 void WebsocketServer::deletedControlDevice(QUuid controlDeviceID)
 {
-    m_controlDevice.value(controlDeviceID.toString(QUuid::WithoutBraces))->close();
+    if(m_controlDevice.contains(controlDeviceID.toString(QUuid::WithoutBraces))){
+        m_controlDevice.value(controlDeviceID.toString(QUuid::WithoutBraces))->close();
+    }
 }
 
 void WebsocketServer::setShC(SharedController *ShC)
