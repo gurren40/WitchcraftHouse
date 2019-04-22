@@ -171,7 +171,7 @@ void WebsocketServer::broadcastToAllUserControlDevice(int userID, QJsonObject js
 
     QTextStream(stdout) <<"\n"<< doc.toJson();
 
-    for (int i = 0;i<cdList.size();i++) {
+    for (int i = 0;i<array.size();i++) {
         QJsonObject cDevice = array[i].toObject();
         if(cDevice["isControlDeviceOnline"].toBool()){
             if(m_controlDevice.contains(cDevice["controlDeviceID"].toString())){
