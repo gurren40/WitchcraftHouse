@@ -221,7 +221,7 @@ QJsonObject DeviceController::editDevice(QJsonObject json, int userID)
     else {
         for (int i = 0;i<jsonArray.size();i++) {
             QJsonObject jsonObject = jsonArray.at(i).toObject();
-            QJsonObject error = device.read("deviceID='"+QString::number(jsonObject["deviceID"].toInt())+"'");
+            QJsonObject error = device.read("Device.deviceID='"+QString::number(jsonObject["deviceID"].toInt())+"'");
             if(device.mDevices.size()==1){
                 error = device.update(jsonObject["deviceID"].toInt(),QUuid::fromString(jsonObject["deviceUUID"].toString()),userID,jsonObject["deviceName"].toString(),device.mDevices.at(0).deviceToken,device.mDevices.at(0).isDeviceOnline,jsonObject["description"].toString());
                 errorArray.append(error);
@@ -251,7 +251,7 @@ QJsonObject DeviceController::editGroup(QJsonObject json, int userID)
     else {
         for (int i = 0;i<jsonArray.size();i++) {
             QJsonObject jsonObject = jsonArray.at(i).toObject();
-            QJsonObject error = group.read("groupID='"+QString::number(jsonObject["groupID"].toInt())+"'");
+            QJsonObject error = group.read("Groups.groupID='"+QString::number(jsonObject["groupID"].toInt())+"'");
             if(group.mGroups.size() == 1){
                 error = group.update(jsonObject["groupID"].toInt(),userID,jsonObject["iconID"].toInt(),jsonObject["groupName"].toString(),jsonObject["description"].toString());
             }
@@ -282,7 +282,7 @@ QJsonObject DeviceController::editPin(QJsonObject json, int userID)
         for (int i = 0;i<jsonArray.size();i++) {
             QJsonObject jsonObject = jsonArray.at(i).toObject();
             QUuid UUID = QUuid::fromString(jsonObject["UUID"].toString());
-            QJsonObject error = pin.read("UUID=UuidToBin('"+UUID.toString(QUuid::WithoutBraces)+"')");
+            QJsonObject error = pin.read("Pin.UUID=UuidToBin('"+UUID.toString(QUuid::WithoutBraces)+"')");
             if(pin.mPins.size() == 1){
                 //error = pin.update(pin.mPins.at(0).pinID,pin.mPins.at(0).UUID,userID,jsonObject["groupID"].toInt(),jsonObject["deviceID"].toInt(),jsonObject["iconID"].toInt(),jsonObject["pinTypeID"].toInt(),jsonObject["pinName"].toString(),pin.mPins.at(0).value,jsonObject["option"].toString(),jsonObject["description"].toString());
                 error = pin.update(pin.mPins.at(0).pinID,pin.mPins.at(0).UUID,userID,jsonObject["groupID"].toInt(),jsonObject["deviceID"].toInt(),jsonObject["iconID"].toInt(),jsonObject["pinTypeID"].toInt(),jsonObject["pinName"].toString(),jsonObject["value"].toString(),jsonObject["option"].toString(),jsonObject["description"].toString());
@@ -365,11 +365,11 @@ QJsonObject DeviceController::deleteGroup(QJsonObject json, int userID)
     else {
         for (int i = 0;i<jsonArray.size();i++) {
             QJsonObject jsonObject = jsonArray.at(i).toObject();
-            QJsonObject error1 = group.read("groupID='"+QString::number(jsonObject["groupID"].toInt())+"'");
+            QJsonObject error1 = group.read("Groups.groupID='"+QString::number(jsonObject["groupID"].toInt())+"'");
             if(group.mGroups.size() == 1){
 
                 //delete pin
-                pin.read("groupID='"+QString::number(group.mGroups.at(0).groupID)+"'");
+                pin.read("Pin.groupID='"+QString::number(group.mGroups.at(0).groupID)+"'");
                 if(pin.mPins.size()>0){
                     QJsonArray pinArray;
                     for (int j = 0;j<pin.mPins.size();j++) {
@@ -414,7 +414,7 @@ QJsonObject DeviceController::deletePin(QJsonObject json, int userID)
         for (int i = 0;i<jsonArray.size();i++) {
             QJsonObject jsonObject = jsonArray.at(i).toObject();
             QUuid UUID = QUuid::fromString(jsonObject["UUID"].toString());
-            QJsonObject error = pin.read("UUID=UuidToBin('"+UUID.toString(QUuid::WithoutBraces)+"')");
+            QJsonObject error = pin.read("Pin.UUID=UuidToBin('"+UUID.toString(QUuid::WithoutBraces)+"')");
             if(pin.mPins.size() == 1){
                 error = pin.deletes("UUID=UuidToBin('"+UUID.toString(QUuid::WithoutBraces)+"')");
                 emit deletedPin(UUID,userID);

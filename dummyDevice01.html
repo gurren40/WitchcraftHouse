@@ -11,7 +11,7 @@
         //var theSocket = new WebSocket("ws://localhost:9000/device?id="+token);
         var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzaWRhYnV0YXIubm90LmVuZEBnbWFpbC5jb20iLCJpc3MiOiJXaXRjaGNyYWZ0SG91c2UiLCJqdGkiOiJhMDI2YmQwZC0wMGNhLTQ2OGQtOTkzMC0zYzU3N2RkZTNlMjkifQ==.A0cdvz/A0CxVkguym6QoSaxs3Li5DX2xWk3T3uBlhGc=";
         var theUUID = "eec311cb-5446-4e4a-bec8-4b28c1049d6f";
-        var theSocket = new WebSocket("ws://192.168.0.12:9000/device?id="+token);
+        var theSocket = new WebSocket("ws://192.168.0.3:9000/device?id="+token);
         theSocket.onopen = function(event){
             theSocket.send("device  is connected\n");
         };
