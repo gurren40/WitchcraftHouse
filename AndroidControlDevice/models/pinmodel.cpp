@@ -193,20 +193,27 @@ void PinModel::setList(PinList *list)
 
     if (mList) {
 
-        //delete semua item yang ada di list
-        connect(mList, &PinList::preItemsResetRemove,this, [=](int index){
-            beginRemoveRows(QModelIndex(),0,index);
+        //append item
+        connect(mList, &PinList::preItemAppended, this, [=]() {
+            const int index = mList->items().size();
+            beginInsertRows(QModelIndex(), index, index);
         });
-        connect(mList, &PinList::postItemResetRemove, this, [=]() {
-            endRemoveRows();
-        });
-        //masukkan semua item dari list baru
-        connect(mList, &PinList::preItemsResetAppend,this, [=](int index){
-            beginInsertRows(QModelIndex(),0,index);
-        });
-        connect(mList, &PinList::postItemResetAppend, this, [=]() {
+        connect(mList, &PinList::postItemAppended, this, [=]() {
             endInsertRows();
         });
+
+        //remove item
+        connect(mList, &PinList::preItemRemoved, this, [=](int index) {
+            beginRemoveRows(QModelIndex(), index, index);
+        });
+        connect(mList, &PinList::postItemRemoved, this, [=]() {
+            endRemoveRows();
+        });
+
+        connect(mList, &PinList::itemDataChanged, this, [=](int first, int last) {
+            emit dataChanged(index(first),index(last),QVector<int>());
+        });
+
         //setted pin value
         connect(mList, &PinList::preItemDataChanged, this, [=](){
             beginResetModel();

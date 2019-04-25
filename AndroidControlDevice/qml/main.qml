@@ -11,7 +11,7 @@ ApplicationWindow {
     width: 640
     height: 480
     title: qsTr("Witchcraft House")
-    visibility: user.isFullScreen ? "FullScreen" : "Windowed"
+    visibility: user.isFullScreen ? "FullScreen" : "Maximized"
 
 
     //timer and stuff

@@ -9,16 +9,16 @@
 //inisialisasi wifi
 const char* ssid = "BigPond01C5";
 const char* password = "9726399032";
-const String websocketServerIp = "192.168.0.6";
+const String websocketServerIp = "192.168.0.13";
 const int websocketServerPort = 9000;
-const String websocketServerUrl = "/";
+const String websocketServerUrl = "/device";
 
 //inisialisasi device
-const String deviceID = "";
-const String ambientTempID = "";
-const String intendedTempID = "";
-const String powerID = "";
-const String stateID = "";
+const char* deviceID = "jwt: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhZGl0aXlhc2lkYWJ1dGFyQHlhbmRleC5jb20iLCJpc3MiOiJXaXRjaGNyYWZ0SG91c2UiLCJqdGkiOiIzOTJkMTNhMC05NjFhLTQ1ZTgtYWU2Ni0xYTJkN2JlMGI5YzkifQ==.VzmBHy52pEahrZ2v1wwlMxCv0qAV3LlQFkmkR6KyX9s=";
+const String ambientTempID = "74346d95-2e75-4e18-ba83-8064a2c86e1b";
+const String intendedTempID = "02bf3baa-6cc8-4f1b-8b69-447ae451e430";
+const String powerID = "73579023-a032-4142-a4a5-84f7de41f079";
+const String stateID = "a7a9501a-ddf1-46dc-a5e1-08ee7c34ae6d";
 
 //actual variable
 float ambientTemp = 24;
@@ -27,14 +27,14 @@ bool power = false;
 int state = 0; //0 = off, 1 = heating, 2 = cooling, 3 = fan only
 
 //inisialisasi pin arduino
-#define DHTPIN 5
+#define DHTPIN 15
 #define DHTTYPE DHT22
 
-const int fan = 14; //relay
-const int heater = 15; //relay
-const int cooler = 16; //relay
-const int clk = 12;
-const int dio = 4;
+const int fan = D1; //relay
+const int heater = D2; //relay
+const int cooler = D3; //relay
+const int clk = D7;
+const int dio = D6;
 
 //misc
 unsigned long startTime;
@@ -85,7 +85,7 @@ int allOff(){
   turnOff(cooler);
   turnOff(fan);
   power = false;
-  return 3;
+  return 0;
 }
 
 void setValue(String uuid, String value){
@@ -97,6 +97,9 @@ void setValue(String uuid, String value){
     else if(ambientTemp > value.toFloat()){
       intendedTemp = value.toFloat();
       state = cooling();
+    }
+    else{
+      intendedTemp = value.toFloat();
     }
   }
   if(uuid == powerID){
@@ -145,6 +148,9 @@ void sendMessage(){
   }
   else if(state == 3){
     stateStatus = "Fan Only";
+  }
+  else{
+    stateStatus = "Off";
   }
 
   msg1 = "{ \"UUID\" : \""+ambientTempID+"\" , \"value\" : \""+ambientTempStatus+"\"}";
@@ -261,6 +267,9 @@ void setup() {
   }
 
   //inisialisasi websocket
+
+  webSocket.setExtraHeaders(deviceID);
+  
   webSocket.begin(websocketServerIp,websocketServerPort,websocketServerUrl);
 
   webSocket.onEvent(webSocketEvent);

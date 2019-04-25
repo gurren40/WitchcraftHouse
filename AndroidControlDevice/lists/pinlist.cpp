@@ -107,12 +107,9 @@ void PinList::setPinList(QJsonObject json, bool isShared)
     else {
         jsonArray = json.value("pinList").toArray();
     }
-    //emit preItemsResetRemove(mItems.size());
-    emit preItemDataChanged();
-    mItems.clear();
-    //emit postItemResetRemove();
-    //emit preItemsResetAppend(jsonArray.size());
-    for(int i=0;i<jsonArray.size();i++){
+    //const int itemSize = mItems.size();
+    //const int jsonSize = jsonArray.size();
+    for(int i=0;i<mItems.size();i++){
         QJsonObject jsonItem = jsonArray.at(i).toObject();
         PinItem item;
         item.UUID = jsonItem["UUID"].toString();
@@ -131,10 +128,48 @@ void PinList::setPinList(QJsonObject json, bool isShared)
         item.deviceName = jsonItem["deviceName"].toString();
         item.description = jsonItem["description"].toString();
         item.pinTypeName = jsonItem["pinTypeName"].toString();
-        mItems.append(item);
+        mItems[i] = item;
     }
-    //emit postItemResetAppend();
-    emit postItemDataChanged();
+    emit itemDataChanged(0,mItems.size() - 1);
+
+    //sisa
+    if(mItems.size() > jsonArray.size()){
+//        for (int j = jsonArray.size();j<mItems.size();j++) {
+//            emit preItemRemoved(j);
+//            mItems.remove(j);
+//            emit postItemRemoved();
+//        }
+        while (mItems.size() > jsonArray.size()) {
+            emit preItemRemoved(mItems.size() - 1);
+            mItems.remove(mItems.size() - 1);
+            emit postItemRemoved();
+        }
+    }
+    else if(mItems.size() < jsonArray.size()){
+        while(mItems.size() < jsonArray.size()){
+            QJsonObject jsonItem = jsonArray.at(mItems.size()).toObject();
+            PinItem item;
+            item.UUID = jsonItem["UUID"].toString();
+            item.pinID = jsonItem["pinID"].toInt();
+            item.value = jsonItem["value"].toString();
+            item.iconID = jsonItem["iconID"].toInt();
+            item.option = jsonItem["option"].toString();
+            item.userID = jsonItem["userID"].toInt();
+            item.groupID = jsonItem["groupID"].toInt();
+            item.pinName = jsonItem["pinName"].toString();
+            item.deviceID = jsonItem["deviceID"].toInt();
+            item.iconName = jsonItem["iconName"].toString();
+            item.userName = jsonItem["userName"].toString();
+            item.groupName = jsonItem["groupName"].toString();
+            item.pinTypeID = jsonItem["pinTypeID"].toInt();
+            item.deviceName = jsonItem["deviceName"].toString();
+            item.description = jsonItem["description"].toString();
+            item.pinTypeName = jsonItem["pinTypeName"].toString();
+            emit preItemAppended();
+            mItems.append(item);
+            emit postItemAppended();
+        }
+    }
 }
 
 RemoteReplica *PinList::remote() const
@@ -239,7 +274,7 @@ void PinList::setPinValue(QVariant UUID, QVariant value)
 
 void PinList::settedPinValue(QJsonObject json)
 {
-    emit preItemDataChanged();
+    //emit preItemDataChanged();
     QJsonArray jsonArray = json.value("settedPinValue").toArray();
     for (int i = 0;i<jsonArray.size();i++) {
         for(int j = 0;j<mItems.size();j++){
@@ -247,10 +282,11 @@ void PinList::settedPinValue(QJsonObject json)
                 PinItem item = mItems.at(j);
                 item.value = jsonArray.at(i).toObject().value("value").toString();
                 mItems[j] = item;
+                emit itemDataChanged(j,j);
             }
         }
     }
-    emit postItemDataChanged();
+    //emit postItemDataChanged();
 }
 
 QVariant PinList::jsonToVariant(QJsonObject json)

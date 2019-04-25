@@ -2,7 +2,6 @@ import QtQuick 2.9
 import Qt.labs.platform 1.1
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
-import QtWebView 1.1
 import Pin 1.0
 import Icon 1.0
 import Group 1.0
@@ -97,12 +96,23 @@ Page {
                     rightPadding: 0
                     anchors.right: parent.right
                     anchors.verticalCenter : parent.verticalCenter
+
                     function thefunc(){
                         if(value == "1"){
                             actualSwitch.checked = true
                         }
                         else{
                             actualSwitch.checked = false
+                        }
+                    }
+
+                    Timer{
+                        id : switchchecker
+                        interval: 500
+                        repeat: true
+                        running: true
+                        onTriggered: {
+                            actualSwitch.thefunc()
                         }
                     }
 
@@ -438,6 +448,7 @@ Page {
                             ListModel{
                                 id : theModel
                             }
+
                             function comboItems(options){
                                 var theValue = options.split(",");
                                 theValue.forEach(function(theValue){
@@ -547,9 +558,6 @@ Page {
                         }
                         RangeSlider{
                             id:actualRangeSlider
-                            //Layout.fillWidth: true
-                            //width: 120
-                            //anchors.right: parent.right
                             anchors.verticalCenter : parent.verticalCenter
                             width: parent.width - (10 + fromLabel.width + toLabel.width)
                             stepSize: 1
@@ -570,16 +578,24 @@ Page {
                                 }
                             }
                             function setValue(){
-//                                var thisValue = first.value.toString() + "," + second.value.toString();
-//                                pinList.setPinValue(uuid,thisValue);
-//                                console.log(thisValue)
                                 rangeSliderTimer.running = true
+                                rangevaluetimer.running = false
                             }
 
-                            //onValueModified: pinList.setPinValue(uuid,value)
-                            //onMoved: pinList.setPinValue(uuid,value)
                             first.onMoved: setValue()
                             second.onMoved: setValue()
+
+                            Timer{
+                                id : rangevaluetimer
+                                running: true
+                                repeat: true
+                                interval: 1000
+                                onTriggered: {
+                                    actualRangeSlider.first.value = actualRangeSlider.fromAndTo(value,true)
+                                    actualRangeSlider.second.value = actualRangeSlider.fromAndTo(value,false)
+                                }
+                            }
+
                             Timer{
                                 id : rangeSliderTimer
                                 running: false
@@ -589,6 +605,7 @@ Page {
                                     var thisValue = actualRangeSlider.first.value.toString() + "," + actualRangeSlider.second.value.toString();
                                     console.log(thisValue)
                                     pinList.setPinValue(uuid,thisValue)
+                                    rangevaluetimer.running = true
                                 }
                             }
                         }
@@ -617,37 +634,23 @@ Page {
                     text: pinName
                     anchors.verticalCenter : parent.verticalCenter
                     icon.name: iconName
+                    onClicked: {
+                        if(listViewElement.currentIndex != thisIndex){
+                            listViewElement.currentIndex = thisIndex
+                        }
+                        pinDetails.open()
+                    }
                 }
                 ItemDelegate{
                     id : colorIndicator
-                    topPadding: 0
-                    leftPadding: 0
-                    bottomPadding: 0
-                    rightPadding: chooseButton.visible ? 15 : 0
-                    anchors.verticalCenter : parent.verticalCenter
-                    anchors.right: chooseButton.visible ? chooseButton.left : parent.right
-                    icon.name: "default"
-                    icon.color: value
-                    icon.height: 30
-                    icon.width: 30
-                }
-
-                Button{
-                    id : chooseButton
-                    text: "Choose"
                     anchors.verticalCenter : parent.verticalCenter
                     anchors.right: parent.right
+                    icon.name: "default"
+                    icon.color: value
+                    icon.height: height
+                    icon.width: width
                     onClicked: {
                         colorDialog.open()
-                    }
-                    visible: isVisible()
-                    function isVisible(){
-                        if(option == "0"){
-                            return false;
-                        }
-                        else{
-                            return true;
-                        }
                     }
                 }
                 ColorDialog {
@@ -712,17 +715,12 @@ Page {
                         }
                         Slider{
                             id:actualSlider
-                            //Layout.fillWidth: true
-                            //width: 120
-                            //anchors.right: parent.right
                             anchors.verticalCenter : parent.verticalCenter
                             width: parent.width - (10 + fromLabel.width + toLabel.width)
                             stepSize: 1
                             from: fromAndTo(option,true)
                             to : fromAndTo(option,false)
                             value: sliderDelegate.sliderValue
-                            //first.value: fromAndTo(value,true)
-                            //second.value: fromAndTo(value,false)
                             orientation: Qt.Horizontal
                             snapMode: Slider.SnapAlways
                             function fromAndTo(options,from){
@@ -734,15 +732,7 @@ Page {
                                     return thevalue[1];
                                 }
                             }
-//                            function setValue(){
-//                                var thisValue = first.value.toString() + "," + second.value.toString();
-//                                pinList.setPinValue(uuid,thisValue);
-//                                console.log(thisValue)
-//                            }
-
-                            //onValueModified: pinList.setPinValue(uuid,value)
                             onMoved: {
-                                //pinList.setPinValue(uuid,value)
                                 sliderTimer.running = true
                             }
                             Timer{
@@ -755,9 +745,6 @@ Page {
                                     pinList.setPinValue(uuid,actualSlider.value)
                                 }
                             }
-
-                            //first.onMoved: setValue()
-                            //second.onMoved: setValue()
                         }
                         Label{
                             id : toLabel
@@ -769,23 +756,6 @@ Page {
             }
         }
     }
-
-//    Dialog{
-//        property string url: ""
-//        title: ""
-//        id : webviewDialog
-//        width: parent.width * 0.9
-//        height: parent.height * 0.9
-//        standardButtons: Dialog.Close
-//        anchors.centerIn: parent
-//        modal: true
-//        contentItem: WebView{
-//            anchors.centerIn: parent
-//            width: parent.width
-//            height: parent.height
-//            url : webviewDialog.url
-//        }
-//    }
 
     ColumnLayout {
         id: column
@@ -970,16 +940,15 @@ Page {
     }
 
     Dialog{
-        id: deletePin
-        modal: true
-        anchors.centerIn: parent
-        title: "Are you sure want to delete this Pin?"
+        id : deletePin
         width: parent.width * 0.9
         //height: parent.height * 0.9
-        standardButtons: Dialog.Ok | Dialog.Cancel
+        modal: true
+        anchors.centerIn: parent
+        title: "Are you sure to delete this pin?"
+        //standardButtons: Dialog.Close
         contentItem: ScrollView {
             clip: true
-            contentWidth: -1
             Column{
                 spacing: 10
                 width: parent.width
@@ -994,11 +963,24 @@ Page {
                 }
             }
         }
-        onAccepted: {
-            //void deletePin(QVariant UUID);
-            pinList.deletePin(listViewElement.currentItem.uuid);
-            pinList.getPinList()
+        footer: DialogButtonBox{
+            standardButtons: Dialog.Ok | Dialog.Close
+            Button{
+                text: qsTr("Ok")
+                DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+            }
+            Button{
+                text: qsTr("Close")
+                DialogButtonBox.buttonRole: DialogButtonBox.DestructiveRole
+                onClicked: deletePin.close()
+            }
+
+            onAccepted: {
+                //void deletePin(QVariant UUID);
+                pinList.deletePin(listViewElement.currentItem.uuid);
+                pinList.getPinList()
+            }
+            onRejected: console.log("Cancel clicked")
         }
-        onRejected: console.log("Cancel clicked")
     }
 }

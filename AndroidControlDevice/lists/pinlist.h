@@ -44,12 +44,17 @@ public:
 
 signals:
 
-    void preItemsResetRemove(int index);
-    void postItemResetRemove();
-    void preItemsResetAppend(int index);
-    void postItemResetAppend();
+
+    void preItemAppended();
+    void postItemAppended();
+
+    void preItemRemoved(int index);
+    void postItemRemoved();
+
     void preItemDataChanged();
     void postItemDataChanged();
+
+    void itemDataChanged(int first, int last);
 
 public slots:
     void setPinList(QJsonObject json, bool isShared);
