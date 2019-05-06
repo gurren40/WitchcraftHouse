@@ -5,7 +5,7 @@
 #include <QFile>
 #include <QTextStream>
 //#include <libnotifymm.h>
-//#include <iostream>
+
 
 class ExternalFunctions : public QObject
 {

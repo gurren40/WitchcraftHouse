@@ -96,27 +96,7 @@ Page {
                     rightPadding: 0
                     anchors.right: parent.right
                     anchors.verticalCenter : parent.verticalCenter
-
-                    function thefunc(){
-                        if(value == "1"){
-                            actualSwitch.checked = true
-                        }
-                        else{
-                            actualSwitch.checked = false
-                        }
-                    }
-
-                    Timer{
-                        id : switchchecker
-                        interval: 500
-                        repeat: true
-                        running: true
-                        onTriggered: {
-                            actualSwitch.thefunc()
-                        }
-                    }
-
-                    checked: thefunc()
+                    checked: (value == "1")
 
                     onClicked: function(){
                         if(checked){
@@ -578,12 +558,14 @@ Page {
                                 }
                             }
                             function setValue(){
-                                rangeSliderTimer.running = true
-                                rangevaluetimer.running = false
+                                var thisValue = actualRangeSlider.first.value.toString() + "," + actualRangeSlider.second.value.toString();
+                                console.log(thisValue)
+                                pinList.setPinValue(uuid,thisValue)
+                                rangevaluetimer.running = true
                             }
 
-                            first.onMoved: setValue()
-                            second.onMoved: setValue()
+                            first.onPressedChanged: first.pressed ? (rangevaluetimer.running = false) : setValue()
+                            second.onPressedChanged: second.pressed ? (rangevaluetimer.running = false) : setValue()
 
                             Timer{
                                 id : rangevaluetimer
@@ -593,19 +575,6 @@ Page {
                                 onTriggered: {
                                     actualRangeSlider.first.value = actualRangeSlider.fromAndTo(value,true)
                                     actualRangeSlider.second.value = actualRangeSlider.fromAndTo(value,false)
-                                }
-                            }
-
-                            Timer{
-                                id : rangeSliderTimer
-                                running: false
-                                repeat: false
-                                interval: 500
-                                onTriggered: {
-                                    var thisValue = actualRangeSlider.first.value.toString() + "," + actualRangeSlider.second.value.toString();
-                                    console.log(thisValue)
-                                    pinList.setPinValue(uuid,thisValue)
-                                    rangevaluetimer.running = true
                                 }
                             }
                         }
@@ -732,19 +701,11 @@ Page {
                                     return thevalue[1];
                                 }
                             }
-                            onMoved: {
-                                sliderTimer.running = true
+                            function sendData(){
+                                pinList.setPinValue(uuid,actualSlider.value)
+                                console.log(actualSlider.value)
                             }
-                            Timer{
-                                id : sliderTimer
-                                running: false
-                                repeat: false
-                                interval: 500
-                                onTriggered: {
-                                    console.log(actualSlider.value)
-                                    pinList.setPinValue(uuid,actualSlider.value)
-                                }
-                            }
+                            onPressedChanged: pressed ? undefined : sendData()
                         }
                         Label{
                             id : toLabel

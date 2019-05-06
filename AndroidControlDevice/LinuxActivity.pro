@@ -58,5 +58,6 @@ RESOURCES += \
 QML_IMPORT_PATH =
 
 #INCLUDEPATH += /usr/include/libnotifymm-1.0
+LIBS += -L/lib -lgiomm-2.4
 
 REPC_REPLICA += remote.rep

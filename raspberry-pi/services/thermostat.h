@@ -8,6 +8,10 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QFile>
+#include <QDir>
+#include <QByteArray>
+#include <QTextStream>
 
 class Thermostat : public QObject
 {
@@ -34,11 +38,14 @@ public slots:
     void loop();
     void jsonReceived(QJsonObject json);
     void sendAllValue();
+    void buttonValidator();
 
 
 private:
     //common
     QTimer m_timer;
+    QTimer m_buttontimer;
+    bool buttonIndicator;
     //pins
     int m_fanPin;
     int m_heaterPin;
@@ -49,6 +56,7 @@ private:
     float intendedTemp;
     bool power;
     int state;
+    QString m_tempid;
     //uuids
     QString ambientTempID;
     QString intendedTempID;

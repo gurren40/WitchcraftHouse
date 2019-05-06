@@ -1,105 +1,62 @@
 #include "thermostat.h"
 #include <wiringPi.h>
 
-#define MAX_TIMINGS 85
-#define DHT_PIN 2
-
 Thermostat::Thermostat(QObject *parent) : QObject(parent)
 {
     setPinState();
     setUuids();
     connect(&m_timer,&QTimer::timeout,this,&Thermostat::loop);
+    connect(&m_buttontimer,&QTimer::timeout,this,&Thermostat::buttonValidator);
+    buttonIndicator = false;
     m_timer.setInterval(10000);
     m_timer.setSingleShot(false);
     m_timer.start();
-    pinMode( m_fanPin, OUTPUT );
-    pinMode( m_heaterPin, OUTPUT );
-    pinMode( m_coolerPin, OUTPUT );
+    m_buttontimer.setInterval(10);
+    m_buttontimer.setSingleShot(false);
+    m_buttontimer.start();
     turnOff(m_fanPin);
     turnOff(m_heaterPin);
     turnOff(m_coolerPin);
 }
 
+void Thermostat::buttonValidator()
+{
+    uint8_t state = digitalRead( 3 );
+    if(!buttonIndicator && (state == HIGH)){
+        buttonIndicator = true;
+    }
+    else if(buttonIndicator && (state == LOW)){
+        buttonIndicator = false;
+        if(power){
+            power = false;
+        }
+        else{
+            power = true;
+        }
+        loop();
+    }
+}
+
 float Thermostat::readTemp()
 {
     float temp;
-    int data[5] = { 0, 0, 0, 0, 0 };
-    //[IMPLEMENT HERE];
-    //m_dhtPin
-    //temp = 30;
-    uint8_t laststate	= HIGH;
-	uint8_t counter		= 0;
-	uint8_t j			= 0, i;
- 
-	data[0] = data[1] = data[2] = data[3] = data[4] = 0;
- 
-	/* pull pin down for 18 milliseconds */
-	pinMode( DHT_PIN, OUTPUT );
-	digitalWrite( DHT_PIN, LOW );
-	delay( 18 );
- 
-	/* prepare to read the pin */
-	pinMode( DHT_PIN, INPUT );
-    
-    /* detect change and read data */
-	for ( i = 0; i < MAX_TIMINGS; i++ )
-	{
-		counter = 0;
-		while ( digitalRead( DHT_PIN ) == laststate )
-		{
-			counter++;
-			delayMicroseconds( 1 );
-			if ( counter == 255 )
-			{
-				break;
-			}
-		}
-		laststate = digitalRead( DHT_PIN );
- 
-		if ( counter == 255 )
-			break;
- 
-		/* ignore first 3 transitions */
-		if ( (i >= 4) && (i % 2 == 0) )
-		{
-			/* shove each bit into the storage bytes */
-			data[j / 8] <<= 1;
-			if ( counter > 16 )
-				data[j / 8] |= 1;
-			j++;
-		}
-	}
-	
-		/*
-	 * check we read 40 bits (8bit x 5 ) + verify checksum in the last byte
-	 * print it out if data is good
-	 */
-	if ( (j >= 40) &&
-	     (data[4] == ( (data[0] + data[1] + data[2] + data[3]) & 0xFF) ) )
-	{
-		float h = (float)((data[0] << 8) + data[1]) / 10;
-		if ( h > 100 )
-		{
-			h = data[0];	// for DHT11
-		}
-		float c = (float)(((data[2] & 0x7F) << 8) + data[3]) / 10;
-		if ( c > 125 )
-		{
-			c = data[2];	// for DHT11
-		}
-		if ( data[2] & 0x80 )
-		{
-			c = -c;
-		}
-		float f = c * 1.8f + 32;
-		//printf( "Humidity = %.1f %% Temperature = %.1f *C (%.1f *F)\n", h, c, f );
-        temp = c;
-        QTextStream(stdout) << "\nyes " << c << " \n";
-	}else  {
-		//printf( "Data not good, skip\n" );
+    //[IMPLEMENT HERE]
+    QString directory = "/sys/bus/w1/devices/28-"+m_tempid.toUtf8();
+    QDir fileDir(directory);
+    QFile loadFile(fileDir.path()+"/w1_slave");
+    if(!loadFile.open(QIODevice::ReadOnly)){
+        QTextStream(stdout) << "Couldn't open file\n";
+    }
+    QString data(loadFile.readAll());
+    if(data.contains("YES")){
+        QTextStream(stdout) << "YES!\n";
+        temp = QString(data.section("=",2,3)).toFloat() / 1000;
+        QTextStream(stdout) << "temp is : " << temp <<"\n";
+    }
+    else {
+        QTextStream(stdout) << "NO :'(!\n";
         temp = ambientTemp;
-        QTextStream(stdout) << "\nno good " << " \n";
-	}
+    }
     //[IMPLEMENT HERE]
     return temp;
 }
@@ -194,8 +151,19 @@ void Thermostat::setPinState()
         m_dhtPin = 0;
         setting.setValue("pins/dhtpin",m_dhtPin);
     }
+    //temperature id
+    if(setting.contains("tempid")){
+        m_tempid = setting.value("tempid").toString();
+    }
+    else {
+        m_tempid = "02089246f320";
+        setting.setValue("tempid",m_tempid);
+    }
     //set pin input/output
     //here
+    pinMode( m_fanPin, OUTPUT );
+    pinMode( m_heaterPin, OUTPUT );
+    pinMode( m_coolerPin, OUTPUT );
 }
 
 void Thermostat::setUuids()
