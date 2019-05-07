@@ -291,6 +291,8 @@ QJsonObject UserController::editUser(QJsonObject json, int userID)
 
         QJsonObject error = user.update(userID,user.mUsers.at(0).email,QString::fromUtf8(passHash.result().toHex()),jsonObject["name"].toString());
         errorArray.append(error);
+        Log log(&db);
+        log.create(user.mUsers.at(0).userID,"User with email "+user.mUsers.at(0).email+" has been edited");
     }
     response["error"] = errorArray;
     response["notification"] = notificationArray;
@@ -409,7 +411,7 @@ QJsonObject UserController::deleteControlDevice(QJsonObject json, int userID)
             QJsonObject jsonObject = jsonArray.at(i).toObject();
             QJsonObject error = theDevice.read("ControlDevice.controlDeviceID=UuidToBin('"+jsonObject["controlDeviceID"].toString()+"')");
             errorArray.append(error);
-            if((theDevice.mControlDevices.size()!=1) || (theDevice.mControlDevices.at(i).userID != userID)){
+            if((theDevice.mControlDevices.size()!=1) || (theDevice.mControlDevices.at(0).userID != userID)){
                 QJsonObject error,notification;
                 error["error"] = "no object information to delete";
                 error["errorCode"] = "6";
@@ -421,6 +423,8 @@ QJsonObject UserController::deleteControlDevice(QJsonObject json, int userID)
             else {
                 QJsonObject error = theDevice.deletes("ControlDevice.controlDeviceID=UuidToBin('"+jsonObject["controlDeviceID"].toString()+"')");
                 errorArray.append(error);
+                Log log(&db);
+                log.create(userID,"Control Device "+theDevice.mControlDevices.at(0).controlDeviceName+" (ID : "+theDevice.mControlDevices.at(0).controlDeviceID.toString(QUuid::WithoutBraces)+")has been deleted");
                 emit deletedControlDevice(QUuid::fromString(jsonObject["controlDeviceID"].toString()));
             }
         }

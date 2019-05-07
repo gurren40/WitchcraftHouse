@@ -1,6 +1,7 @@
 #include "sharedcontroller.h"
 #include "Entity/user.h"
 #include "Entity/pin.h"
+#include "Entity/log.h"
 
 SharedController::SharedController(QObject *parent) : QObject(parent)
 {
@@ -44,6 +45,8 @@ QJsonObject SharedController::createNewShared(QJsonObject json, int userID)
                 QString sharedName = jsonObject["sharedName"].toString();
                 QString description = jsonObject["description"].toString(" ");
                 error = shared.create(sharedBy,sharedTo,groupID,sharedName,description);
+                Log log(&db);
+                log.create(userID,"Shared "+jsonObject["sharedName"].toString()+" has been created");
             }
             else {
                 error["error"] = "email "+json["sharedTo"].toString()+" is not valid";
@@ -96,6 +99,8 @@ QJsonObject SharedController::editShared(QJsonObject json, int userID)
                     QString sharedName = jsonObject["sharedName"].toString();
                     QString description = jsonObject["description"].toString(" ");
                     error = shared.update(sharedID,sharedBy,sharedTo,groupID,sharedName,description);
+                    Log log(&db);
+                    log.create(userID,"Shared "+jsonObject["sharedName"].toString()+" has been edited");
                 }
                 else {
                     error["error"] = "email "+json["sharedTo"].toString()+" is not valid";
@@ -143,6 +148,8 @@ QJsonObject SharedController::deleteShared(QJsonObject json, int userID)
             }
             else {
                 error = shared.deletes("sharedID='"+QString::number(sharedID)+"'");
+                Log log(&db);
+                log.create(userID,"Shared "+shared.mShareds.at(0).sharedName+" has been deleted");
             }
             errorArray.append(error);
             notificationArray.append(notificationArray);

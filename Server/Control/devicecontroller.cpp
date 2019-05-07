@@ -1,4 +1,5 @@
 #include "devicecontroller.h"
+#include "Entity/log.h"
 
 DeviceController::DeviceController(QObject *parent) : QObject(parent)
 {
@@ -122,6 +123,8 @@ QJsonObject DeviceController::createNewDevice(QJsonObject json, int userID)
 
                 if(error["error"].toString() == "0"){
                     emit sendMail(jsonObject["email"].toString(),title,body);
+                    Log log(&db);
+                    log.create(userID,"Device "+jsonObject["deviceName"].toString()+" has been created");
                 }
                 errorArray.append(error);
                 notificationArray.append(notification);
@@ -165,6 +168,8 @@ QJsonObject DeviceController::createNewGroup(QJsonObject json, int userID)
             QJsonObject jsonObject = jsonArray.at(i).toObject();
             QJsonObject error = newGroup.create(userID,jsonObject["iconID"].toInt(),jsonObject["groupName"].toString(),jsonObject["description"].toString());
             errorArray.append(error);
+            Log log(&db);
+            log.create(userID,"Group "+jsonObject["groupName"].toString()+" has been created");
         }
     }
     response["notification"] = notificationArray;
@@ -195,6 +200,8 @@ QJsonObject DeviceController::createNewPin(QJsonObject json, int userID)
             QUuid newUUID = QUuid::createUuid();
             QJsonObject error = newPin.create(newUUID,userID,jsonObject["groupID"].toInt(),jsonObject["deviceID"].toInt(),jsonObject["iconID"].toInt(),jsonObject["pinTypeID"].toInt(),jsonObject["pinName"].toString(),jsonObject["value"].toString("0"),jsonObject["option"].toString(""),jsonObject["description"].toString(""));
             errorArray.append(error);
+            Log log(&db);
+            log.create(userID,"Pin "+jsonObject["pinName"].toString()+" has been created");
         }
     }
     response["error"] = errorArray;
@@ -225,6 +232,8 @@ QJsonObject DeviceController::editDevice(QJsonObject json, int userID)
             if(device.mDevices.size()==1){
                 error = device.update(jsonObject["deviceID"].toInt(),QUuid::fromString(jsonObject["deviceUUID"].toString()),userID,jsonObject["deviceName"].toString(),device.mDevices.at(0).deviceToken,device.mDevices.at(0).isDeviceOnline,jsonObject["description"].toString());
                 errorArray.append(error);
+                Log log(&db);
+                log.create(userID,"Device "+jsonObject["deviceName"].toString()+" has been edited");
             }
         }
     }
@@ -254,6 +263,8 @@ QJsonObject DeviceController::editGroup(QJsonObject json, int userID)
             QJsonObject error = group.read("Groups.groupID='"+QString::number(jsonObject["groupID"].toInt())+"'");
             if(group.mGroups.size() == 1){
                 error = group.update(jsonObject["groupID"].toInt(),userID,jsonObject["iconID"].toInt(),jsonObject["groupName"].toString(),jsonObject["description"].toString());
+                Log log(&db);
+                log.create(userID,"Group "+jsonObject["groupName"].toString()+" has been edited");
             }
             errorArray.append(error);
         }
@@ -286,6 +297,8 @@ QJsonObject DeviceController::editPin(QJsonObject json, int userID)
             if(pin.mPins.size() == 1){
                 //error = pin.update(pin.mPins.at(0).pinID,pin.mPins.at(0).UUID,userID,jsonObject["groupID"].toInt(),jsonObject["deviceID"].toInt(),jsonObject["iconID"].toInt(),jsonObject["pinTypeID"].toInt(),jsonObject["pinName"].toString(),pin.mPins.at(0).value,jsonObject["option"].toString(),jsonObject["description"].toString());
                 error = pin.update(pin.mPins.at(0).pinID,pin.mPins.at(0).UUID,userID,jsonObject["groupID"].toInt(),jsonObject["deviceID"].toInt(),jsonObject["iconID"].toInt(),jsonObject["pinTypeID"].toInt(),jsonObject["pinName"].toString(),jsonObject["value"].toString(),jsonObject["option"].toString(),jsonObject["description"].toString());
+                Log log(&db);
+                log.create(userID,"Pin "+jsonObject["pinName"].toString()+" has been edited");
             }
             errorArray.append(error);
         }
@@ -337,6 +350,8 @@ QJsonObject DeviceController::deleteDevice(QJsonObject json, int userID)
                 emit deletedDevice(device.mDevices.at(i).deviceUUID);
                 //[ERROR]
                 error1 = device.deletes("deviceID='"+QString::number(device.mDevices.at(0).deviceID)+"'");
+                Log log(&db);
+                log.create(userID,"Device "+device.mDevices.at(0).deviceName+" has been deleted");
             }
             errorArray.append(error1);
         }
@@ -386,6 +401,8 @@ QJsonObject DeviceController::deleteGroup(QJsonObject json, int userID)
                 //delete group
                 emit deletedGroup(jsonObject["groupID"].toInt(),userID);
                 error1 = group.deletes("groupID='"+QString::number(group.mGroups.at(0).groupID)+"'");
+                Log log(&db);
+                log.create(userID,"Group "+group.mGroups.at(0).groupName+" has been deleted");
             }
             errorArray.append(error1);
         }
@@ -418,6 +435,8 @@ QJsonObject DeviceController::deletePin(QJsonObject json, int userID)
             if(pin.mPins.size() == 1){
                 error = pin.deletes("UUID=UuidToBin('"+UUID.toString(QUuid::WithoutBraces)+"')");
                 emit deletedPin(UUID,userID);
+                Log log(&db);
+                log.create(userID,"Pin "+pin.mPins.at(0).pinName+" has been deleted");
             }
             errorArray.append(error);
         }

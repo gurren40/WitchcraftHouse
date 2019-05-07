@@ -1,6 +1,7 @@
 #include "schedulecontroller.h"
 
 #include "Entity/pin.h"
+#include "Entity/log.h"
 
 ScheduleController::ScheduleController(QObject *parent) : QObject(parent)
 {
@@ -51,6 +52,8 @@ QJsonObject ScheduleController::createNewSchedule(QJsonObject json, int userID)
             QString cronSyntax = minute+" "+hour+" "+dayOfMonth+" "+month+" "+dayOfWeek+" *";
             emit createNewCron(scheduleUUID,cronSyntax,UUID,value,userID);
             errorArray.append(error);
+            Log log(&db);
+            log.create(userID,"Schedule "+jsonObject["scheduleName"].toString()+" has been created");
         }
     }
 
@@ -102,6 +105,8 @@ QJsonObject ScheduleController::editSchedule(QJsonObject json, int userID)
                 error = schedule.update(scheduleID,userID,pinID,scheduleName,minute,hour,dayOfMonth,month,dayOfWeek,timeZone,value,description);
                 QString cronSyntax = minute+" "+hour+" "+dayOfMonth+" "+month+" "+dayOfWeek+" *";
                 emit editCron(schedule.mSchedules.at(0).scheduleUUID,cronSyntax,UUID,value,userID);
+                Log log(&db);
+                log.create(userID,"Schedule "+jsonObject["scheduleName"].toString()+" has been edited");
             }
             errorArray.append(error);
             notificationArray.append(notificationArray);
@@ -142,6 +147,8 @@ QJsonObject ScheduleController::deleteSchedule(QJsonObject json, int userID)
             }
             else {
                 error = schedule.deletes("scheduleID='"+QString::number(scheduleID)+"'");
+                Log log(&db);
+                log.create(userID,"Schedule "+schedule.mSchedules.at(0).scheduleName+" has been deleted");
                 emit deleteCron(schedule.mSchedules.at(0).scheduleUUID);
             }
             errorArray.append(error);
