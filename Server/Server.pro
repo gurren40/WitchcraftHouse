@@ -19,6 +19,7 @@ include(Library/SimpleSmtp/simplesmtp.pri)
 include(Library/qcron-master/src/qcron.pri)
 
 SOURCES += \
+    Entity/pinlog.cpp \
         main.cpp \
     Entity/user.cpp \
     Entity/group.cpp \
@@ -44,6 +45,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    Entity/pinlog.h \
     Entity/user.h \
     Entity/group.h \
     Entity/device.h \
