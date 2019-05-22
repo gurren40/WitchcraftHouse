@@ -109,5 +109,6 @@
         <file>icons/witchcraft/24x24S/plus.svg</file>
         <file>icons/witchcraft/navigation/plus.svg</file>
         <file>icons/witchcraft/24x24S/witchcraft.svg</file>
+        <file>icons/witchcraft/24x24S/download.svg</file>
     </qresource>
 </RCC>

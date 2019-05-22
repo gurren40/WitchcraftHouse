@@ -67,6 +67,12 @@ void Client::fromServer(QVariant jvar)
     if(json.contains("controlDeviceList")){
         m_controlDeviceList->setControlDeviceList(json);
     }
+    if(json.contains("activityLogList")){
+        m_logList->setLogList(json);
+    }
+    if(json.contains("pinLogList")){
+        m_logList->setPinLogList(json);
+    }
 }
 
 void Client::setIsOnline(bool value)
@@ -86,6 +92,11 @@ QJsonObject Client::variantToJson(QVariant jvar)
     QJsonDocument jdoc = QJsonDocument::fromJson(jvar.toByteArray());
     QJsonObject json = jdoc.object();
     return json;
+}
+
+void Client::setLogList(LogList *logList)
+{
+    m_logList = logList;
 }
 
 void Client::setSharedPinList(PinList *sharedPinList)

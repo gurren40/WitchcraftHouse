@@ -11,6 +11,7 @@
 #include "Entity/user.h"
 #include "Entity/group.h"
 #include "Entity/pin.h"
+#include "Entity/pinlog.h"
 #include "Library/QJsonWebToken/qjsonwebtoken.h"
 
 class DeviceController : public QObject

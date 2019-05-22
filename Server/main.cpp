@@ -31,6 +31,7 @@
 #include "Control/devicecontroller.h"
 #include "Control/schedulecontroller.h"
 #include "Control/sharedcontroller.h"
+#include "Control/logcontroller.h"
 
 bool insertIconData(QSqlDatabase *db){
     /*mItems.append({ 0, QStringLiteral("default") });
@@ -243,11 +244,13 @@ int main(int argc, char *argv[])
     DC->setSecret(secret);
     ScheduleController *SC = new ScheduleController(&db);
     SharedController *ShC = new SharedController(&db);
+    LogController *LC = new LogController(&db);
 
     server->setUC(UC);
     server->setDC(DC);
     server->setSC(SC);
     server->setShC(ShC);
+    server->setLC(LC);
 
 //    QThread *threadUC = new QThread;
 //    QThread *threadDC = new QThread;

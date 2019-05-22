@@ -389,6 +389,38 @@ void WebsocketServer::controlProcessTextMessage(QString message)
         QJsonDocument toSend(response);
         pClient->sendTextMessage(toSend.toJson());
     }
+
+    //logs
+    if(jsonObj.contains("getAllLog")){
+        QJsonObject response = m_LC->getAllLog(userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+    }
+    if(jsonObj.contains("getAllPinLog")){
+        QJsonObject response = m_LC->getAllPinLog(userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+    }
+    if(jsonObj.contains("getAllActivityLog")){
+        QJsonObject response = m_LC->getAllActivityLog(userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+    }
+    if(jsonObj.contains("deleteAllLog")){
+        QJsonObject response = m_LC->deleteAllLog(userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+    }
+    if(jsonObj.contains("deleteAllPinLog")){
+        QJsonObject response = m_LC->deleteAllPinLog(userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+    }
+    if(jsonObj.contains("deleteAllActivityLog")){
+        QJsonObject response = m_LC->deleteAllActivityLog(userID);
+        QJsonDocument toSend(response);
+        pClient->sendTextMessage(toSend.toJson());
+    }
 }
 
 void WebsocketServer::controlProcessBinaryMessage(QByteArray message)
@@ -519,6 +551,11 @@ void WebsocketServer::deletedControlDevice(QUuid controlDeviceID)
 void WebsocketServer::setShC(SharedController *ShC)
 {
     m_ShC = ShC;
+}
+
+void WebsocketServer::setLC(LogController *LC)
+{
+    m_LC = LC;
 }
 
 void WebsocketServer::setSC(ScheduleController *SC)

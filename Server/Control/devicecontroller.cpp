@@ -644,6 +644,7 @@ QJsonObject DeviceController::settedPinValue(QJsonObject json, int userID)
     QHash<int,QJsonArray> sortedPinByUser;
     //Device device(&db);
     Pin pin(&db);
+    PinLog pinLog(&db);
     if(jsonArray.size()<1){
         QJsonObject error,notification;
         error["error"] = "there is no pin to set";
@@ -680,6 +681,7 @@ QJsonObject DeviceController::settedPinValue(QJsonObject json, int userID)
                     sortedPinByUser.insert(pin.mPins.at(0).userID,toHashArray);
                 }
                 QJsonObject error2 = pin.update(pin.mPins.at(0).pinID,pin.mPins.at(0).UUID,pin.mPins.at(0).userID,pin.mPins.at(0).groupID,pin.mPins.at(0).deviceID,pin.mPins.at(0).iconID,pin.mPins.at(0).pinTypeID,pin.mPins.at(0).pinName,pinObject["value"].toString(),pin.mPins.at(0).option,pin.mPins.at(0).description);
+                pinLog.create(userID,pin.mPins.at(0).pinID,pinObject["value"].toString(),"pin "+pin.mPins.at(0).pinName+" value is changed to "+pinObject["value"].toString()+" at "+QDateTime::currentDateTime().toString());
                 emit broadcastToShared(UUID,userID);
                 errorArray.append(error1);
                 errorArray.append(error2);

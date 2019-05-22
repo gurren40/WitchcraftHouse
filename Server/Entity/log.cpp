@@ -41,7 +41,7 @@ QJsonObject Log::read(QString wherequery)
     QJsonObject response;
     QSqlQuery query;
     bool ok;
-    QString textQuery = "SELECT Log.logID,Log.userID,Log.description,Log.timestamp,User.name FROM Log INNER JOIN User ON Log.userID = User.userID WHERE "+wherequery+";";
+    QString textQuery = "SELECT Log.logID,Log.userID,Log.description,Log.timestamp,User.name FROM Log INNER JOIN User ON Log.userID = User.userID WHERE "+wherequery+" ORDER BY Log.timestamp;";
     if(db.open()){
         QTextStream(stdout) << textQuery << "\n\n";
         ok = query.exec(textQuery);

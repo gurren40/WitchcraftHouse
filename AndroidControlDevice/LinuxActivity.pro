@@ -9,6 +9,10 @@ QT += widgets
 CONFIG += c++11
 
 HEADERS += \
+    lists/loglist.h \
+    lists/loglistview.h \
+    lists/logstructs.h \
+    models/logviewmodel.h \
     runtime/client.h \
     models/pinmodel.h \
     lists/pinlist.h \
@@ -30,6 +34,9 @@ HEADERS += \
     linuxFunctions/externalfunctions.h
 
 SOURCES += runtime/client.cpp \
+    lists/loglist.cpp \
+    lists/loglistview.cpp \
+    models/logviewmodel.cpp \
     models/pinmodel.cpp \
     lists/pinlist.cpp \
     models/devicemodel.cpp \

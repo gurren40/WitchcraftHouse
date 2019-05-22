@@ -215,6 +215,7 @@ ApplicationWindow {
                     ListElement { icon : "chevron_right"; title: "Schedule"; source: "./list/ScheduleList.qml" }
                     ListElement { icon : "chevron_right"; title: "Shared List"; source: "./list/SharedList.qml" }
                     ListElement { icon : "chevron_right"; title: "Control Device"; source: "./list/ControlDeviceList.qml" }
+                    ListElement { icon : "chevron_right"; title: "Log Book"; source: "./list/LogBook.qml" }
                     ListElement { icon : "chevron_right"; title: "Settings"; source: "./etc/settings.qml" }
                 }
 

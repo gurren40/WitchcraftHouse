@@ -40,7 +40,7 @@ QJsonObject PinLog::read(QString wherequery)
     QJsonObject response;
     QSqlQuery query;
     bool ok;
-    QString textQuery = "SELECT PinLog.pinLogID, PinLog.userID, PinLog.pinID, PinLog.value, PinLog.description, PinLog.timestamp,PinLog.timestamp,UuidFromBin(Pin.UUID),User.name,Pin.pinName,PinType.pinTypeID,PinType.pinTypeName FROM ((PinLog INNER JOIN Pin ON PinLog.pinID = Pin.pinID) LEFT JOIN User ON PinLog.userID = User.userID) LEFT JOIN PinType ON Pin.pinTypeID = PinType.pinTypeID WHERE "+wherequery+";";
+    QString textQuery = "SELECT PinLog.pinLogID, PinLog.userID, PinLog.pinID, PinLog.value, PinLog.description, PinLog.timestamp,PinLog.timestamp,UuidFromBin(Pin.UUID),User.name,Pin.pinName,PinType.pinTypeID,PinType.pinTypeName FROM ((PinLog INNER JOIN Pin ON PinLog.pinID = Pin.pinID) LEFT JOIN User ON PinLog.userID = User.userID) LEFT JOIN PinType ON Pin.pinTypeID = PinType.pinTypeID WHERE "+wherequery+" ORDER BY PinLog.timestamp;";
     if(db.open()){
         QTextStream(stdout) << textQuery << "\n\n";
         ok = query.exec(textQuery);

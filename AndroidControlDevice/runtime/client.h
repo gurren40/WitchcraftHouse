@@ -14,6 +14,7 @@
 #include "lists/schedulelist.h"
 #include "lists/sharedlist.h"
 #include "lists/controldevicelist.h"
+#include "lists/loglist.h"
 #include "objects/user.h"
 
 class Client : public QObject
@@ -43,6 +44,8 @@ public:
 
     void setSharedPinList(PinList *sharedPinList);
 
+    void setLogList(LogList *logList);
+
 signals:
 
 public slots:
@@ -61,6 +64,7 @@ private:
     SharedList *m_sharedList;
     PinList *m_sharedPinList;
     ControlDeviceList *m_controlDeviceList;
+    LogList *m_logList;
     User *m_user;
 };
 

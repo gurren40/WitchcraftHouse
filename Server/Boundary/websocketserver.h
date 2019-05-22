@@ -19,6 +19,7 @@
 #include "Control/devicecontroller.h"
 #include "Control/schedulecontroller.h"
 #include "Control/sharedcontroller.h"
+#include "Control/logcontroller.h"
 
 //cron scheduler
 #include "Boundary/cronscheduler.h"
@@ -35,6 +36,7 @@ public:
     void setDC(DeviceController *DC);
     void setSC(ScheduleController *SC);
     void setShC(SharedController *ShC);
+    void setLC(LogController *LC);
 
 signals:
     void closed();
@@ -88,6 +90,7 @@ private:
     DeviceController *m_DC;
     ScheduleController *m_SC;
     SharedController *m_ShC;
+    LogController *m_LC;
 
     //private function
     QString getPathWithoutQuery(QUrl url);

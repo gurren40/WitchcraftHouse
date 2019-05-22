@@ -23,5 +23,8 @@
         <file>qml/etc/settings.qml</file>
         <file>qml/etc/authentication.qml</file>
         <file>qml/etc/webview.qml</file>
+        <file>qml/list/LogBook.qml</file>
+        <file>qml/list/ActivityLog.qml</file>
+        <file>qml/list/PinLog.qml</file>
     </qresource>
 </RCC>
