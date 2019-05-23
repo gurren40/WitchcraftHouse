@@ -7,47 +7,52 @@ Page {
 
     ColumnLayout {
         id: column
-        spacing: 40
+        spacing: 10
         anchors.fill: parent
-        ListView{
-            id : listViewElement
+        ToolBar{
             Layout.fillWidth: true
-            Layout.fillHeight: true
-            header: ToolBar{
-                width: parent.width
-                RowLayout{
-                    anchors.fill: parent
-                    ToolButton{
-                        Layout.alignment: Qt.AlignLeft
-                        icon.name: "sync"
-                        onClicked: logList.getLogListData()
-                    }
-                    ToolButton{
-                        Layout.alignment: Qt.AlignLeft
-                        text: "Today"
-                        font.pixelSize: Qt.application.font.pixelSize
-                        onClicked: logList.getTodayLogList()
-                    }
-                    ToolButton{
-                        Layout.alignment: Qt.AlignLeft
-                        text: "Week"
-                        font.pixelSize: Qt.application.font.pixelSize
-                        onClicked: logList.getThisWeekLogList()
-                    }
-                    ToolButton{
-                        Layout.alignment: Qt.AlignLeft
-                        text: "Month"
-                        font.pixelSize: Qt.application.font.pixelSize
-                        onClicked: logList.getThisMonthLogList()
-                    }
-                    ToolButton{
-                        Layout.alignment: Qt.AlignLeft
-                        text: "Year"
-                        font.pixelSize: Qt.application.font.pixelSize
-                        onClicked: logList.getThisYearLogList()
-                    }
+            clip: true
+            RowLayout{
+                anchors.fill: parent
+                ToolButton{
+                    Layout.alignment: Qt.AlignLeft
+                    icon.name: "sync"
+                    onClicked: logList.getLogListData()
+                }
+                ToolButton{
+                    Layout.alignment: Qt.AlignLeft
+                    text: "Today"
+                    font.pixelSize: Qt.application.font.pixelSize
+                    onClicked: logList.getTodayLogList()
+                }
+                ToolButton{
+                    Layout.alignment: Qt.AlignLeft
+                    text: "Week"
+                    font.pixelSize: Qt.application.font.pixelSize
+                    onClicked: logList.getThisWeekLogList()
+                }
+                ToolButton{
+                    Layout.alignment: Qt.AlignLeft
+                    text: "Month"
+                    font.pixelSize: Qt.application.font.pixelSize
+                    onClicked: logList.getThisMonthLogList()
+                }
+                ToolButton{
+                    Layout.alignment: Qt.AlignLeft
+                    text: "Year"
+                    font.pixelSize: Qt.application.font.pixelSize
+                    onClicked: logList.getThisYearLogList()
+                }
+                Item {
+                    Layout.fillWidth: true
                 }
             }
+        }
+        ListView{
+            id : listViewElement
+            clip: true
+            Layout.fillWidth: true
+            Layout.fillHeight: true
             model: LogViewModel{
                 list: logListView
             }
