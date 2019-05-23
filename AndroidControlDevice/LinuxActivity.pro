@@ -12,7 +12,9 @@ HEADERS += \
     lists/loglist.h \
     lists/loglistview.h \
     lists/logstructs.h \
+    lists/pinloglistview.h \
     models/logviewmodel.h \
+    models/pinlogviewmodel.h \
     runtime/client.h \
     models/pinmodel.h \
     lists/pinlist.h \
@@ -36,7 +38,9 @@ HEADERS += \
 SOURCES += runtime/client.cpp \
     lists/loglist.cpp \
     lists/loglistview.cpp \
+    lists/pinloglistview.cpp \
     models/logviewmodel.cpp \
+    models/pinlogviewmodel.cpp \
     models/pinmodel.cpp \
     lists/pinlist.cpp \
     models/devicemodel.cpp \

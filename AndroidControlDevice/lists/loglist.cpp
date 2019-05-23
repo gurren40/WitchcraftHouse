@@ -24,10 +24,11 @@ void LogList::setLogList(QJsonObject json)
 
 void LogList::setPinLogList(QJsonObject json)
 {
-    QJsonArray jsonKeys = json["keys"].toArray();
+    QJsonObject jsonObj = json["pinLogList"].toObject();
+    QJsonArray jsonKeys = jsonObj["keys"].toArray();
     m_pinLogItems.clear();
     for (int i = 0;i<jsonKeys.size();i++) {
-        QJsonArray jsonArr = json[jsonKeys.at(i).toString()].toArray();
+        QJsonArray jsonArr = jsonObj[jsonKeys.at(i).toString()].toArray();
         m_pinLogItems.insert(jsonKeys.at(i).toString(),jsonArr);
     }
 }
@@ -144,7 +145,7 @@ void LogList::getTodayPinLogList(QString pinUUID)
             pinlog.userName = logOBj["userName"].toString();
             pinlog.pinID = logOBj["pinID"].toInt();
             pinlog.pinName = logOBj["pinName"].toString();
-            pinlog.pinUUID = QUuid::fromString(logOBj["pinUUID"].toString());
+            pinlog.pinUUID = logOBj["pinUUID"].toString();
             pinlog.pinTypeID = logOBj["pinTypeID"].toInt();
             pinlog.pinTypeName = logOBj["pinTypeName"].toString();
             pinlog.value = logOBj["value"].toString();
@@ -153,6 +154,7 @@ void LogList::getTodayPinLogList(QString pinUUID)
             pinloglist.append(pinlog);
         }
     }
+    m_pinloglistview->setPinLogItems(pinloglist);
 }
 
 void LogList::getThisWeekPinLogList(QString pinUUID)
@@ -171,7 +173,7 @@ void LogList::getThisWeekPinLogList(QString pinUUID)
                 pinlog.userName = logOBj["userName"].toString();
                 pinlog.pinID = logOBj["pinID"].toInt();
                 pinlog.pinName = logOBj["pinName"].toString();
-                pinlog.pinUUID = QUuid::fromString(logOBj["pinUUID"].toString());
+                pinlog.pinUUID = logOBj["pinUUID"].toString();
                 pinlog.pinTypeID = logOBj["pinTypeID"].toInt();
                 pinlog.pinTypeName = logOBj["pinTypeName"].toString();
                 pinlog.value = logOBj["value"].toString();
@@ -181,6 +183,7 @@ void LogList::getThisWeekPinLogList(QString pinUUID)
             }
         }
     }
+    m_pinloglistview->setPinLogItems(pinloglist);
 }
 
 void LogList::getThisMonthPinLogList(QString pinUUID)
@@ -199,7 +202,7 @@ void LogList::getThisMonthPinLogList(QString pinUUID)
                 pinlog.userName = logOBj["userName"].toString();
                 pinlog.pinID = logOBj["pinID"].toInt();
                 pinlog.pinName = logOBj["pinName"].toString();
-                pinlog.pinUUID = QUuid::fromString(logOBj["pinUUID"].toString());
+                pinlog.pinUUID = logOBj["pinUUID"].toString();
                 pinlog.pinTypeID = logOBj["pinTypeID"].toInt();
                 pinlog.pinTypeName = logOBj["pinTypeName"].toString();
                 pinlog.value = logOBj["value"].toString();
@@ -209,6 +212,7 @@ void LogList::getThisMonthPinLogList(QString pinUUID)
             }
         }
     }
+    m_pinloglistview->setPinLogItems(pinloglist);
 }
 
 void LogList::getThisYearPinLogList(QString pinUUID)
@@ -226,7 +230,7 @@ void LogList::getThisYearPinLogList(QString pinUUID)
             pinlog.userName = logOBj["userName"].toString();
             pinlog.pinID = logOBj["pinID"].toInt();
             pinlog.pinName = logOBj["pinName"].toString();
-            pinlog.pinUUID = QUuid::fromString(logOBj["pinUUID"].toString());
+            pinlog.pinUUID = logOBj["pinUUID"].toString();
             pinlog.pinTypeID = logOBj["pinTypeID"].toInt();
             pinlog.pinTypeName = logOBj["pinTypeName"].toString();
             pinlog.value = logOBj["value"].toString();
@@ -235,6 +239,7 @@ void LogList::getThisYearPinLogList(QString pinUUID)
             pinloglist.append(pinlog);
         }
     }
+    m_pinloglistview->setPinLogItems(pinloglist);
 }
 
 void LogList::getAllTimePinLogList(QString pinUUID)
@@ -250,7 +255,7 @@ void LogList::getAllTimePinLogList(QString pinUUID)
         pinlog.userName = logOBj["userName"].toString();
         pinlog.pinID = logOBj["pinID"].toInt();
         pinlog.pinName = logOBj["pinName"].toString();
-        pinlog.pinUUID = QUuid::fromString(logOBj["pinUUID"].toString());
+        pinlog.pinUUID = logOBj["pinUUID"].toString();
         pinlog.pinTypeID = logOBj["pinTypeID"].toInt();
         pinlog.pinTypeName = logOBj["pinTypeName"].toString();
         pinlog.value = logOBj["value"].toString();
@@ -258,6 +263,7 @@ void LogList::getAllTimePinLogList(QString pinUUID)
         pinlog.timeStamp = QDateTime::fromString(logOBj["timeStamp"].toString());
         pinloglist.append(pinlog);
     }
+    m_pinloglistview->setPinLogItems(pinloglist);
 }
 
 void LogList::setLoglistview(LogListView *loglistview)
@@ -277,6 +283,11 @@ QJsonObject LogList::variantToJson(QVariant jvar)
     QJsonDocument jdoc = QJsonDocument::fromJson(jvar.toByteArray());
     QJsonObject json = jdoc.object();
     return json;
+}
+
+void LogList::setPinloglistview(PinLogListView *pinloglistview)
+{
+    m_pinloglistview = pinloglistview;
 }
 
 void LogList::setRemote(RemoteReplica *remote)

@@ -14,6 +14,7 @@
 #include "rep_remote_replica.h"
 #include "logstructs.h"
 #include "loglistview.h"
+#include "pinloglistview.h"
 
 class LogList : public QObject
 {
@@ -28,6 +29,8 @@ public:
     void setLoglistview(LogListView *loglistview);
 
     void setRemote(RemoteReplica *remote);
+
+    void setPinloglistview(PinLogListView *pinloglistview);
 
 signals:
 
@@ -61,6 +64,7 @@ private:
     QVector<logItem> m_logItems;
     QMap<QString,QJsonArray> m_pinLogItems;
     LogListView *m_loglistview;
+    PinLogListView *m_pinloglistview;
     RemoteReplica *m_remote;
 };
 

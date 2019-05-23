@@ -18,7 +18,7 @@ struct pinLogItem{
     QString userName;
     int pinID;
     QString pinName;
-    QUuid pinUUID;
+    QString pinUUID;
     int pinTypeID;
     QString pinTypeName;
     QString value;

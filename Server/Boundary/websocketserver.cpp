@@ -400,6 +400,7 @@ void WebsocketServer::controlProcessTextMessage(QString message)
         QJsonObject response = m_LC->getAllPinLog(userID);
         QJsonDocument toSend(response);
         pClient->sendTextMessage(toSend.toJson());
+        QTextStream(stdout) << toSend.toJson() << "\n\n";
     }
     if(jsonObj.contains("getAllActivityLog")){
         QJsonObject response = m_LC->getAllActivityLog(userID);

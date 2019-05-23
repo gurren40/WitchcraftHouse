@@ -59,15 +59,15 @@ bool LogViewModel::setData(const QModelIndex &index, const QVariant &value, int 
         break;
 //        int userID;
     case userNameRole:
-        item.logID = value.toInt();
+        item.userName = value.toString();
         break;
 //        QString userName;
     case descriptionRole:
-        item.logID = value.toInt();
+        item.description = value.toString();
         break;
 //        QString description;
     case timeStampRole :
-        item.logID = value.toInt();
+        item.timeStamp = value.toDateTime();
         break;
 //        QDateTime timeStamp;
     }
