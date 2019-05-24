@@ -35,6 +35,13 @@
 #include "lists/iconlist.h"
 #include "lists/pintypelist.h"
 
+//logs
+#include "lists/loglist.h"
+#include "models/logviewmodel.h"
+#include "models/pinlogviewmodel.h"
+#include "lists/loglistview.h"
+#include "lists/pinloglistview.h"
+
 //platform specificfunctions
 #include "androidFunctions/externalfunctions.h"
 
@@ -69,6 +76,8 @@ int main(int argc, char *argv[])
     //non editable
     qmlRegisterType<IconModel>("Icon",1,0,"IconModel");
     qmlRegisterType<PinTypeModel>("PinType",1,0,"PinTypeModel");
+    qmlRegisterType<LogViewModel>("LogView",1,0,"LogViewModel");
+    qmlRegisterType<PinLogViewModel>("LogView",1,0,"PinLogViewModel");
 
     qmlRegisterUncreatableType<PinList>("Pin", 1, 0, "PinList",
         QStringLiteral("PinList should not be created in QML"));
@@ -87,6 +96,14 @@ int main(int argc, char *argv[])
         QStringLiteral("IconList should not be created in QML"));
     qmlRegisterUncreatableType<PinTypeList>("PinType", 1, 0, "PinTypeList",
         QStringLiteral("PinTypeList should not be created in QML"));
+    //logs
+    qmlRegisterUncreatableType<LogList>("LogView", 1, 0, "LogList",
+        QStringLiteral("LogView should not be created in QML"));
+    qmlRegisterUncreatableType<LogListView>("LogView", 1, 0, "LogListView",
+        QStringLiteral("LogListView should not be created in QML"));
+    qmlRegisterUncreatableType<PinLogListView>("LogView", 1, 0, "PinLogListView",
+        QStringLiteral("PinLogListView should not be created in QML"));
+
 
     //panggil remote object
     QRemoteObjectNode repNode;
@@ -115,6 +132,13 @@ int main(int argc, char *argv[])
     //inisialisasi non editable
     IconList iconList;
     PinTypeList pinTypeList;
+    //logs
+    LogListView logListView;
+    PinLogListView pinLogListView;
+    LogList logList;
+    logList.setRemote(rep.data());
+    logList.setLoglistview(&logListView);
+    logList.setPinloglistview(&pinLogListView);
 
     //inisialisasi client
     Client clientApp;
@@ -127,6 +151,7 @@ int main(int argc, char *argv[])
     clientApp.setSharedPinList(&sharedPinList);
     clientApp.setControlDeviceList(&controlDeviceList);
     clientApp.setUser(&user);
+    clientApp.setLogList(&logList);
 
     //inisialisasi list di qml engine
     QQmlApplicationEngine engine;
@@ -140,6 +165,11 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty(QStringLiteral("user"), &user);
     engine.rootContext()->setContextProperty(QStringLiteral("iconList"), &iconList);
     engine.rootContext()->setContextProperty(QStringLiteral("pinTypeList"), &pinTypeList);
+
+    //logs
+    engine.rootContext()->setContextProperty(QStringLiteral("logListView"), &logListView);
+    engine.rootContext()->setContextProperty(QStringLiteral("pinLogListView"), &pinLogListView);
+    engine.rootContext()->setContextProperty(QStringLiteral("logList"), &logList);
 
     engine.load(QUrl("qrc:/qml/main.qml"));
 

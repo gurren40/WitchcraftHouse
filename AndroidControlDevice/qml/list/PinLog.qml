@@ -146,6 +146,33 @@ Page {
             horizontalPadding: 15
             RowLayout{
                 anchors.fill: parent
+                ToolButton{
+                    Layout.alignment: Qt.AlignLeft
+                    text: "Hourly"
+                    font.pixelSize: Qt.application.font.pixelSize
+                    onClicked: {
+                        pinLogListView.datatype = 1
+                    }
+                }
+                ToolButton{
+                    Layout.alignment: Qt.AlignLeft
+                    text: "Mean"
+                    font.pixelSize: Qt.application.font.pixelSize
+                    onClicked: {
+                        pinLogListView.datatype = 0
+                    }
+                }
+                Item {
+                    Layout.fillWidth: true
+                }
+            }
+        }
+        ToolBar{
+            Layout.fillWidth: true
+            clip: true
+            horizontalPadding: 15
+            RowLayout{
+                anchors.fill: parent
                 ComboBox{
                     property string displayName : "Select Pin"
                     id : selectPin
@@ -181,31 +208,6 @@ Page {
                     onClicked: {
                         listViewElement.visible = false
                         lineSeriesElement.visible = true
-                    }
-                }
-                ToolButton{
-                    Layout.alignment: Qt.AlignLeft
-                    text: "|"
-                    font.pixelSize: Qt.application.font.pixelSize
-                    onClicked: {
-                        listViewElement.visible = false
-                        lineSeriesElement.visible = true
-                    }
-                }
-                ToolButton{
-                    Layout.alignment: Qt.AlignLeft
-                    text: "Hourly"
-                    font.pixelSize: Qt.application.font.pixelSize
-                    onClicked: {
-                        pinLogListView.datatype = 1
-                    }
-                }
-                ToolButton{
-                    Layout.alignment: Qt.AlignLeft
-                    text: "Mean"
-                    font.pixelSize: Qt.application.font.pixelSize
-                    onClicked: {
-                        pinLogListView.datatype = 0
                     }
                 }
             }
@@ -259,105 +261,120 @@ Page {
                 Layout.fillWidth: true
                 visible: !(yearly.visible || monthly.visible || weekly.visible)
             }
-            ChartView {
-                id : yearly
-                clip: true
-                visible: false
-                title: "Line"
+            ScrollView{
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                //antialiasing: true
+                contentWidth: width
+                contentHeight: (height > 300) ? height : 300
+                ScrollBar.vertical.interactive: true
+                clip: true
+                Column{
+                    id : chartColumn
+                    spacing: 15
+                    height : (parent.height > 300) ? parent.height : 300
+                    width: parent.width
+                    clip: true
+                    ChartView {
+                        id : yearly
+                        clip: true
+                        visible: false
+                        title: "Line"
+                        width: parent.width
+                        height: (parent.height > 300) ? parent.height : 300
+                        //antialiasing: true
 
-                BarSeries {
-                    //id : yearly
-                    //visible: false
-                    name: "Coba series"
-                    axisX: BarCategoryAxis {categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ]}
-                    axisY: ValueAxis {    //  <- custom ValueAxis attached to the y-axis
-                        id: yearlyValueAxis
-                    }
-                    BarSet{
-                        id : yearlyBarSet
-                        label: "This Year"
-                        values: [1,2,3,4,5,6,7,8,9,10,11,12]
-                        function setAxisValue(){
-                            var max = 0;
-                            for(var i = 0; i<values.length;i++){
-                                if(max < values[i]){
-                                    max = values[i];
-                                }
-                                if(max > 0){
-                                    yearlyValueAxis.max = max;
+                        BarSeries {
+                            //id : yearly
+                            //visible: false
+                            name: "Coba series"
+                            axisX: BarCategoryAxis {categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ]}
+                            axisY: ValueAxis {    //  <- custom ValueAxis attached to the y-axis
+                                id: yearlyValueAxis
+                            }
+                            BarSet{
+                                id : yearlyBarSet
+                                label: "This Year"
+                                values: [1,2,3,4,5,6,7,8,9,10,11,12]
+                                function setAxisValue(){
+                                    var max = 0;
+                                    for(var i = 0; i<values.length;i++){
+                                        if(max < values[i]){
+                                            max = values[i];
+                                        }
+                                        if(max > 0){
+                                            yearlyValueAxis.max = max;
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
-                }
-            }
-            ChartView {
-                id : monthly
-                clip: true
-                visible: false
-                title: "Line"
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                //antialiasing: true
+                    ChartView {
+                        id : monthly
+                        clip: true
+                        visible: false
+                        title: "Line"
+                        width: parent.width
+                        height: (parent.height > 300) ? parent.height : 300
+                        //antialiasing: true
 
 
-                BarSeries {
-                    //id : monthly
-                    //visible: false
-                    name: "Coba series"
-                    axisX: BarCategoryAxis { categories: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" ]}
-                    axisY: ValueAxis {    //  <- custom ValueAxis attached to the y-axis
-                        id: monthlyValueAxis
-                    }
-                    BarSet{
-                        id : monthlyBarSet
-                        label: "This Month"
-                        values: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
-                        function setAxisValue(){
-                            var max = 0;
-                            for(var i = 0; i<values.length;i++){
-                                if(max < values[i]){
-                                    max = values[i];
-                                }
-                                if(max > 0){
-                                    monthlyValueAxis.max = max;
+                        BarSeries {
+                            //id : monthly
+                            //visible: false
+                            name: "Coba series"
+                            axisX: BarCategoryAxis { categories: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" ]}
+                            axisY: ValueAxis {    //  <- custom ValueAxis attached to the y-axis
+                                id: monthlyValueAxis
+                            }
+                            BarSet{
+                                id : monthlyBarSet
+                                label: "This Month"
+                                values: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
+                                function setAxisValue(){
+                                    var max = 0;
+                                    for(var i = 0; i<values.length;i++){
+                                        if(max < values[i]){
+                                            max = values[i];
+                                        }
+                                        if(max > 0){
+                                            monthlyValueAxis.max = max;
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
-                }
-            }
-            ChartView {
-                id : weekly
-                clip: true
-                visible: false
-                title: "Line"
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                //antialiasing: true
-                BarSeries {
-                    //id : weekly
-                    //visible: false
-                    name: "Coba series"
-                    axisX: BarCategoryAxis {categories: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]}
-                    axisY: ValueAxis {    //  <- custom ValueAxis attached to the y-axis
-                        id: weeklyValueAxis
-                    }
-                    BarSet{
-                        id : weeklyBarSet
-                        label: "This Week"
-                        values: [1,2,3,4,5,6,7]
-                        function setAxisValue(){
-                            var max = 0;
-                            for(var i = 0; i<values.length;i++){
-                                if(max < values[i]){
-                                    max = values[i];
-                                }
-                                if(max > 0){
-                                    weeklyValueAxis.max = max;
+                    ChartView {
+                        id : weekly
+                        clip: true
+                        visible: false
+                        title: "Line"
+                        width: parent.width
+                        height: (parent.height > 300) ? parent.height : 300
+                        //antialiasing: true
+                        BarSeries {
+                            //id : weekly
+                            //visible: false
+                            name: "Coba series"
+                            axisX: BarCategoryAxis {categories: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]}
+                            axisY: ValueAxis {    //  <- custom ValueAxis attached to the y-axis
+                                id: weeklyValueAxis
+                            }
+                            BarSet{
+                                id : weeklyBarSet
+                                label: "This Week"
+                                values: [1,2,3,4,5,6,7]
+                                function setAxisValue(){
+                                    var max = 0;
+                                    for(var i = 0; i<values.length;i++){
+                                        if(max < values[i]){
+                                            max = values[i];
+                                        }
+                                        if(max > 0){
+                                            weeklyValueAxis.max = max;
+                                        }
+                                    }
                                 }
                             }
                         }

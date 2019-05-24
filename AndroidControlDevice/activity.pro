@@ -10,6 +10,12 @@ QT += widgets
 CONFIG += c++11
 
 HEADERS += \
+    lists/loglist.h \
+    lists/loglistview.h \
+    lists/logstructs.h \
+    lists/pinloglistview.h \
+    models/logviewmodel.h \
+    models/pinlogviewmodel.h \
     runtime/client.h \
 #    objects/device.h \
 #    objects/group.h \
@@ -37,6 +43,11 @@ HEADERS += \
 
 SOURCES += activity.cpp \
     runtime/client.cpp \
+    lists/loglist.cpp \
+    lists/loglistview.cpp \
+    lists/pinloglistview.cpp \
+    models/logviewmodel.cpp \
+    models/pinlogviewmodel.cpp \
 #    objects/device.cpp \
 #    objects/group.cpp \
 #    objects/pin.cpp \
