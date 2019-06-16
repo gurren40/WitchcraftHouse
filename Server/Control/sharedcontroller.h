@@ -8,6 +8,9 @@
 #include <QSqlDatabase>
 
 #include "Entity/shared.h"
+#include "Entity/user.h"
+#include "Entity/pin.h"
+#include "Entity/log.h"
 
 class SharedController : public QObject
 {

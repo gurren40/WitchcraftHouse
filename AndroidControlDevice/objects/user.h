@@ -17,6 +17,8 @@ class User : public QObject
     Q_PROPERTY(bool isTokenExpired READ isTokenExpired NOTIFY isTokenExpiredSig)
     Q_PROPERTY(bool isLoggedIn READ isLoggedIn NOTIFY isLoggedInSig)
     Q_PROPERTY(QString serverDomain READ serverDomain WRITE setServerDomain NOTIFY serverDomainSig)
+    Q_PROPERTY(QString localDomain READ localDomain WRITE setLocalDomain NOTIFY localDomainSig)
+    Q_PROPERTY(bool isLocalDomain READ isLocalDomain WRITE setIsLocalDomain NOTIFY isLocalDomainSig)
     Q_PROPERTY(QString email READ email WRITE setEmail NOTIFY emailSig)
     Q_PROPERTY(QString thisDeviceModel READ thisDeviceModel)
     Q_PROPERTY(QString name READ getName WRITE setName NOTIFY nameSig)
@@ -32,7 +34,9 @@ public:
     bool isOnline() const;
     bool isTokenExpired() const;
     bool isLoggedIn();
+    bool isLocalDomain();
     QString serverDomain();
+    QString localDomain();
     QString email();
     QString thisDeviceModel();
     QString getJwt();
@@ -62,7 +66,9 @@ signals:
     void isOnlineSig();
     void isTokenExpiredSig();
     void isLoggedInSig();
+    void isLocalDomainSig();
     void serverDomainSig();
+    void localDomainSig();
     void emailSig();
     void nameSig();
     void darkThemeSig();
@@ -76,6 +82,8 @@ public slots:
     void setIsTokenExpired(bool isTokenExpired);
 //    void setIsLoggedIn(bool isLoggedIn);
     void setServerDomain(const QString &serverDomain);
+    void setLocalDomain(const QString &localDomain);
+    void setIsLocalDomain(bool value);
     void setEmail(const QString &email);
     void getUserInfo();
     void requestLoginToken(QVariant email, QVariant password);

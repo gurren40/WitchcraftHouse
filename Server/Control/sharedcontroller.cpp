@@ -1,7 +1,4 @@
 #include "sharedcontroller.h"
-#include "Entity/user.h"
-#include "Entity/pin.h"
-#include "Entity/log.h"
 
 SharedController::SharedController(QObject *parent) : QObject(parent)
 {

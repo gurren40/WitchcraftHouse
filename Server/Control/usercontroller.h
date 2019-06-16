@@ -16,6 +16,11 @@
 #include "Entity/controlldevice.h"
 #include "Entity/log.h"
 
+//controll
+#include "Control/devicecontroller.h"
+#include "Control/schedulecontroller.h"
+#include "Control/sharedcontroller.h"
+
 class UserController : public QObject
 {
     Q_OBJECT

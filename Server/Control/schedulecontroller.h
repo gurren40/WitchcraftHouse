@@ -8,6 +8,8 @@
 #include <QSqlDatabase>
 
 #include "Entity/schedule.h"
+#include "Entity/pin.h"
+#include "Entity/log.h"
 
 class ScheduleController : public QObject
 {

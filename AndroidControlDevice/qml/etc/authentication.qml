@@ -25,6 +25,13 @@ Page {
                     onClicked : serverDialog.open()
                 }
                 ItemDelegate{
+                    id: localDomainDelegate
+                    text: "Local Domain"
+                    icon.name: "chevron_right"
+                    width: parent.width
+                    onClicked : localDialog.open()
+                }
+                ItemDelegate{
                     enabled: !user.isLoggedIn
                     id: loginDelegate
                     text: "Login"
@@ -65,6 +72,24 @@ Page {
                     width: parent.width
                     text: user.serverDomain
                     placeholderText: "Server Domain"
+                }
+            }
+
+            Dialog{
+                id: localDialog
+                title: "Local Domain"
+                modal: true
+                anchors.centerIn: parent
+                standardButtons: Dialog.Ok | Dialog.Cancel
+                onAccepted: user.localDomain = localDomain.text
+                onRejected: console.log("Cancel clicked")
+                width: parent.width * 0.7
+                contentWidth: -1
+                contentItem: TextField{
+                    id:localDomain
+                    width: parent.width
+                    text: user.localDomain
+                    placeholderText: "Local Domain"
                 }
             }
 

@@ -1,8 +1,5 @@
 #include "schedulecontroller.h"
 
-#include "Entity/pin.h"
-#include "Entity/log.h"
-
 ScheduleController::ScheduleController(QObject *parent) : QObject(parent)
 {
 

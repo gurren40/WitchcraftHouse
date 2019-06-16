@@ -1,7 +1,4 @@
 #include "usercontroller.h"
-#include "Control/devicecontroller.h"
-#include "Control/schedulecontroller.h"
-#include "Control/sharedcontroller.h"
 
 UserController::UserController(QObject *parent) : QObject(parent)
 {

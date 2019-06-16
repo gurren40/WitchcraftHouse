@@ -60,29 +60,56 @@ void Connection::onTextMessageReceived(QString message)
 void Connection::connectAuth()
 {
     QSettings setting;
-    if(!setting.contains("serverDomain")){
-        onDisconnected();
+    if(!setting.value("isLocalDomain").toBool()){
+        if(!setting.contains("serverDomain")){
+            onDisconnected();
+        }
+        else {
+            QUrl url(setting.value("serverDomain").toString() + "/authentication");
+            QNetworkRequest request(url);
+            qDebug() << "WebSocket server authentication:" << url;
+            m_websocket->open(request);
+        }
     }
-    else {
-        QUrl url(setting.value("serverDomain").toString() + "/authentication");
-        QNetworkRequest request(url);
-        qDebug() << "WebSocket server authentication:" << url;
-        m_websocket->open(request);
+    else{
+        if(!setting.contains("localDomain")){
+            onDisconnected();
+        }
+        else {
+            QUrl url(setting.value("localDomain").toString() + "/authentication");
+            QNetworkRequest request(url);
+            qDebug() << "WebSocket server authentication:" << url;
+            m_websocket->open(request);
+        }
     }
 }
 
 void Connection::connectControl()
 {
     QSettings setting;
-    if(!setting.contains("serverDomain")){
-        onDisconnected();
+    if(!setting.value("isLocalDomain").toBool()){
+        if(!setting.contains("serverDomain")){
+            onDisconnected();
+        }
+        else {
+            QUrl url(setting.value("serverDomain").toString() + "/control");
+            QNetworkRequest request(url);
+            request.setRawHeader("jwt",setting.value("jwt").toString().toUtf8());
+            qDebug() << "WebSocket server authentication:" << url;
+            m_websocket->open(request);
+        }
     }
     else {
-        QUrl url(setting.value("serverDomain").toString() + "/control");
-        QNetworkRequest request(url);
-        request.setRawHeader("jwt",setting.value("jwt").toString().toUtf8());
-        qDebug() << "WebSocket server authentication:" << url;
-        m_websocket->open(request);
+        if(!setting.contains("localDomain")){
+            onDisconnected();
+        }
+        else {
+            QUrl url(setting.value("localDomain").toString() + "/control");
+            QNetworkRequest request(url);
+            request.setRawHeader("jwt",setting.value("jwt").toString().toUtf8());
+            qDebug() << "WebSocket server authentication:" << url;
+            m_websocket->open(request);
+        }
     }
 }
 

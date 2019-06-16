@@ -1,5 +1,4 @@
 #include "devicecontroller.h"
-#include "Entity/log.h"
 
 DeviceController::DeviceController(QObject *parent) : QObject(parent)
 {

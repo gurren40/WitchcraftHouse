@@ -39,6 +39,18 @@ bool User::isLoggedIn()
     return m_isLoggedIn;
 }
 
+bool User::isLocalDomain()
+{
+    QSettings setting;
+    if(setting.contains("isLocalDomain")){
+        return setting.value("isLocalDomain").toBool();
+    }
+    else{
+        setting.setValue("isLocalDomain",false);
+        return setting.value("isLocalDomain").toBool();
+    }
+}
+
 QString User::email()
 {
     QSettings setting;
@@ -79,11 +91,37 @@ QString User::serverDomain()
     }
 }
 
+QString User::localDomain()
+{
+    QSettings setting;
+    if(setting.contains("localDomain")){
+        return setting.value("localDomain").toString();
+    }
+    else{
+        return "Not Set";
+    }
+}
+
 void User::setServerDomain(const QString &serverDomain)
 {
     QSettings setting;
     setting.setValue("serverDomain",serverDomain);
     emit serverDomainSig();
+}
+
+void User::setLocalDomain(const QString &localDomain)
+{
+    QSettings setting;
+    setting.setValue("localDomain",localDomain);
+    emit localDomainSig();
+}
+
+void User::setIsLocalDomain(bool value)
+{
+    QSettings setting;
+    setting.setValue("isLocalDomain",value);
+    emit isLocalDomainSig();
+    m_remote->reconnect();
 }
 
 QString User::thisDeviceModel()

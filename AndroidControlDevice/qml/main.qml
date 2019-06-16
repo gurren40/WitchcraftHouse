@@ -219,13 +219,23 @@ ApplicationWindow {
                     ListElement { icon : "chevron_right"; title: "Settings"; source: "./etc/settings.qml" }
                 }
 
-                footer: ItemDelegate{
-                    id : exitDelegate
+                footer: Column{
                     width: parent.width
-                    text: "Exit"
-                    icon.name: "power"
-                    icon.color: "red"
-                    onClicked: Qt.quit()
+                    SwitchDelegate{
+                        icon.name: "default"
+                        width: parent.width
+                        text: qsTr("Local Network")
+                        checked: user.isLocalDomain
+                        onClicked: user.isLocalDomain = checked
+                    }
+                    ItemDelegate{
+                        id : exitDelegate
+                        width: parent.width
+                        text: "Exit"
+                        icon.name: "power"
+                        icon.color: "red"
+                        onClicked: Qt.quit()
+                    }
                 }
             }
         }
