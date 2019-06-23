@@ -111,7 +111,7 @@ void PinList::setPinList(QJsonObject json, bool isShared)
     //const int jsonSize = jsonArray.size();
     for(int i=0;i<mItems.size();i++){
         QJsonObject jsonItem = jsonArray.at(i).toObject();
-        PinItem item;
+        PinItem item = mItems.at(i);
         item.UUID = jsonItem["UUID"].toString();
         item.pinID = jsonItem["pinID"].toInt();
         item.value = jsonItem["value"].toString();
@@ -129,8 +129,8 @@ void PinList::setPinList(QJsonObject json, bool isShared)
         item.description = jsonItem["description"].toString();
         item.pinTypeName = jsonItem["pinTypeName"].toString();
         mItems[i] = item;
+        emit itemDataChanged(i,i);
     }
-    emit itemDataChanged(0,mItems.size() - 1);
 
     //sisa
     if(mItems.size() > jsonArray.size()){

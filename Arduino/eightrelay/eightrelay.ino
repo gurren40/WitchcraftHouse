@@ -9,20 +9,20 @@
 //inisialisasi wifi
 const char* ssid = "BigPond01C5";
 const char* password = "9726399032";
-const String websocketServerIp = "192.168.0.13";
+const String websocketServerIp = "192.168.0.100";
 const int websocketServerPort = 9000;
 const String websocketServerUrl = "/device";
 
 //inisialisasi device
-const char* deviceID = "jwt: xxxx";
-const String pin1ID = "00000000-0000-0000-0000-000000000000";
-const String pin2ID = "00000000-0000-0000-0000-000000000000";
-const String pin3ID = "00000000-0000-0000-0000-000000000000";
-const String pin4ID = "00000000-0000-0000-0000-000000000000";
-const String pin5ID = "00000000-0000-0000-0000-000000000000";
-const String pin6ID = "00000000-0000-0000-0000-000000000000";
-const String pin7ID = "00000000-0000-0000-0000-000000000000";
-const String pin8ID = "00000000-0000-0000-0000-000000000000";
+const char* deviceID = "jwt:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhZGl0aXlhc2lkYWJ1dGFyQHlhbmRleC5jb20iLCJpc3MiOiJXaXRjaGNyYWZ0SG91c2UiLCJqdGkiOiI2NWVmMTFjOC1hNGFjLTRmZTQtOGY4Yi1iNWJmNjdjOWExMDUifQ==.258C4gkDuDze841nv/tN2mS+VqOg3k/1N0oj+qlXzCE=";
+const String pin1ID = "66d8d886-cb78-4370-9858-2987ab6a46ee";
+const String pin2ID = "9e57ef2e-54e6-46ab-93c6-187ddf43ee6a";
+const String pin3ID = "ef7d6995-8a76-4aae-94ca-01e2e0fed210";
+const String pin4ID = "8d7ec35a-929d-445c-afa9-58c8489fc622";
+const String pin5ID = "84941286-7799-482b-be35-865668f1e8e8";
+const String pin6ID = "7b4742e1-b61e-4f6f-a0fb-c950a07fed56";
+const String pin7ID = "39221fdd-7b58-4674-aa6c-7d634844f545";
+const String pin8ID = "e500e728-48fd-47af-bb0b-660e62e03bae";
 
 //pins
 const int pin1 = D1; //relay
@@ -215,14 +215,14 @@ void setup() {
   pinMode(pin7, OUTPUT);
   pinMode(pin8, OUTPUT);
 
-  digitalWrite(pin1, 0);
-  digitalWrite(pin2, 0);
-  digitalWrite(pin3, 0);
-  digitalWrite(pin4, 0);
-  digitalWrite(pin5, 0);
-  digitalWrite(pin6, 0);
-  digitalWrite(pin7, 0);
-  digitalWrite(pin8, 0);
+  digitalWrite(pin1, 1);
+  digitalWrite(pin2, 1);
+  digitalWrite(pin3, 1);
+  digitalWrite(pin4, 1);
+  digitalWrite(pin5, 1);
+  digitalWrite(pin6, 1);
+  digitalWrite(pin7, 1);
+  digitalWrite(pin8, 1);
   
   Serial.begin(115200);
   //WiFi.begin(ssid, password);
