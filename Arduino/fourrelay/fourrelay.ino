@@ -9,22 +9,22 @@
 //inisialisasi wifi
 const char* ssid = "BigPond01C5";
 const char* password = "9726399032";
-const String websocketServerIp = "192.168.0.13";
+const String websocketServerIp = "192.168.0.100";
 const int websocketServerPort = 9000;
 const String websocketServerUrl = "/device";
 
 //inisialisasi device
-const char* deviceID = "jwt: xxxx";
-const String pin1ID = "00000000-0000-0000-0000-000000000000";
-const String pin2ID = "00000000-0000-0000-0000-000000000000";
-const String pin3ID = "00000000-0000-0000-0000-000000000000";
-const String pin4ID = "00000000-0000-0000-0000-000000000000";
+const char* deviceID = "jwt:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhZGl0aXlhc2lkYWJ1dGFyQHlhbmRleC5jb20iLCJpc3MiOiJXaXRjaGNyYWZ0SG91c2UiLCJqdGkiOiI0Yjg3ZTQ2NC02MjY5LTRkNjItYTlmMC1iZmRjYzdmYmY1MGEifQ==.pUK4/FhDfbw1zPKk/1CpJVKrazw/N4rNTucWBixtAOE=";
+const String pin1ID = "7497bcb2-26fd-4e4b-9eb5-120122cf9d08";
+const String pin2ID = "ee0fec3f-d1cd-453d-b432-b17a9fe29e65";
+const String pin3ID = "bf122747-b1df-4410-94c4-4f0749fe487f";
+const String pin4ID = "a261da54-6bc7-440a-9aee-1f989ad80f3a";
 
 //pins
-const int pin1 = D1; //relay
-const int pin2 = D2; //relay
-const int pin3 = D3; //relay
-const int pin4 = D4; //relay
+const int pin1 = D5; //relay
+const int pin2 = D6; //relay
+const int pin3 = D7; //relay
+const int pin4 = D8; //relay
 
 //pin status
 bool pin1Status = false;
@@ -163,10 +163,10 @@ void setup() {
   pinMode(pin3, OUTPUT);
   pinMode(pin4, OUTPUT);
 
-  digitalWrite(pin1, 0);
-  digitalWrite(pin2, 0);
-  digitalWrite(pin3, 0);
-  digitalWrite(pin4, 0);
+  digitalWrite(pin1, 1);
+  digitalWrite(pin2, 1);
+  digitalWrite(pin3, 1);
+  digitalWrite(pin4, 1);
   
   Serial.begin(115200);
   //WiFi.begin(ssid, password);
