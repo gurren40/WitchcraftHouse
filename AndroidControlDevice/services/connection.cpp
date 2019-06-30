@@ -6,6 +6,7 @@ Connection::Connection(QObject *parent) : QObject(parent)
     m_isOnline = false;
     m_pongCount = 0;
     m_websocket = new QWebSocket;
+    connect(m_websocket, QOverload<const QList<QSslError>&>::of(&QWebSocket::sslErrors),this, &Connection::onSslErrors);
     m_timer = new QTimer(this);
     m_pingTimer = new QTimer(this);
     connect(m_timer,&QTimer::timeout,this,&Connection::connectionLoop);
@@ -133,6 +134,17 @@ void Connection::onPong(quint64 elapsedTime, QByteArray payload)
     int intElapsedTime = QString::number(elapsedTime).toInt();
     m_pongCount = 0;
     emit pong(intElapsedTime,payload);
+}
+
+void Connection::onSslErrors(const QList<QSslError> &errors)
+{
+    Q_UNUSED(errors);
+
+        // WARNING: Never ignore SSL errors in production code.
+        // The proper way to handle self-signed certificates is to add a custom root
+        // to the CA store.
+
+    m_websocket->ignoreSslErrors();
 }
 
 bool Connection::isOnline() const

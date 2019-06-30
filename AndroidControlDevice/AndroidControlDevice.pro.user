@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.9.0, 2019-06-25T07:16:33. -->
+<!-- Written by QtCreator 4.9.0, 2019-06-30T22:39:42. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
-  <value type="QByteArray">{00908d98-164b-4aa0-9303-572afd5e7bd8}</value>
+  <value type="QByteArray">{9ea17d8b-b599-4fa8-9192-802342a595d7}</value>
  </data>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
@@ -64,12 +64,12 @@
   <valuemap type="QVariantMap">
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Android for arm64-v8a (Clang Qt 5.12.3 for Android ARM64-v8a)</value>
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Android for arm64-v8a (Clang Qt 5.12.3 for Android ARM64-v8a)</value>
-   <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">{5a56be27-ac7d-431d-a502-a00ed349a872}</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">{99d9d431-265e-4815-bcf9-91fa304681c4}</value>
    <value type="int" key="ProjectExplorer.Target.ActiveBuildConfiguration">0</value>
    <value type="int" key="ProjectExplorer.Target.ActiveDeployConfiguration">0</value>
    <value type="int" key="ProjectExplorer.Target.ActiveRunConfiguration">0</value>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.0">
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/liz/QtProjects/witchcrafthouse/build-AndroidControlDevice-Android_for_arm64_v8a_Clang_Qt_5_12_3_for_Android_ARM64_v8a-Debug</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/aditiya/QtProjects/Witchcraft/witchcrafthouse/build-AndroidControlDevice-Android_for_arm64_v8a_Clang_Qt_5_12_3_for_Android_ARM64_v8a-Debug</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
@@ -141,7 +141,7 @@
     <value type="bool" key="Qt4ProjectManager.Qt4BuildConfiguration.UseShadowBuild">true</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.1">
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/liz/QtProjects/witchcrafthouse/build-AndroidControlDevice-Android_for_arm64_v8a_Clang_Qt_5_12_3_for_Android_ARM64_v8a-Release</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/aditiya/QtProjects/Witchcraft/witchcrafthouse/build-AndroidControlDevice-Android_for_arm64_v8a_Clang_Qt_5_12_3_for_Android_ARM64_v8a-Release</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
@@ -213,7 +213,7 @@
     <value type="bool" key="Qt4ProjectManager.Qt4BuildConfiguration.UseShadowBuild">true</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.2">
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/liz/QtProjects/witchcrafthouse/build-AndroidControlDevice-Android_for_arm64_v8a_Clang_Qt_5_12_3_for_Android_ARM64_v8a-Profile</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/aditiya/QtProjects/Witchcraft/witchcrafthouse/build-AndroidControlDevice-Android_for_arm64_v8a_Clang_Qt_5_12_3_for_Android_ARM64_v8a-Profile</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
@@ -305,7 +305,10 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.AndroidDeployConfiguration2</value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.DeployConfigurationCount">1</value>
-   <valuemap type="QVariantMap" key="ProjectExplorer.Target.PluginSettings"/>
+   <valuemap type="QVariantMap" key="ProjectExplorer.Target.PluginSettings">
+    <value type="QString" key="AndroidDeviceSerialNumber">8dade0ef7ce4</value>
+    <value type="int" key="AndroidVersion.ApiLevel">25</value>
+   </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.0">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
     <valuelist type="QVariantList" key="Analyzer.Perf.Events">
@@ -363,7 +366,7 @@
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">activity</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">activity</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.AndroidRunConfiguration:/home/liz/QtProjects/witchcrafthouse/AndroidControlDevice/activity.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.AndroidRunConfiguration:/home/aditiya/QtProjects/Witchcraft/witchcrafthouse/AndroidControlDevice/activity.pro</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="uint" key="RunConfiguration.QmlDebugServerPort">3768</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
@@ -380,12 +383,12 @@
   <valuemap type="QVariantMap">
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Android for armeabi-v7a (Clang Qt 5.12.3 for Android ARMv7)</value>
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Android for armeabi-v7a (Clang Qt 5.12.3 for Android ARMv7)</value>
-   <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">{e49d9059-69b1-4d5c-be44-f85d6f3a6137}</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">{399ea2f5-5cd9-4760-a8b9-c5beccbc3483}</value>
    <value type="int" key="ProjectExplorer.Target.ActiveBuildConfiguration">0</value>
    <value type="int" key="ProjectExplorer.Target.ActiveDeployConfiguration">0</value>
    <value type="int" key="ProjectExplorer.Target.ActiveRunConfiguration">0</value>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.0">
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/liz/QtProjects/witchcrafthouse/build-AndroidControlDevice-Android_for_armeabi_v7a_Clang_Qt_5_12_3_for_Android_ARMv7-Debug</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/aditiya/QtProjects/Witchcraft/witchcrafthouse/build-AndroidControlDevice-Android_for_armeabi_v7a_Clang_Qt_5_12_3_for_Android_ARMv7-Debug</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
@@ -457,7 +460,7 @@
     <value type="bool" key="Qt4ProjectManager.Qt4BuildConfiguration.UseShadowBuild">true</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.1">
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/liz/QtProjects/witchcrafthouse/build-AndroidControlDevice-Android_for_armeabi_v7a_Clang_Qt_5_12_3_for_Android_ARMv7-Release</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/aditiya/QtProjects/Witchcraft/witchcrafthouse/build-AndroidControlDevice-Android_for_armeabi_v7a_Clang_Qt_5_12_3_for_Android_ARMv7-Release</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
@@ -529,7 +532,7 @@
     <value type="bool" key="Qt4ProjectManager.Qt4BuildConfiguration.UseShadowBuild">true</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.2">
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/liz/QtProjects/witchcrafthouse/build-AndroidControlDevice-Android_for_armeabi_v7a_Clang_Qt_5_12_3_for_Android_ARMv7-Profile</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/aditiya/QtProjects/Witchcraft/witchcrafthouse/build-AndroidControlDevice-Android_for_armeabi_v7a_Clang_Qt_5_12_3_for_Android_ARMv7-Profile</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
@@ -621,7 +624,10 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.AndroidDeployConfiguration2</value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.DeployConfigurationCount">1</value>
-   <valuemap type="QVariantMap" key="ProjectExplorer.Target.PluginSettings"/>
+   <valuemap type="QVariantMap" key="ProjectExplorer.Target.PluginSettings">
+    <value type="QString" key="AndroidDeviceSerialNumber">8dade0ef7ce4</value>
+    <value type="int" key="AndroidVersion.ApiLevel">25</value>
+   </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.0">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
     <valuelist type="QVariantList" key="Analyzer.Perf.Events">
@@ -672,12 +678,14 @@
      <value type="int">13</value>
      <value type="int">14</value>
     </valuelist>
-    <value type="int" key="PE.EnvironmentAspect.Base">2</value>
+    <value type="QString" key="Android.AmStartArgsKey"></value>
+    <valuelist type="QVariantList" key="Android.PostStartShellCmdListKey"/>
+    <valuelist type="QVariantList" key="Android.PreStartShellCmdListKey"/>
+    <value type="int" key="PE.EnvironmentAspect.Base">0</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.CustomExecutableRunConfiguration.Executable"></value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Custom Executable</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName"></value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.CustomExecutableRunConfiguration</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.AndroidRunConfiguration:/home/aditiya/QtProjects/Witchcraft/witchcrafthouse/AndroidControlDevice/activity.pro</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="uint" key="RunConfiguration.QmlDebugServerPort">3768</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
@@ -685,8 +693,6 @@
     <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>
@@ -696,12 +702,12 @@
   <valuemap type="QVariantMap">
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Android for x86 (Clang Qt 5.12.3 for Android x86)</value>
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Android for x86 (Clang Qt 5.12.3 for Android x86)</value>
-   <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">{df47652e-e372-48d6-8081-8bc2402901a5}</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">{b09b55c7-f66d-45fa-b5be-59103265de93}</value>
    <value type="int" key="ProjectExplorer.Target.ActiveBuildConfiguration">0</value>
    <value type="int" key="ProjectExplorer.Target.ActiveDeployConfiguration">0</value>
    <value type="int" key="ProjectExplorer.Target.ActiveRunConfiguration">0</value>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.0">
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/liz/QtProjects/witchcrafthouse/build-AndroidControlDevice-Android_for_x86_Clang_Qt_5_12_3_for_Android_x86-Debug</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/aditiya/QtProjects/Witchcraft/witchcrafthouse/build-AndroidControlDevice-Android_for_x86_Clang_Qt_5_12_3_for_Android_x86-Debug</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
@@ -773,7 +779,7 @@
     <value type="bool" key="Qt4ProjectManager.Qt4BuildConfiguration.UseShadowBuild">true</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.1">
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/liz/QtProjects/witchcrafthouse/build-AndroidControlDevice-Android_for_x86_Clang_Qt_5_12_3_for_Android_x86-Release</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/aditiya/QtProjects/Witchcraft/witchcrafthouse/build-AndroidControlDevice-Android_for_x86_Clang_Qt_5_12_3_for_Android_x86-Release</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
@@ -845,7 +851,7 @@
     <value type="bool" key="Qt4ProjectManager.Qt4BuildConfiguration.UseShadowBuild">true</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.2">
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/liz/QtProjects/witchcrafthouse/build-AndroidControlDevice-Android_for_x86_Clang_Qt_5_12_3_for_Android_x86-Profile</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/aditiya/QtProjects/Witchcraft/witchcrafthouse/build-AndroidControlDevice-Android_for_x86_Clang_Qt_5_12_3_for_Android_x86-Profile</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>

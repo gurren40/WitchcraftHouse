@@ -35,6 +35,7 @@ public slots:
     void disconnectWebsocket();
     void doPing(QByteArray payload = "witchcraft");
     void onPong(quint64 elapsedTime, QByteArray payload);
+    void onSslErrors(const QList<QSslError> &errors);
 
 private:
     QWebSocket* m_websocket;

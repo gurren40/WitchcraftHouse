@@ -105,3 +105,15 @@ ANDROID_PACKAGE_SOURCE_DIR = \
     $$PWD/android
 
 include(deployment.pri)
+
+contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
+    ANDROID_EXTRA_LIBS = \
+        $$PWD/../../../../build/android openssl/openssl-1.0.2s/libcrypto.so \
+        $$PWD/../../../../build/android openssl/openssl-1.0.2s/libssl.so
+}
+
+contains(ANDROID_TARGET_ARCH,arm64-v8a) {
+    ANDROID_EXTRA_LIBS = \
+    $$PWD/ssl/libcrypto.so \
+    $$PWD/ssl/libssl.so
+}
