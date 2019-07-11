@@ -10,16 +10,16 @@
 //inisialisasi wifi
 const char* ssid = "BigPond01C5";
 const char* password = "9726399032";
-const String websocketServerIp = "192.168.0.1000";
+const String websocketServerIp = "192.168.0.100";
 const int websocketServerPort = 9000;
 const String websocketServerUrl = "/device";
 
 //inisialisasi device
-const char* deviceID = "jwt:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhZGl0aXlhc2lkYWJ1dGFyQHlhbmRleC5jb20iLCJpc3MiOiJXaXRjaGNyYWZ0SG91c2UiLCJqdGkiOiIzOTJkMTNhMC05NjFhLTQ1ZTgtYWU2Ni0xYTJkN2JlMGI5YzkifQ==.VzmBHy52pEahrZ2v1wwlMxCv0qAV3LlQFkmkR6KyX9s=";
-const String ambientTempID = "74346d95-2e75-4e18-ba83-8064a2c86e1b";
-const String intendedTempID = "02bf3baa-6cc8-4f1b-8b69-447ae451e430";
-const String powerID = "73579023-a032-4142-a4a5-84f7de41f079";
-const String stateID = "a7a9501a-ddf1-46dc-a5e1-08ee7c34ae6d";
+const char* deviceID = "jwt:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhZGl0aXlhc2lkYWJ1dGFyQHlhbmRleC5jb20iLCJpc3MiOiJXaXRjaGNyYWZ0SG91c2UiLCJqdGkiOiJmZDBhMmI2MS1jNWFhLTQwNWItODYzMC0zMmZhZTJjMTU3NGEifQ==.mgu8ujNuOctdA3IhByc0CUsDiKTEUJGBD9XMAqWhhU8=";
+const String ambientTempID = "d822334b-f108-40dc-a3b1-9f527e20acc0";
+const String intendedTempID = "d3344b19-b947-406b-8741-c104d49f1fd9";
+const String powerID = "93838ff4-3d6e-49ce-b036-a0525246089b";
+const String stateID = "52e4582f-9392-4d7d-b52c-2723e49b324f";
 
 //actual variable
 float ambientTemp = 24;
@@ -28,7 +28,7 @@ bool power = false;
 int state = 0; //0 = off, 1 = heating, 2 = cooling, 3 = fan only
 
 //inisialisasi pin arduino
-#define ONE_WIRE_BUS D5
+#define ONE_WIRE_BUS 14 //D5
 
 const int fan = D1; //relay
 const int heater = D2; //relay
@@ -275,12 +275,10 @@ void setup() {
   webSocket.setReconnectInterval(5000);
 
   sensors.begin();
-  delay(1000);
-  sensors.requestTemperatures();
-  ambientTemp = sensors.getTempCByIndex(0);
+  ambientTemp = 24;
   startTime = millis();
   currentTime = millis();
-  elapsedTime = currentTime - startTime;
+  elapsedTime = 0;
 }
 
 void loop() {
@@ -288,7 +286,7 @@ void loop() {
   webSocket.loop();
   currentTime = millis();
   elapsedTime = currentTime - startTime;
-  if(elapsedTime > 3000){
+  if(elapsedTime > 5000){
     sensors.requestTemperatures();
     ambientTemp = sensors.getTempCByIndex(0);
     keeper();
