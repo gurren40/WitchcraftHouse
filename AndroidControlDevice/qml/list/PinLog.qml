@@ -11,7 +11,21 @@ Page {
         id: column
         spacing: 10
         anchors.fill: parent
+        ItemDelegate{
+            Layout.fillWidth: true
+            clip: true
+            icon.name: firstBar.visible ? "expand_less" : "expand_more"
+            text: "Menu"
+            onClicked: {
+                firstBar.visible ? firstBar.visible = false : firstBar.visible = true
+                secondBar.visible ? secondBar.visible = false : secondBar.visible = true
+                thirdBar.visible ? thirdBar.visible = false : thirdBar.visible = true
+            }
+        }
+
         ToolBar{
+            id : firstBar
+            visible: false
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignHCenter
             clip: true
@@ -141,6 +155,8 @@ Page {
             }
         }
         ToolBar{
+            id : secondBar
+            visible: false
             Layout.fillWidth: true
             clip: true
             horizontalPadding: 15
@@ -168,6 +184,8 @@ Page {
             }
         }
         ToolBar{
+            id : thirdBar
+            visible: false
             Layout.fillWidth: true
             clip: true
             horizontalPadding: 15
@@ -287,8 +305,8 @@ Page {
                             //id : yearly
                             //visible: false
                             name: "Coba series"
-                            axisX: BarCategoryAxis {categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ]}
-                            axisY: ValueAxis {    //  <- custom ValueAxis attached to the y-axis
+                            axisY: BarCategoryAxis {categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ]}
+                            axisX: ValueAxis {    //  <- custom ValueAxis attached to the y-axis
                                 id: yearlyValueAxis
                             }
                             BarSet{
@@ -323,8 +341,8 @@ Page {
                             //id : monthly
                             //visible: false
                             name: "Coba series"
-                            axisX: BarCategoryAxis { categories: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" ]}
-                            axisY: ValueAxis {    //  <- custom ValueAxis attached to the y-axis
+                            axisY: BarCategoryAxis { categories: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" ]}
+                            axisX: ValueAxis {    //  <- custom ValueAxis attached to the y-axis
                                 id: monthlyValueAxis
                             }
                             BarSet{
@@ -357,8 +375,8 @@ Page {
                             //id : weekly
                             //visible: false
                             name: "Coba series"
-                            axisX: BarCategoryAxis {categories: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]}
-                            axisY: ValueAxis {    //  <- custom ValueAxis attached to the y-axis
+                            axisY: BarCategoryAxis {categories: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]}
+                            axisX: ValueAxis {    //  <- custom ValueAxis attached to the y-axis
                                 id: weeklyValueAxis
                             }
                             BarSet{
