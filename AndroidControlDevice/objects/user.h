@@ -88,7 +88,7 @@ public slots:
     void getUserInfo();
     void requestLoginToken(QVariant email, QVariant password);
     void createNewUser(QVariant email, QVariant name, QVariant password);
-    void editUser(QVariant email, QVariant name, QVariant password);
+    void editUser(QVariant email, QVariant name, QVariant oldPassword, QVariant newPassword);
     void setUserInfo(QJsonObject json);
     void setThisDeviceModel(QString deviceModel);
 
