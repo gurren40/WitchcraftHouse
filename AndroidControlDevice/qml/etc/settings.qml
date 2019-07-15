@@ -85,6 +85,78 @@ Page {
                     checked: user.isFullScreen
                     onClicked: user.isFullScreen = checked
                 }
+                ItemDelegate{
+                    icon.name: logColumn.visible ? "expand_less" : "expand_more"
+                    width: parent.width
+                    text: qsTr("Delete Log Menu")
+                    onClicked: logColumn.visible ? logColumn.visible = false : logColumn.visible = true
+                }
+                Column{
+                    id : logColumn
+                    width: parent.width
+                    spacing: 15
+                    visible: false
+                    ItemDelegate{
+                        width: parent.width
+                        text: "Delete All Activity Log"
+                        onClicked: deleteActivityDialog.open()
+                    }
+                    ItemDelegate{
+                        width: parent.width
+                        text: "Delete All Pin Log"
+                        onClicked: deletePinDialog.open()
+                    }
+                    ItemDelegate{
+                        width: parent.width
+                        text: "Delete All Log"
+                        onClicked: deleteAllDialog.open()
+                    }
+                }
+            }
+            Dialog{
+                id: deleteActivityDialog
+                title: "WARNING"
+                modal: true
+                anchors.centerIn: parent
+                standardButtons: Dialog.Ok | Dialog.Cancel
+                onAccepted: logList.deleteActivityLog()
+                onRejected: console.log("Cancel clicked")
+                width: parent.width * 0.7
+                contentWidth: -1
+                contentItem: Label{
+                    width: parent.width
+                    text: "Are you sure to delete all activity log?"
+                }
+            }
+            Dialog{
+                id: deletePinDialog
+                title: "WARNING"
+                modal: true
+                anchors.centerIn: parent
+                standardButtons: Dialog.Ok | Dialog.Cancel
+                onAccepted: logList.deletePinLog()
+                onRejected: console.log("Cancel clicked")
+                width: parent.width * 0.7
+                contentWidth: -1
+                contentItem: Label{
+                    width: parent.width
+                    text: "Are you sure to delete all pin log?"
+                }
+            }
+            Dialog{
+                id: deleteAllDialog
+                title: "WARNING"
+                modal: true
+                anchors.centerIn: parent
+                standardButtons: Dialog.Ok | Dialog.Cancel
+                onAccepted: logList.deleteAllLog()
+                onRejected: console.log("Cancel clicked")
+                width: parent.width * 0.7
+                contentWidth: -1
+                contentItem: Label{
+                    width: parent.width
+                    text: "Are you sure to delete all log?"
+                }
             }
         }
     }

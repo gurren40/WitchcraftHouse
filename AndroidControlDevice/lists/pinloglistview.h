@@ -56,6 +56,7 @@ public slots:
     int getTodayMonth();
     int getMonth();
     int getYear();
+
 private:
     QVector<pinLogItem> mItems;
     int dataType; //0=mean//1=hours used
