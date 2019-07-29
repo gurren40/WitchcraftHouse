@@ -45,6 +45,7 @@ signals:
 public slots:
     void setSharedList(QJsonObject json);
     void getSharedList();
+    void getSharedPinList();
     void createNewShared(QVariant sharedName, QVariant sharedTo, QVariant groupID, QVariant description);
     void editShared(QVariant sharedID, QVariant sharedName, QVariant sharedTo, QVariant groupID, QVariant description);
     void deleteShared(QVariant sharedID);

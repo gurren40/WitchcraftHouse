@@ -47,6 +47,8 @@ Page {
                     }
                 }
                 ToolButton{
+                    id:weekbutton
+                    property variant theValue: [1,2,3,4,5,6,7]
                     Layout.alignment: Qt.AlignLeft
                     text: "Week"
                     font.pixelSize: Qt.application.font.pixelSize
@@ -55,19 +57,24 @@ Page {
                         yearly.visible = false
                         monthly.visible = false;
                         weekly.visible = true;
-                        weeklyBarSet.values = [pinLogListView.readDayWeek(1)
-                                               ,pinLogListView.readDayWeek(2)
-                                               ,pinLogListView.readDayWeek(3)
-                                               ,pinLogListView.readDayWeek(4)
-                                               ,pinLogListView.readDayWeek(5)
-                                               ,pinLogListView.readDayWeek(6)
-                                               ,pinLogListView.readDayWeek(7)
+                        weekbutton.theValue = [pinLogListView.dw1
+                                               ,pinLogListView.dw2
+                                               ,pinLogListView.dw3
+                                               ,pinLogListView.dw4
+                                               ,pinLogListView.dw5
+                                               ,pinLogListView.dw6
+                                               ,pinLogListView.dw7
                                 ]
-                        console.log(pinLogListView.readDayWeek(5))
+                        console.log(pinLogListView.dw1)
+                        weeklyBarSet.values = weekbutton.theValue
+                        weeklyBarSet.setAxisValue();
+                        weeklyBarSet.values = weekbutton.theValue
                         summaryLabel.text = ""
                     }
                 }
                 ToolButton{
+                    id : monthbutton
+                    property variant theValue: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
                     Layout.alignment: Qt.AlignLeft
                     text: "Month"
                     font.pixelSize: Qt.application.font.pixelSize
@@ -76,49 +83,53 @@ Page {
                         yearly.visible = false
                         monthly.visible = true;
                         weekly.visible = false;
-                        monthlyBarSet.values = [pinLogListView.readDayMonth(1)
-                                               ,pinLogListView.readDayMonth(2)
-                                               ,pinLogListView.readDayMonth(3)
-                                               ,pinLogListView.readDayMonth(4)
-                                               ,pinLogListView.readDayMonth(5)
-                                               ,pinLogListView.readDayMonth(6)
-                                               ,pinLogListView.readDayMonth(7)
-                                               ,pinLogListView.readDayMonth(8)
-                                               ,pinLogListView.readDayMonth(9)
-                                               ,pinLogListView.readDayMonth(10)
-                                               ,pinLogListView.readDayMonth(11)
-                                               ,pinLogListView.readDayMonth(12)
-                                               ,pinLogListView.readDayMonth(13)
-                                               ,pinLogListView.readDayMonth(14)
-                                               ,pinLogListView.readDayMonth(15)
-                                               ,pinLogListView.readDayMonth(16)
-                                               ,pinLogListView.readDayMonth(17)
-                                               ,pinLogListView.readDayMonth(18)
-                                               ,pinLogListView.readDayMonth(19)
-                                               ,pinLogListView.readDayMonth(20)
-                                               ,pinLogListView.readDayMonth(21)
-                                               ,pinLogListView.readDayMonth(22)
-                                               ,pinLogListView.readDayMonth(23)
-                                               ,pinLogListView.readDayMonth(24)
-                                               ,pinLogListView.readDayMonth(25)
-                                               ,pinLogListView.readDayMonth(26)
-                                               ,pinLogListView.readDayMonth(27)
-                                               ,pinLogListView.readDayMonth(28)
-                                               ,pinLogListView.readDayMonth(29)
-                                               ,pinLogListView.readDayMonth(30)
-                                               ,pinLogListView.readDayMonth(31)
+                        monthbutton.theValue = [pinLogListView.dm1
+                                               ,pinLogListView.dm2
+                                               ,pinLogListView.dm3
+                                               ,pinLogListView.dm4
+                                               ,pinLogListView.dm5
+                                               ,pinLogListView.dm6
+                                               ,pinLogListView.dm7
+                                               ,pinLogListView.dm8
+                                               ,pinLogListView.dm9
+                                               ,pinLogListView.dm10
+                                               ,pinLogListView.dm11
+                                               ,pinLogListView.dm12
+                                               ,pinLogListView.dm13
+                                               ,pinLogListView.dm14
+                                               ,pinLogListView.dm15
+                                               ,pinLogListView.dm16
+                                               ,pinLogListView.dm17
+                                               ,pinLogListView.dm18
+                                               ,pinLogListView.dm19
+                                               ,pinLogListView.dm20
+                                               ,pinLogListView.dm21
+                                               ,pinLogListView.dm22
+                                               ,pinLogListView.dm23
+                                               ,pinLogListView.dm24
+                                               ,pinLogListView.dm25
+                                               ,pinLogListView.dm26
+                                               ,pinLogListView.dm27
+                                               ,pinLogListView.dm28
+                                               ,pinLogListView.dm29
+                                               ,pinLogListView.dm30
+                                               ,pinLogListView.dm31
                                 ]
-                        console.log(pinLogListView.readDayMonth(7))
+                        console.log(pinLogListView.dm29)
+                        monthlyBarSet.values = monthbutton.theValue;
                         monthlyBarSet.setAxisValue();
+                        monthlyBarSet.values = monthbutton.theValue;
                         if(pinLogListView.datatype == 0){
-                            summaryLabel.text = "Average this month = "+pinLogListView.readMonth(pinLogListView.month)
+                            summaryLabel.text = "Average this month = "+pinLogListView.thisMonth
                         }
                         else if(pinLogListView.datatype == 1){
-                            summaryLabel.text = "Usage hour this month = "+pinLogListView.readYear(pinLogListView.month)
+                            summaryLabel.text = "Usage hour this month = "+pinLogListView.thisMonth
                         }
                     }
                 }
                 ToolButton{
+                    id : yearbutton
+                    property variant theValue: [1,2,3,4,5,6,7,8,9,10,11,12]
                     Layout.alignment: Qt.AlignLeft
                     text: "Year"
                     font.pixelSize: Qt.application.font.pixelSize
@@ -127,25 +138,28 @@ Page {
                         yearly.visible = true
                         monthly.visible = false;
                         weekly.visible = false;
-                        yearlyBarSet.values = [pinLogListView.readMonth(1)
-                                               ,pinLogListView.readMonth(2)
-                                               ,pinLogListView.readMonth(3)
-                                               ,pinLogListView.readMonth(4)
-                                               ,pinLogListView.readMonth(5)
-                                               ,pinLogListView.readMonth(6)
-                                               ,pinLogListView.readMonth(7)
-                                               ,pinLogListView.readMonth(8)
-                                               ,pinLogListView.readMonth(9)
-                                               ,pinLogListView.readMonth(10)
-                                               ,pinLogListView.readMonth(11)
-                                               ,pinLogListView.readMonth(12)
+                        yearbutton.theValue = [pinLogListView.month1
+                                               ,pinLogListView.month2
+                                               ,pinLogListView.month3
+                                               ,pinLogListView.month4
+                                               ,pinLogListView.month5
+                                               ,pinLogListView.month6
+                                               ,pinLogListView.month7
+                                               ,pinLogListView.month8
+                                               ,pinLogListView.month9
+                                               ,pinLogListView.month10
+                                               ,pinLogListView.month11
+                                               ,pinLogListView.month12
                                 ]
+                        console.log(pinLogListView.month7)
+                        yearlyBarSet.values = yearbutton.theValue
                         yearlyBarSet.setAxisValue();
+                        yearlyBarSet.values = yearbutton.theValue
                         if(pinLogListView.datatype == 0){
-                            summaryLabel.text = "Average this year = "+pinLogListView.readYear(pinLogListView.year)
+                            summaryLabel.text = "Average this year = "+pinLogListView.thisYear
                         }
                         else if(pinLogListView.datatype == 1){
-                            summaryLabel.text = "Usage hour this year = "+pinLogListView.readYear(pinLogListView.year)
+                            summaryLabel.text = "Usage hour this year = "+pinLogListView.thisYear
                         }
                     }
                 }
@@ -305,8 +319,8 @@ Page {
                             //id : yearly
                             //visible: false
                             name: "Coba series"
-                            axisY: BarCategoryAxis {categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ]}
-                            axisX: ValueAxis {    //  <- custom ValueAxis attached to the y-axis
+                            axisX: BarCategoryAxis {categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ]}
+                            axisY: ValueAxis {    //  <- custom ValueAxis attached to the x-axis
                                 id: yearlyValueAxis
                             }
                             BarSet{
@@ -320,7 +334,8 @@ Page {
                                             max = values[i];
                                         }
                                         if(max > 0){
-                                            yearlyValueAxis.max = max;
+                                            yearlyValueAxis.max = max + 1;
+                                            yearlyValueAxis.min = 0;
                                         }
                                     }
                                 }
@@ -341,8 +356,8 @@ Page {
                             //id : monthly
                             //visible: false
                             name: "Coba series"
-                            axisY: BarCategoryAxis { categories: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" ]}
-                            axisX: ValueAxis {    //  <- custom ValueAxis attached to the y-axis
+                            axisX: BarCategoryAxis { categories: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" ]}
+                            axisY: ValueAxis {    //  <- custom ValueAxis attached to the x-axis
                                 id: monthlyValueAxis
                             }
                             BarSet{
@@ -356,7 +371,8 @@ Page {
                                             max = values[i];
                                         }
                                         if(max > 0){
-                                            monthlyValueAxis.max = max;
+                                            monthlyValueAxis.max = max + 1;
+                                            monthlyValueAxis.min = 0;
                                         }
                                     }
                                 }
@@ -375,8 +391,8 @@ Page {
                             //id : weekly
                             //visible: false
                             name: "Coba series"
-                            axisY: BarCategoryAxis {categories: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]}
-                            axisX: ValueAxis {    //  <- custom ValueAxis attached to the y-axis
+                            axisX: BarCategoryAxis {categories: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]}
+                            axisY: ValueAxis {    //  <- custom ValueAxis attached to the y-axis
                                 id: weeklyValueAxis
                             }
                             BarSet{
@@ -390,7 +406,8 @@ Page {
                                             max = values[i];
                                         }
                                         if(max > 0){
-                                            weeklyValueAxis.max = max;
+                                            weeklyValueAxis.max = max + 1;
+                                            weeklyValueAxis.min = 0;
                                         }
                                     }
                                 }
