@@ -266,6 +266,42 @@ void LogList::getAllTimePinLogList(QString pinUUID)
     m_pinloglistview->setPinLogItems(pinloglist);
 }
 
+void LogList::deleteAllLog()
+{
+    QSettings setting;
+    QJsonObject jsonObj;
+    jsonObj["email"] = setting.value("email").toString();
+    QJsonArray jsonArray;
+    jsonArray.append(jsonObj);
+    QJsonObject toSend;
+    toSend["deleteAllLog"] = jsonArray;
+    m_remote->sendToServer(jsonToVariant(toSend));
+}
+
+void LogList::deleteActivityLog()
+{
+    QSettings setting;
+    QJsonObject jsonObj;
+    jsonObj["email"] = setting.value("email").toString();
+    QJsonArray jsonArray;
+    jsonArray.append(jsonObj);
+    QJsonObject toSend;
+    toSend["deleteAllActivityLog"] = jsonArray;
+    m_remote->sendToServer(jsonToVariant(toSend));
+}
+
+void LogList::deletePinLog()
+{
+    QSettings setting;
+    QJsonObject jsonObj;
+    jsonObj["email"] = setting.value("email").toString();
+    QJsonArray jsonArray;
+    jsonArray.append(jsonObj);
+    QJsonObject toSend;
+    toSend["deleteAllPinLog"] = jsonArray;
+    m_remote->sendToServer(jsonToVariant(toSend));
+}
+
 void LogList::setLoglistview(LogListView *loglistview)
 {
     m_loglistview = loglistview;

@@ -180,12 +180,13 @@ void User::createNewUser(QVariant email, QVariant name, QVariant password)
     m_remote->sendToServer(jsonToVariant(toSend));
 }
 
-void User::editUser(QVariant email, QVariant name, QVariant password)
+void User::editUser(QVariant email, QVariant name, QVariant oldPassword, QVariant newPassword)
 {
     QJsonObject jsonObj;
     if(email.toString() == this->email()){
         jsonObj["email"] = email.toString();
-        jsonObj["password"] = password.toString();
+        jsonObj["oldPassword"] = oldPassword.toString();
+        jsonObj["newPassword"] = newPassword.toString();
         jsonObj["name"] = name.toString();
         QJsonArray jsonArray;
         jsonArray.append(jsonObj);

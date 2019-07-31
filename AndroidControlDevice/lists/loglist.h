@@ -56,6 +56,11 @@ public slots:
     void getThisYearPinLogList(QString pinUUID);
     void getAllTimePinLogList(QString pinUUID);
 
+    //delete
+    void deleteAllLog();
+    void deleteActivityLog();
+    void deletePinLog();
+
     //misc
     QVariant jsonToVariant(QJsonObject json);
     QJsonObject variantToJson(QVariant jvar);

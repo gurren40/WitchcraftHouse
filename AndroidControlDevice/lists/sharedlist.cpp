@@ -79,6 +79,18 @@ void SharedList::getSharedList()
     m_remote->sendToServer(jsonToVariant(toSend));
 }
 
+void SharedList::getSharedPinList()
+{
+    QSettings setting;
+    QJsonObject jsonObj;
+    jsonObj["email"] = setting.value("email").toString();
+    QJsonArray jsonArray;
+    jsonArray.append(jsonObj);
+    QJsonObject toSend;
+    toSend["getSharedPinList"] = jsonArray;
+    m_remote->sendToServer(jsonToVariant(toSend));
+}
+
 void SharedList::createNewShared(QVariant sharedName, QVariant sharedTo, QVariant groupID, QVariant description)
 {
     QJsonObject jsonObj;

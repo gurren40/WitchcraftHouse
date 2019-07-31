@@ -210,7 +210,8 @@ CREATE TABLE `PinLog` (
   `userID` int(11) NOT NULL,
   `pinID` int(11) NOT NULL,
   `value` varchar(255),
-  `description` varchar(100)
+  `description` varchar(100),
+  `timestamp` timestamp DEFAULT CURRENT_TIMESTAMP,
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Tabel untuk entitas pin log';
 
 
