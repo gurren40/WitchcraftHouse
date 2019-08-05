@@ -56,11 +56,13 @@ ESP8266WiFiMulti WiFiMulti;
 WebSocketsClient webSocket;
 
 void turnOn(int relay){
-  digitalWrite(relay, 0);
+  //digitalWrite(relay, 0);
+  digitalWrite(relay, 1);
 }
 
 void turnOff(int relay){
-  digitalWrite(relay, 1);
+  //digitalWrite(relay, 1);
+  digitalWrite(relay, 0);
 }
 
 bool setPinValue(int relay, String value){
@@ -215,14 +217,14 @@ void setup() {
   pinMode(pin7, OUTPUT);
   pinMode(pin8, OUTPUT);
 
-  digitalWrite(pin1, 1);
-  digitalWrite(pin2, 1);
-  digitalWrite(pin3, 1);
-  digitalWrite(pin4, 1);
-  digitalWrite(pin5, 1);
-  digitalWrite(pin6, 1);
-  digitalWrite(pin7, 1);
-  digitalWrite(pin8, 1);
+  digitalWrite(pin1, 0);
+  digitalWrite(pin2, 0);
+  digitalWrite(pin3, 0);
+  digitalWrite(pin4, 0);
+  digitalWrite(pin5, 0);
+  digitalWrite(pin6, 0);
+  digitalWrite(pin7, 0);
+  digitalWrite(pin8, 0);
   
   Serial.begin(115200);
   //WiFi.begin(ssid, password);
