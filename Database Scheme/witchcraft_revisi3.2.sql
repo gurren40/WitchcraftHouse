@@ -73,13 +73,14 @@ CREATE TABLE `ControlDevice` (
 --
 
 CREATE TABLE `Device` (
-  `deviceID` int(11) NOT NULL,
+  `deviceID` int(11) NOT NULL AUTO_INCREMENT,
   `deviceUUID` binary(16) NOT NULL,
   `userID` int(11) NOT NULL,
   `deviceName` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `deviceToken` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `isDeviceOnline` tinyint(1) NOT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci NOT NULL
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  primary key (deviceID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -89,11 +90,12 @@ CREATE TABLE `Device` (
 --
 
 CREATE TABLE `Groups` (
-  `groupID` int(11) NOT NULL,
+  `groupID` int(11) NOT NULL AUTO_INCREMENT,
   `userID` int(11) NOT NULL,
   `iconID` int(11) NOT NULL,
   `groupName` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci NOT NULL
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  primary key (groupID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -212,6 +214,7 @@ CREATE TABLE `PinLog` (
   `value` varchar(255),
   `description` varchar(100),
   `timestamp` timestamp DEFAULT CURRENT_TIMESTAMP,
+  primary key (pinLogID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Tabel untuk entitas pin log';
 
 
@@ -229,16 +232,16 @@ ALTER TABLE `ControlDevice`
 --
 -- Indexes for table `Device`
 --
+-- ADD PRIMARY KEY (`deviceID`),
 ALTER TABLE `Device`
-  ADD PRIMARY KEY (`deviceID`),
   ADD UNIQUE KEY `deviceUUID` (`deviceUUID`),
   ADD KEY `userID` (`userID`);
 
 --
 -- Indexes for table `Groups`
 --
+-- ADD PRIMARY KEY (`groupID`),
 ALTER TABLE `Groups`
-  ADD PRIMARY KEY (`groupID`),
   ADD KEY `userID` (`userID`),
   ADD KEY `iconID` (`iconID`);
 
@@ -300,8 +303,8 @@ ALTER TABLE `User`
 --
 -- Indexes for table `PinLog`
 --
-ALTER TABLE `PinLog`
-  ADD PRIMARY KEY (`pinLogID`);
+-- ALTER TABLE `PinLog`
+--   ADD PRIMARY KEY (`pinLogID`);
 
 
 --
@@ -311,14 +314,14 @@ ALTER TABLE `PinLog`
 --
 -- AUTO_INCREMENT for table `Device`
 --
-ALTER TABLE `Device`
-  MODIFY `deviceID` int(11) NOT NULL AUTO_INCREMENT;
+-- ALTER TABLE `Device`
+--   MODIFY `deviceID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `Groups`
 --
-ALTER TABLE `Groups`
-  MODIFY `groupID` int(11) NOT NULL AUTO_INCREMENT;
+-- ALTER TABLE `Groups`
+--   MODIFY `groupID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `Icon`
