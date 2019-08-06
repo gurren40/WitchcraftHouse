@@ -19,18 +19,21 @@ const String pin1ID = "7497bcb2-26fd-4e4b-9eb5-120122cf9d08";
 const String pin2ID = "ee0fec3f-d1cd-453d-b432-b17a9fe29e65";
 const String pin3ID = "bf122747-b1df-4410-94c4-4f0749fe487f";
 const String pin4ID = "a261da54-6bc7-440a-9aee-1f989ad80f3a";
+//const String pin8ID = "e500e728-48fd-47af-bb0b-660e62e03bae";
 
 //pins
-const int pin1 = D5; //relay
-const int pin2 = D6; //relay
-const int pin3 = D7; //relay
-const int pin4 = D8; //relay
+const int pin1 = D1; //relay 5
+const int pin2 = D5; //relay 6
+const int pin3 = D3; //relay 7
+const int pin4 = D4; //relay 8
+//const int pin8 = D5; //relay
 
 //pin status
 bool pin1Status = false;
 bool pin2Status = false;
 bool pin3Status = false;
 bool pin4Status = false;
+//bool pin8Status = false;
 
 //misc
 unsigned long startTime;
@@ -78,6 +81,9 @@ void setValue(String uuid, String value){
   if(uuid == pin4ID){
     pin4Status = setPinValue(pin4,value);
   }
+  //if(uuid == pin8ID){
+    //pin8Status = setPinValue(pin8,value);
+  //}
   sendMessage();
 }
 
@@ -87,10 +93,12 @@ void sendMessage(){
   String msg2;
   String msg3;
   String msg4;
+  //String msg8;
   String msgValue1 = "0";
   String msgValue2 = "0";
   String msgValue3 = "0";
   String msgValue4 = "0";
+  //String msgValue8 = "0";
 
   if(pin1Status){
     msgValue1 = "1";
@@ -164,11 +172,13 @@ void setup() {
   pinMode(pin2, OUTPUT);
   pinMode(pin3, OUTPUT);
   pinMode(pin4, OUTPUT);
+  //pinMode(pin8, OUTPUT);
 
   digitalWrite(pin1, 0);
   digitalWrite(pin2, 0);
   digitalWrite(pin3, 0);
   digitalWrite(pin4, 0);
+  //digitalWrite(pin8, 0);
   
   Serial.begin(115200);
   //WiFi.begin(ssid, password);
